@@ -1,0 +1,37 @@
+.marquee-container {
+    overflow: hidden;
+    white-space: nowrap;
+    display: flex;
+}
+
+.marquee-content {
+    display: inline-flex;      /* inline-flex avoids spacing quirks */
+    animation: marquee 60s linear infinite;
+}
+
+.marquee-content span {
+    white-space: nowrap;
+}
+
+/* Move only ONE copy width */
+@keyframes marquee {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.yarding-text {
+    font-family: 'Yarding', sans-serif;
+    font-weight: normal;
+}
+
+
+@font-face {
+  font-family: 'Yarding';
+  src: url('./assets/fonts/Yarndings12-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
