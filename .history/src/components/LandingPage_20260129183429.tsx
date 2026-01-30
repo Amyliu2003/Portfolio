@@ -11,7 +11,7 @@ interface SlideData {
 const SLIDES: SlideData[] = [
   {
     id: 1,
-    title: "Amy Liu",
+    title: "AMY",
     description: "Constructing digital experiences through experimental technology and curated design. Exploring the intersection of data structures, pixel perfection, and user interaction.",
     actionText: "Execute_Init"
   },
