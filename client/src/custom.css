@@ -23,6 +23,18 @@
     }
 }
 
+
+/* hide scrollbar but keep scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
+
 .publicSans-text {
     font-family: 'publicSans', sans-serif;
     font-weight: normal;

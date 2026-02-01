@@ -68,7 +68,7 @@ export const FloatingTooltip: React.FC<FloatingTooltipProps> = ({
                     {hoveredItem.skills}
                   </p>
                   <span className="text-white text-[10px] font-mono">
-                    2026
+                    {hoveredItem.time.substring(hoveredItem.time.length - 5, hoveredItem.time.length)}
                   </span>
                 </div>
               </div>

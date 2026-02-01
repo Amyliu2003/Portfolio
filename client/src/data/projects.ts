@@ -1,9 +1,20 @@
+import thisWebsiteTitle from "../assets/thisWebsite_title.png";
+
 import campusCravingTitle from "../assets/campusCraving_title.png";
 import campusCravingBot from "../assets/campusCraving_bot.png";
+
+import smartChipTitle from "../assets/SmartChip_title.jpg";
+
+import GenesisTitle from "../assets/Genesis_title.png";
+
+import CDaysTitle from "../assets/100days_title.png";
+
 
 import unicefGeosightTitle from "../assets/unicefGeosight_title.png";
 
 import sameRoofTitle from "../assets/UTSM_title.jpg";
+
+import lightningTitle from "../assets/lightning_title.png";
 
 import OCCATTitle from "../assets/OCCAT_title.png";
 import OCCATProfile from "../assets/OCCAT_profile.png";
@@ -14,6 +25,12 @@ import trafficCityIdea1 from "../assets/TrafficCity_idea.png";
 import trafficCityIdea2 from "../assets/TrafficCity_idea2.png";
 import trafficCityMenu from "../assets/trafficCity_menu.png";
 import trafficCityGame from "../assets/trafficCity_game.png";
+
+import lookingGlassTitle from "../assets/lookingGlass_title.png";
+
+import TemperatureCloudTitle from "../assets/TemperatureCloud_title.JPG";
+
+import { data } from "react-router-dom";
 
 
 
@@ -175,9 +192,28 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
   const id = i + 1;
   const idStr = id < 10 ? `0${id}` : `${id}`;
   const projectLabel = `PROJECT ${idStr}`;
-
-  // 1. Campus Cravings
+  
+  //1. This Website
   if (id === 1) {
+    return {
+      id,
+      idStr,
+      projectLabel,
+      type: "special",
+      title: "Amy Liu's Portfolio Website",
+      time: "JAN 2026",
+      skills: "React • TypeScript • UI/UX",
+      role: "Frontend Developer • Designer",
+      description:
+        "A custom-built interactive portfolio website designed to showcase projects through an unconventional horizontal “Lava Tray” interface and a responsive masonry grid. Built with React and Tailwind CSS, the site supports dual viewing modes, immersive full-screen project pages, and modular content blocks for long-form storytelling. A built-in admin system enables direct content editing, while dynamic filtering and navigation support intuitive exploration across devices.",
+      image: thisWebsiteTitle,
+      link: "",
+      githubLink: ""
+    };
+  }
+
+  // 2. Campus Cravings
+  if (id === 2) {
     return {
       id,
       idStr,
@@ -185,7 +221,7 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
       type: "special",
       title: "Campus Cravings",
       time: "AUG 2025",
-      skills: "JS • OpenAI • UI/UX",
+      skills: "HTML/CSS/JavaScript • RAG • UI/UX",
       role: "Creative Technologist • Developer",
       description:
         "Designed a site showcasing NYU-area food options by embedding and customizing WordPress content via REST APIs. Built a dish randomizer in JavaScript and integrated an OpenAI-based chatbot with basic RAG logic. Applied UX principles from Figma mockups. Led to recruitment for NYU’s WordPress & Emerging Tech role.",
@@ -194,6 +230,63 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
       githubLink: "",
     };
   }
+
+  // 3. Between Boundaries
+  if (id === 3) {
+    return {
+      id,
+      idStr,
+      projectLabel,
+      type: "special",
+      title: "Between Boundaries",
+      time: "FALL 2023",
+      skills: "Arduino • AI/ML • WEBGL • Projection Mapping • Installation",
+      role: "Creative Technologist • Interaction Designer",
+      description:
+       "A semi-autonomous interactive installation exploring the blurred boundary between human, machine, and nature. The work presents a speculative “being” that claims neither human nor AI identity, communicating primarily through emojis and non-verbal signals. Using sensors, serial communication, and a kinetic sculpture with RGB lighting and sound, the installation shifts behavior based on human presence and interaction. Digital responses generated through character-based AI are mapped to physical reactions, while a Pepper’s Ghost hologram blends virtual 3D content with physical form. The project questions authorship, consciousness, and how human bias shapes the systems we create.",
+      image: smartChipTitle,
+      link: null,
+      githubLink: null,
+    };
+  }
+
+  //
+  if (id === 4) {
+    return {
+      id,
+      idStr,
+      projectLabel,
+      type: "special",
+      title: "Genesis",
+      time: "FALL 2022",
+      skills: "p5.js • AI/ML • Projection Mapping • Installation",
+      role: "Game Designer • Developer",
+      description:
+        "GENESIS is an interactive narrative installation that imagines a future in which humanity no longer exists and artificial intelligence becomes the sole medium for preserving human culture. Participants assume the role of observers in orbit, scanning everyday objects to generate symbolic texts and myth-like narratives that form a speculative encyclopedia for a future species. Combining p5.js animations, object detection, generative text logic, and MIDI-controlled projection mapping, the work links physical artifacts to responsive visuals and asks how meaning, memory, and human values are translated—and transformed—when interpreted through algorithmic systems.",
+      image: GenesisTitle,
+      link: null,
+      githubLink: null,
+    };
+  } 
+
+  // 5. 100 Days of OC's (?) Artifacts
+  if (id === 5) {
+    return {
+      id,
+      idStr,
+      projectLabel,
+      type: "special",
+      title: "100 Days of OC's (?) Artifacts",
+      time: "FALL 2025",
+      skills: "Graphic Design",
+      role: "Graphic Designer",
+      description:
+        "A semesrer-long personal challenge to output creative visuals for 100 days. The project explores themes of identity, transformation, and narrative through a series of digital illustrations and mixed-media collages. Each piece reflects a unique aspect of character design, storytelling, or emotional expression.",
+      image: CDaysTitle,
+      link: "https://www.instagram.com/siera_100days/",
+      githubLink: "",
+    };
+  } 
 
   // 3. UNICEF GeoSight
   if (id === 3) {
@@ -204,13 +297,31 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
       type: "special",
       title: "UNICEF GeoSight",
       time: "JUNE 2025",
-      skills: "React • Mapping • OSS",
-      role: "Frontend Developer • GIS Specialist",
+      skills: "React • MapLibre GL JS • Docker",
+      role: "Co-Developer",
       description:
         "Co-developed a working prototype for a dual-map swipe feature proposed in UNICEF GeoSight’s open-source repository. Built with React and MapLibre GL JS to support side-by-side comparison of geospatial data, and refined state management to enable responsive toggling and improved usability.",
       image: unicefGeosightTitle,
       link: "",
       githubLink: "",
+    };
+  }
+
+  if (id === 4) {
+    return {
+      id,
+      idStr,
+      projectLabel,
+      type: "placeholder",
+      title: "[PROJECT NAME]",
+      time: "[TIMEFRAME]",
+      skills: "[SKILL USED]",
+      role: "Developer",
+      description:
+        "This project data is currently encrypted or unavailable.",
+      image: null,
+      link: null,
+      githubLink: null,
     };
   }
 
@@ -223,8 +334,8 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
       type: "special",
       title: "Under the Same Roof",
       time: "SPRING 2025",
-      skills: "Three.js • AI/ML • Installation",
-      role: "Creative Technologist • 3D Artist",
+      skills: "Three.js • Fusion 360 • Projection Mapping • 3D Printing • Installation",
+      role: "Creative Technologist • 3D Artist ",
       description:
         "A mixed-media installation exploring how algorithmic language models reshape our understanding of home and meaning. Visitors input a word, which is processed through a Word2Vec embedding model to dynamically alter a physical dollhouse’s layout and atmosphere using Three.js, projection mapping, and screen-based media.",
       image: sameRoofTitle,
@@ -232,6 +343,26 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
       githubLink: null
     };
   }
+
+  if (id === 7) {
+    return {
+      id,
+      idStr,
+      projectLabel,
+      type: "special",
+      title: "Lightning",
+      time: "SPRING 2025",
+      skills: "p5.js • generative art",
+      role: "Developer",
+      description:
+        "A generative animation exploring the visual structure and rhythm of lightning through recursive branching and controlled randomness. Built in p5.js, the sketch uses Gaussian noise, depth-based branching, and layered glow effects to simulate electrical discharge, flicker, and atmospheric light over time.",
+      image: lightningTitle,
+      link: null,
+      githubLink: null,
+    };
+  }
+
+
 
   // 9. Traffic City
   if (id === 9) {
@@ -241,8 +372,8 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
       projectLabel,
       type: "special",
       title: "Traffic City",
-      time: "WINTER 2024",
-      skills: "Accessibility • Game Dev",
+      time: "FALL 2024",
+      skills: "Accessibility • HTML/CSS/JavaScript • MakeCode Arcade • Arduino",
       role: "Game Designer • Developer",
       description:
         "Designed and co-developed a browser-based two-button driving game prioritizing inclusive play for users with limited mobility. Built in MakeCode Arcade, the game allows control through two-directional inputs, enabling gameplay via alternative physical gestures. Implemented accessibility features including colorblind-safe palettes and dual-sensory feedback.",
@@ -263,6 +394,25 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
           image:  trafficCityIdea2
         }
       ]
+    };
+  }
+
+  //
+  if (id === 10) {
+    return {
+      id,
+      idStr,
+      projectLabel,
+      type: "special",
+      title: "The Looking-through Glass House",
+      time: "Spring 2024",
+      skills: "Three.js • Blender • Interactive Narrative",
+      role: "Developer",
+      description:
+        "An interactive web-based narrative inspired by Through the Looking-Glass, combining a 2D questionnaire with a 3D navigable room. The project explores authorship, control, and identity by positioning the user as a “pawn” within a rule-driven system, using mirrors, narration, and constrained interaction to question agency within digital environments.",
+      image: lookingGlassTitle,
+      link: null,
+      githubLink: null,
     };
   }
 
@@ -304,14 +454,14 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
       id,
       idStr,
       projectLabel,
-      type: "placeholder",
-      title: "[PROJECT NAME]",
-      time: "[TIMEFRAME]",
-      skills: "[SKILL USED]",
+      type: "special",
+      title: "Cloud Maker",
+      time: "FALL 2023",
+      skills: "p5.js • WEBGL • Arduino",
       role: "Developer",
       description:
-        "This project data is currently encrypted or unavailable.",
-      image: null,
+        "A procedural 3D cloud form generated using merged sphere geometries and animated vertex distortion in Three.js. The cloud is constructed from layered base volumes and hundreds of smaller “cloudlets” distributed using golden-ratio spacing, then animated through sinusoidal vertex displacement to create a soft, breathing motion. The project explores form, motion, and atmosphere through geometry manipulation, lighting, and emissive materials.",
+      image: TemperatureCloudTitle,
       link: null,
       githubLink: null,
       };

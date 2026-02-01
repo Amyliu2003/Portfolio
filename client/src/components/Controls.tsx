@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { COLORS, THEME } from "../utils/theme";
+import { TagScroller } from "./TagScroller";
 
 export type SortOption = "default" | "alphabetical" | "newest";
 
@@ -135,29 +136,17 @@ export const Controls: React.FC<ControlsProps> = ({
       </div>
 
       {/* Bottom Row: Tags */}
-      <div className="w-full overflow-hidden pointer-events-auto">
-         <div className="flex flex-wrap gap-2">
-            {tagData.map(([tag, count]) => {
-                const isActive = activeTags.includes(tag);
-                return (
-                    <button
-                        key={tag}
-                        onClick={() => handleTagClick(tag)}
-                        className={`
-                            h-[30px] px-3 flex items-center gap-2 border transition-all duration-200
-                            ${isActive 
-                                ? "bg-[#BA76FF] border-[#BA76FF] text-white" 
-                                : "bg-transparent border-white/20 text-white hover:border-white"
-                            }
-                        `}
-                    >
-                        <span className="publicSans-text text-xs uppercase tracking-[0.6px]">{tag}</span>
-                        <span className={`text-xs font-['Tinos'] font-bold ${isActive ? 'text-white' : 'text-white/60'}`}>{count}</span>
-                    </button>
-                );
-            })}
-         </div>
-      </div>
+         <TagScroller
+         tagData={[
+            ["AI", 24],
+            ["Design", 12],
+            ["React", 18],
+            ["UX", 9],
+            ["Motion", 6],
+         ]}
+         activeTags={activeTags}
+         onTagClick={handleTagClick}
+         />
     </div>
   );
 };

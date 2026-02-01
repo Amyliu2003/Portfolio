@@ -614,7 +614,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
                         rel="noopener noreferrer"
                         className={`inline-block px-8 py-4 bg-[var(--accent)] text-black font-bold uppercase tracking-widest hover:bg-white transition-colors duration-300 ${THEME.fontHeader}`}
                       >
-                        Launch Live Demo
+                        External Link
                       </a>
                     )}
                     {formData.githubLink && (
