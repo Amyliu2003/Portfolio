@@ -151,8 +151,8 @@ export const Controls: React.FC<ControlsProps> = ({
                             }
                         `}
                     >
-                        <span className="font-mono text-xs uppercase tracking-[0.6px]">{tag}</span>
-                        <span className={`text-xs publicSans-text font-bold ${isActive ? 'text-white' : 'text-white/60'}`}>{count}</span>
+                        <span className="font-['Alegreya_Sans'] text-xs uppercase tracking-[0.6px]">{tag}</span>
+                        <span className={`text-xs font-['Tinos'] font-bold ${isActive ? 'text-white' : 'text-white/60'}`}>{count}</span>
                     </button>
                 );
             })}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { COLORS, THEME } from "../utils/theme";
+import { TagScroller } from "./TagScroller";
 
 export type SortOption = "default" | "alphabetical" | "newest";
 
@@ -135,29 +136,7 @@ export const Controls: React.FC<ControlsProps> = ({
       </div>
 
       {/* Bottom Row: Tags */}
-      <div className="w-full pointer-events-auto">
-         <div className="flex flex-nowrap gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-[#BA76FF]/50 scrollbar-track-transparent">
-            {tagData.map(([tag, count]) => {
-                const isActive = activeTags.includes(tag);
-                return (
-                    <button
-                        key={tag}
-                        onClick={() => handleTagClick(tag)}
-                        className={`
-                            shrink-0 h-[30px] px-3 flex items-center gap-2 border transition-all duration-200 whitespace-nowrap
-                            ${isActive 
-                                ? "bg-[#BA76FF] border-[#BA76FF] text-white" 
-                                : "bg-transparent border-white/20 text-white hover:border-white"
-                            }
-                        `}
-                    >
-                        <span className="font-mono text-xs uppercase tracking-[0.6px]">{tag}</span>
-                        <span className={`text-xs publicSans-text font-bold ${isActive ? 'text-white' : 'text-white/60'}`}>{count}</span>
-                    </button>
-                );
-            })}
-         </div>
-      </div>
+      
     </div>
   );
 };
