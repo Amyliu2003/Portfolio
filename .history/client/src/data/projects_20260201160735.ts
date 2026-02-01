@@ -429,7 +429,7 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
       role: "Full Stack Developer",
       description:
         "Developed a side-scroll social platform for Original Character (OC) creators with profile customization, media uploads, and community interactions. Built with Node.js, Express.js, bcrypt, and NeDB. Designed a playful, niche-oriented UI using EJS templates.",
-      image: OCCATProfile,
+      image: OCCATTitle,
       link: "#project-12",
       githubLink: "#github-12",
       processSections: [ 
