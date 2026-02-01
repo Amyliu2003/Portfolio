@@ -49,8 +49,8 @@ export const Controls: React.FC<ControlsProps> = ({
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search(Project_Name)..."
-                className="w-full h-full bg-transparent px-4 text-lg text-white font-mono tracking-[0.45px] placeholder-white/50 outline-none"
+                placeholder="SEARCH(Project Name)..."
+                className="w-full h-full bg-transparent px-4 text-lg text-white font-mono uppercase tracking-[0.45px] placeholder-white/50 outline-none"
               />
               <div className="pr-4 text-[#BA76FF]">
                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

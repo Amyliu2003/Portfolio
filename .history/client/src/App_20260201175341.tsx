@@ -72,13 +72,19 @@ export default function App() {
       sorted.sort((a, b) => a.title.localeCompare(b.title));
     } else if (sortOption === "newest") {
       // the time: xxx 2026 so the parsing needs to get the year at the end and convert to int 
-        const getYear = (item: ProjectItem) =>
-            parseInt(item.time.slice(-4), 10);
+      //using parseInt to convert string to number and subtract to get descending order
 
-          const timeDifference = (a: ProjectItem, b: ProjectItem) =>
-            getYear(b) - getYear(a); // newest first
+      const getYear = (s?: string) => {
+          if (!s) return NaN;
+          const year = s.slice(-4);
+          return Number.isFinite(Number(year)) ? Number(year) : NaN;
+        };
 
-          sorted = [...sorted].sort(timeDifference);
+        const time_difference = (a: ProjectItem, b: ProjectItem) =>
+          (getYear(b) || 0) - (getYear(a) || 0);
+
+        // use a copy to avoid mutating original
+        sorted = [...sorted].sort(time_difference);
     }
     // "default" keeps original order
     return sorted;

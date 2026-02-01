@@ -71,14 +71,9 @@ export default function App() {
     if (sortOption === "alphabetical") {
       sorted.sort((a, b) => a.title.localeCompare(b.title));
     } else if (sortOption === "newest") {
-      // the time: xxx 2026 so the parsing needs to get the year at the end and convert to int 
-        const getYear = (item: ProjectItem) =>
-            parseInt(item.time.slice(-4), 10);
-
-          const timeDifference = (a: ProjectItem, b: ProjectItem) =>
-            getYear(b) - getYear(a); // newest first
-
-          sorted = [...sorted].sort(timeDifference);
+      // Assuming higher time is newer based on the data structure
+      const time_difference = (a: ProjectItem, b: ProjectItem) => parseInt(b.time.substring(b.time.length)) - parseInt(a.time.substring(a.time.length));
+      sorted.sort(time_difference);
     }
     // "default" keeps original order
     return sorted;
