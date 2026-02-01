@@ -60,7 +60,7 @@ export const GridView: React.FC<GridViewProps> = ({
                 </h3>
 
                 {/* Description */}
-                <p className=" publicSans-text text-[#ffffff] text-sm leading-relaxed line-clamp-3">
+                <p className=" publicSans-text text-[#fff] text-sm leading-relaxed line-clamp-3">
                   {item.description}
                 </p>
 

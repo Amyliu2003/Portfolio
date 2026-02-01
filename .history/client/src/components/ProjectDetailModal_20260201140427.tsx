@@ -492,7 +492,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
                  
                  {/* LEFT: LABEL & TITLE */}
                  <div className="flex flex-col">
-                     <p className={`text-[#ba76ff] text-3xl tracking-[1.4px] leading-[20px] mb-1 font-mono`}>
+                     <p className={`text-[#ba76ff] text-3xl tracking-[1.4px] leading-[20px] mb-1`}>
                         {project.projectLabel}
                      </p>
                      

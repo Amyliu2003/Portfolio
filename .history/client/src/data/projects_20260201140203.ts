@@ -218,7 +218,7 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
       idStr,
       projectLabel,
       type: "special",
-      title: "Under the Same Roof",
+      title: "Same Roof",
       skills: "Three.js • AI/ML • Installation",
       role: "Creative Technologist • 3D Artist",
       description:

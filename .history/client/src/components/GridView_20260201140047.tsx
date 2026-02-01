@@ -48,7 +48,7 @@ export const GridView: React.FC<GridViewProps> = ({
               <div className="p-6 flex flex-col gap-4">
                 {/* Header: Label + Year */}
                 <div className="flex justify-between items-center  font-mono text-xs tracking-widest uppercase">
-                  <span className="text-[var(--accent)]">
+                  <span className="">
                     {item.projectLabel}
                   </span>
                   <span className="text-white/30">2026</span>

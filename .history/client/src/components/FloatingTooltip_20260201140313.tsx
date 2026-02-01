@@ -57,7 +57,7 @@ export const FloatingTooltip: React.FC<FloatingTooltipProps> = ({
               </div>
               <div className="p-3 bg-black">
                 <h3
-                  className="text-3xl tk-din-condensed font-black uppercase leading-none mb-1"
+                  className="text-3xl tk-din-condensed font-black italic uppercase leading-none mb-1"
                   style={{ color: COLORS.accent }}
                 >
                   {hoveredItem.title}
