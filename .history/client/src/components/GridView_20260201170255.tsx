@@ -24,7 +24,7 @@ export const GridView: React.FC<GridViewProps> = ({
               layoutId={`grid-${item.id}`}
               key={item.id}
               onClick={() => onSelectProject(item)}
-              className="relative group cursor-pointer radius-8 bg-[#172067] border border-white/10 hover:border-[var(--accent)] transition-all duration-300 bg-white/5 flex flex-col"
+              className="relative group cursor-pointer bg-[#172067] border border-[#333] hover:border-[var(--accent)] transition-all duration-300 bg-white/5 flex flex-col"
               whileHover={{ y: -5 }}
             >
               {/* Image Area */}

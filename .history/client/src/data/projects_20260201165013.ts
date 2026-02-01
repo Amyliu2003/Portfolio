@@ -1,6 +1,7 @@
 import thisWebsiteTitle from "../assets/thisWebsite_title.png";
 
 import campusCravingTitle from "../assets/campusCraving_title.png";
+import campusCravingBot from "../assets/campusCraving_bot.png";
 
 import smartChipTitle from "../assets/SmartChip_title.jpg";
 
@@ -10,7 +11,6 @@ import CDaysTitle from "../assets/CDays_title.png";
 
 import windowWeatherTitle from "../assets/windowWeather_title.png";
 
-import anniversaryImage from "../assets/anniversary_title.png"; 
 
 import unicefGeosightTitle from "../assets/unicefGeosight_title.png";
 
@@ -18,18 +18,23 @@ import sameRoofTitle from "../assets/UTSM_title.jpg";
 
 import lightningTitle from "../assets/lightning_title.png";
 
+import OCCATTitle from "../assets/OCCAT_title.png";
 import OCCATProfile from "../assets/OCCAT_profile.png";
 import OCCATPost from "../assets/OCCAT_post.png";
 
 import trafficCityTitle from "../assets/TrafficCity_title.png";
 import trafficCityIdea1 from "../assets/TrafficCity_idea.png";
 import trafficCityIdea2 from "../assets/TrafficCity_idea2.png";
+import trafficCityMenu from "../assets/trafficCity_menu.png";
+import trafficCityGame from "../assets/trafficCity_game.png";
 
 import lookingGlassTitle from "../assets/lookingGlass_title.png";
 
 import TemperatureCloudTitle from "../assets/TemperatureCloud_title.JPG";
 
 import attractivePoliticsTitle from "../assets/attractivePolitics_title.png";
+
+import { data } from "react-router-dom";
 
 
 
@@ -404,10 +409,10 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
       type: "special",
       title: "Window Weather",
       time: "SPRING 2025",
-      skills: "p5.js • API Integration • Generative Art",
-      role: "Designer Developer",
+      skills: "p5.js • Arduino • Installation",
+      role: "Developer",
       description:
-        "This project is an interactive weather visualization that transforms real-world climate data into a simulated interior environment. Using live data from a weather API, the system translates conditions such as rain, snow, fog, cloud cover, wind direction, and time of day into generative visuals rendered through p5.js. Weather parameters dynamically influence particle behaviors, noise fields, opacity, motion, and density, creating responsive window-based scenes that shift between atmospheric states. By framing global weather inside a domestic interior, the project explores how external environmental data can be abstracted into sensory, emotional experiences—blurring the boundary between outside climate systems and intimate, lived space.tion of observing weather through a window.",
+        "An ambient installation simulating real-time weather conditions from a chosen location. Using p5.js for visual rendering and Arduino for physical effects, the piece creates an immersive experience that blends digital and physical elements to evoke the sensation of observing weather through a window.",
       image: windowWeatherTitle,
       link: "https://meowing-chef-843.notion.site/Window-of-Weather-1b5fc717e3aa80e19c6dd6f1ec211193",
       githubLink: null,
@@ -471,10 +476,10 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
       idStr,
       projectLabel,
       type: "special",
-      title: "Attractive Politics", 
+      title: "OCCat Social", 
       time: "SPRING 2025", 
       skills: "p5.js • Simulation • Generative Art. Data Visualization", 
-      role: "Designer Developer",
+      role: "Designer",
       description:
         "This project began as an exploration of collective behavior and political polarization through interactive simulation. I assigned different “political stands” mass and behavioral traits, allowing particles to attract or repel one another with varying strength, inspired by physical forces such as magnetism and wind as well as ideas from The Nature of Code. Rather than relying on centralized mouse control, I made each element draggable, enabling users to influence local dynamics by repositioning agents directly. I also implemented an interface that allows the simulation to be started, paused, and switched between attraction and repulsion modes, while logging interaction data. Along the way, I encountered challenges translating geometric interaction into code—particularly detecting mouse interaction with non-circular shapes—which led me to adapt mathematical solutions for triangle hit-testing. Through this process, the project evolved from a purely visual sketch into an interactive system that reveals how small, localized interactions can produce complex, emergent social patterns.",
       image: attractivePoliticsTitle,
@@ -484,24 +489,8 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
   }
 
   if (id === 15) {
-    return {
-      id,
-      idStr,
-      projectLabel,
-      type: "special",
-      title: "FAFU Alumni Anniversary Presentation Framework",
-      time: "JAN 2026",
-      skills: "React • GSAP • UI/UX",
-      role: "Designer Developer",
-      description:
-        "This project is a modular, React-based web presentation framework designed for ceremonial and large-scale event use. Built as a flexible skeleton rather than a single fixed slideshow, it supports polymorphic slide templates, GSAP-driven transitions, and both manual and timed autoplay modes. Slides are rendered dynamically from structured data, enabling reusable layouts for introductions, historical narratives, sponsor sections, and transitions. The architecture prioritizes visual rhythm, pacing, and adaptability, allowing the same codebase to be reused across different events with minimal changes while maintaining a cohesive ceremonial aesthetic.",
-      image: anniversaryImage,
-      link: null,
-      githubLink: null,
-    };
-  }
 
-  // Fallback return for any id that doesn't match
+  // Default placeholder items
   return {
     id,
     idStr,
