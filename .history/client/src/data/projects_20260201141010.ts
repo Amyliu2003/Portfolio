@@ -324,7 +324,6 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
     projectLabel,
     type: "placeholder",
     title: "[PROJECT NAME]",
-    time: "[TIMEFRAME]",
     skills: "[SKILL USED]",
     role: "Developer",
     description:

@@ -222,7 +222,6 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
       projectLabel,
       type: "special",
       title: "Under the Same Roof",
-      time: "SPRING 2025",
       skills: "Three.js • AI/ML • Installation",
       role: "Creative Technologist • 3D Artist",
       description:
@@ -241,7 +240,6 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
       projectLabel,
       type: "special",
       title: "Traffic City",
-      time: "WINTER 2024",
       skills: "Accessibility • Game Dev",
       role: "Game Designer • Developer",
       description:
@@ -274,7 +272,6 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
       projectLabel,
       type: "special",
       title: "OCCat Social",
-      time: "SPRING 2024",
       skills: "Node.js • Full Stack",
       role: "Full Stack Developer",
       description:
@@ -306,7 +303,6 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
       projectLabel,
       type: "placeholder",
       title: "[PROJECT NAME]",
-      time: "[TIMEFRAME]",
       skills: "[SKILL USED]",
       role: "Developer",
       description:
@@ -324,7 +320,6 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
     projectLabel,
     type: "placeholder",
     title: "[PROJECT NAME]",
-    time: "[TIMEFRAME]",
     skills: "[SKILL USED]",
     role: "Developer",
     description:
