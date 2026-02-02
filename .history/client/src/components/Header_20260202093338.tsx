@@ -17,14 +17,10 @@ export const Header: React.FC<HeaderProps> = ({
       {/* LEFT: TITLE BLOCK */}
       <div className="flex flex-col items-start gap-4">
         <div className="flex items-baseline -space-x-2">
-            <h1 className="text-white font-['Underdog'] uppercase tracking-[1.8px] leading-none"
-                style={{ fontSize: "clamp(2.25rem, 6vw, 3.75rem)" }}
-            >
+            <h1 className="text-white text-4xl sm:text-6xl font-['Underdog'] uppercase tracking-[1.8px] leading-none">
                 Amy
             </h1>
-            <h1 className="text-[#BA76FF] font-['Warnes'] uppercase tracking-[1.8px] leading-none"
-               style={{ fontSize: "clamp(2.25rem, 6vw, 3.75rem)" }}
-            >
+            <h1 className="text-[#BA76FF] text-4xl sm:text-6xl font-['Warnes'] uppercase tracking-[1.8px] leading-none">
                 LiuSiyan
             </h1>
         </div>

@@ -23,7 +23,7 @@ export const Header: React.FC<HeaderProps> = ({
                 Amy
             </h1>
             <h1 className="text-[#BA76FF] font-['Warnes'] uppercase tracking-[1.8px] leading-none"
-               style={{ fontSize: "clamp(2.25rem, 6vw, 3.75rem)" }}
+              style={{ fontSize: "clamp(2.25rem, 6vw, 3.75rem)" }}
             >
                 LiuSiyan
             </h1>
