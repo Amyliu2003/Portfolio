@@ -13,8 +13,23 @@ export const Header: React.FC<HeaderProps> = ({
   onLogoutClick,
 }) => {
   return (
-    <header className="flex-shrink-0 w-full px-8 py-8 sm:py-10 z-10 flex flex-col md:flex-row justify-between items-end border-b border-white/20">
-      {/* LEFT: TITLE BLOCK */}
+    <header
+  className="
+    flex-shrink-0
+    w-full
+    px-6 sm:px-8
+    py-6 sm:py-10
+    z-10
+    flex
+    flex-col
+    md:flex-row
+    justify-between
+    items-start md:items-end
+    gap-6
+    border-b
+    border-white/20
+  "
+>
       <div className="flex flex-col items-start gap-4">
         <div className="flex items-baseline -space-x-2">
             <h1 className="text-white text-5xl sm:text-4xl font-['Underdog'] uppercase tracking-[1.8px] leading-none">
@@ -31,7 +46,7 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* RIGHT: META BLOCK */}
-      <div className="flex flex-col items-start md:items-end gap-2 mt-4 md:mt-0">
+      <div className="flex flex-col items-end gap-2 mt-4 md:mt-0">
          {/* Login Link */}
          <button 
             onClick={isLoggedIn ? onLogoutClick : onLoginClick}

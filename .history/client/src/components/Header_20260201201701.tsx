@@ -31,7 +31,7 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* RIGHT: META BLOCK */}
-      <div className="flex flex-col items-start md:items-end gap-2 mt-4 md:mt-0">
+      <div className="flex flex-col items-end gap-2 mt-4 md:mt-0">
          {/* Login Link */}
          <button 
             onClick={isLoggedIn ? onLogoutClick : onLoginClick}

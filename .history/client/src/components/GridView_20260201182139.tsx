@@ -69,7 +69,7 @@ export const GridView: React.FC<GridViewProps> = ({
                   {item.skills.split("•").map((skill, idx) => (
                     <span
                       key={idx}
-                      className="border border-white/20 px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-white hover:text-white hover:border-white transition-colors"
+                      className="border border-white/10 px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-white hover:text-white hover:border-white transition-colors"
                     >
                       {skill.trim()}
                     </span>
