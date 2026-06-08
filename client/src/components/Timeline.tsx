@@ -77,7 +77,7 @@ const TimelineItem = ({ data }: { data: TimelineItemData }) => {
           )}
         </div>
 
-        <p className="publicSans-texts font-medium text-[#d1d5dc] text-xl leading-snug max-w-[520px]">
+        <p className="publicSans-text font-medium text-[#d1d5dc] text-xl leading-snug max-w-[520px]">
           {data.text}
         </p>
       </motion.div>

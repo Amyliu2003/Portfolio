@@ -37,55 +37,67 @@ export const FloatingTooltip: React.FC<FloatingTooltipProps> = ({
     >
       {hoveredItem && viewMode === "tray" && (
         <div className="relative">
-          {hoveredItem.type === "special" ? (
-            <div
-              className="w-80 bg-[#1a1a1a] border-2 p-1 relative"
-              style={{
-                borderColor: COLORS.accent,
-                boxShadow: `12px 12px 0px 0px ${COLORS.accent}80`,
-              }}
-            >
-              <div className="w-full mb-2 bg-black relative flex items-center justify-center">
-                {hoveredItem.image && (
-                  <img
-                    src={hoveredItem.image}
-                    alt={hoveredItem.title}
-                    className="max-w-full max-h-40 object-contain"
-                  />
-                )}
-                <div className="absolute inset-0 bg-black/10 bg-[length:100%_4px] pointer-events-none"></div>
-              </div>
-              <div className="p-3 bg-black">
-                <h3
-                  className="text-3xl tk-din-condensed font-black uppercase leading-none mb-1"
-                  style={{ color: COLORS.accent }}
+          {(() => {
+            const isSvgTitleImage =
+              typeof hoveredItem.image === "string" &&
+              hoveredItem.image.toLowerCase().includes(".svg");
+
+            return hoveredItem.type === "special" ? (
+              <div
+                className="w-80 bg-[#1a1a1a] border-2 p-1 relative"
+                style={{
+                  borderColor: COLORS.accent,
+                  boxShadow: `12px 12px 0px 0px ${COLORS.accent}80`,
+                }}
+              >
+                <div
+                  className={`w-full mb-2 relative flex items-center justify-center ${
+                    isSvgTitleImage ? "bg-white" : "bg-black"
+                  }`}
                 >
-                  {hoveredItem.title}
-                </h3>
-                <div className="h-px w-full bg-[#333] my-3"></div>
-                <div className="flex justify-between items-end">
-                  <p className="text-white text-xs font-mono uppercase tracking-tight opacity-70">
-                    {hoveredItem.skills}
-                  </p>
-                  <span className="text-white text-[10px] font-mono">
-                    {hoveredItem.time.substring(hoveredItem.time.length - 5, hoveredItem.time.length)}
-                  </span>
+                  {hoveredItem.image && (
+                    <img
+                      src={hoveredItem.image}
+                      alt={hoveredItem.title}
+                      className={`max-w-full max-h-40 ${
+                        isSvgTitleImage ? "object-contain p-2" : "object-contain"
+                      }`}
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-black/10 bg-[length:100%_4px] pointer-events-none"></div>
+                </div>
+                <div className="p-3 bg-black">
+                  <h3
+                    className="text-3xl tk-din-condensed font-black uppercase leading-none mb-1"
+                    style={{ color: COLORS.accent }}
+                  >
+                    {hoveredItem.title}
+                  </h3>
+                  <div className="h-px w-full bg-[#333] my-3"></div>
+                  <div className="flex justify-between items-end">
+                    <p className="text-white text-xs font-mono uppercase tracking-tight opacity-70">
+                      {hoveredItem.skills}
+                    </p>
+                    <span className="text-white text-[10px] font-mono">
+                      {hoveredItem.time.substring(hoveredItem.time.length - 5, hoveredItem.time.length)}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ) : (
-            <div
-              className="bg-black border p-4 w-56 backdrop-blur-md bg-black/90"
-              style={{ borderColor: COLORS.dim }}
-            >
-              <h3 className="text-white/60 text-xl font-black uppercase leading-none mb-1">
-                {hoveredItem.title}
-              </h3>
-              <p className="text-white/30 text-xs font-mono uppercase mt-2">
-                {hoveredItem.skills}
-              </p>
-            </div>
-          )}
+            ) : (
+              <div
+                className="bg-black border p-4 w-56 backdrop-blur-md bg-black/90"
+                style={{ borderColor: COLORS.dim }}
+              >
+                <h3 className="text-white/60 text-xl font-black uppercase leading-none mb-1">
+                  {hoveredItem.title}
+                </h3>
+                <p className="text-white/30 text-xs font-mono uppercase mt-2">
+                  {hoveredItem.skills}
+                </p>
+              </div>
+            );
+          })()}
         </div>
       )}
     </div>

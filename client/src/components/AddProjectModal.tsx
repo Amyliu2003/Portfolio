@@ -44,10 +44,15 @@ export const AddProjectModal: React.FC<AddProjectModalProps> = ({
     
     const newProject: ProjectItem = {
       id: nextId,
+      slug: formData.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "") || `project-${idStr}`,
       idStr,
       projectLabel: `PROJECT ${idStr}`,
       type: "special",
       title: formData.title,
+      time: "TBD",
       skills: formData.skills,
       role: formData.role || "Creative Technologist • Developer",
       description: formData.description,

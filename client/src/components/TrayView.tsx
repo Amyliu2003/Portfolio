@@ -7,7 +7,7 @@ interface TrayViewProps {
   items: ProjectItem[];
   searchTerm: string;
   activeTags: string[];
-  onSelectProject: (item: ProjectItem) => void;
+  onSelectProjectBySlug: (slug: string) => void;
   setHoveredItem: (item: ProjectItem | null) => void;
 }
 
@@ -15,7 +15,7 @@ export const TrayView: React.FC<TrayViewProps> = ({
   items,
   searchTerm,
   activeTags,
-  onSelectProject,
+  onSelectProjectBySlug,
   setHoveredItem,
 }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -147,10 +147,11 @@ export const TrayView: React.FC<TrayViewProps> = ({
                               key={`${gItem.id}-${cycle}`}
                               className={`flex-1 h-full relative group/item outline-none overflow-hidden
                                 ${isSpecial ? "cursor-pointer" : "cursor-default"}
+                                ${shouldHighlightPersistent ? "overflow-visible" : "overflow-hidden"}
                               `}
                               onClick={() => {
-                                if (isSpecial)
-                                  onSelectProject(gItem);
+                                if (isSpecial && gItem.slug)
+                                  onSelectProjectBySlug(gItem.slug);
                               }}
                               onMouseEnter={() =>
                                 setHoveredItem(gItem)
@@ -179,7 +180,9 @@ export const TrayView: React.FC<TrayViewProps> = ({
                               {/* NUMBER INDICATOR AT BOTTOM */}
                               <div
                                 className={`absolute bottom-0 left-0 w-full h-14 z-40 transition-colors duration-300 flex items-center justify-center overflow-hidden 
-                                  ${shouldHighlightPersistent ? "bg-transparent" : " bg-[#0A0F33] group-hover/item:bg-[#BA76FF] group-hover/item:scale-120  group-hover/item:-translate-y-2"}
+                                  ${shouldHighlightPersistent 
+                                    ? "bg-[#BA76FF] scale-120 -translate-y-2" 
+                                    : "bg-[#0A0F33] group-hover/item:bg-[#BA76FF] group-hover/item:scale-120  group-hover/item:-translate-y-2"}
                                 `}
                               >
                                 <span

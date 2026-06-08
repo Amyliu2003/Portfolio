@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { COLORS } from "../utils/theme";
 
 interface HeaderProps {
@@ -36,6 +37,13 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* RIGHT: META BLOCK */}
       <div className="flex flex-col items-start sm:items-end gap-2 mt-4 md:mt-0">
+         <Link
+            to="/tools"
+            className="font-mono text-white text-xs uppercase tracking-[1.2px] hover:text-[#BA76FF] transition-colors"
+         >
+            [Tools]
+         </Link>
+
          {/* Login Link */}
          <button 
             onClick={isLoggedIn ? onLogoutClick : onLoginClick}

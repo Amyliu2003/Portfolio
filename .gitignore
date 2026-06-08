@@ -1,1 +1,5 @@
 node_modules
+.worktrees
+build/
+dist/
+.DS_Store

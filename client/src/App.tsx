@@ -1,8 +1,8 @@
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { initialProjects, ProjectItem } from "./data/projects";
 import { LoginModal } from "./components/LoginModal";
 import { AddProjectModal } from "./components/AddProjectModal";
-import { ProjectDetailModal } from "./components/ProjectDetailModal";
 import { COLORS } from "./utils/theme";
 import { LandingPage } from "./components/LandingPage";
 
@@ -13,14 +13,17 @@ import { TrayView } from "./components/TrayView";
 import { GridView } from "./components/GridView";
 import { FloatingTooltip } from "./components/FloatingTooltip";
 
-export default function App() {
+interface AppProps {
+  initialSection?: "home" | "works";
+}
+
+export default function App({ initialSection = "home" }: AppProps) {
+  const navigate = useNavigate();
   const [items, setItems] =
     useState<ProjectItem[]>(initialProjects);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTags, setActiveTags] = useState<string[]>([]);
   const [hoveredItem, setHoveredItem] =
-    useState<ProjectItem | null>(null);
-  const [selectedProject, setSelectedProject] =
     useState<ProjectItem | null>(null);
   const [viewMode, setViewMode] = useState<"tray" | "grid">(
     "tray",
@@ -40,6 +43,20 @@ export default function App() {
     appSectionRef.current?.scrollIntoView({
       behavior: "smooth",
     });
+  };
+
+  useEffect(() => {
+    if (initialSection !== "works") return;
+    requestAnimationFrame(() => {
+      appSectionRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  }, [initialSection]);
+
+  const openProjectRoute = (slug: string) => {
+    navigate(`/works/${slug}`);
   };
 
   const tagData = useMemo(() => {
@@ -95,35 +112,6 @@ export default function App() {
 
   const handleAddProject = (newProject: ProjectItem) => {
     setItems((prev) => [newProject, ...prev]);
-  };
-
-  const handleUpdateProject = (updatedProject: ProjectItem) => {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === updatedProject.id ? updatedProject : item,
-      ),
-    );
-    setSelectedProject(updatedProject);
-  };
-
-  const navigableProjects = useMemo(() => {
-    return sortedItems.filter(item => item.type === 'special');
-  }, [sortedItems]);
-
-  const handleNextProject = () => {
-    if (!selectedProject) return;
-    const currentIndex = navigableProjects.findIndex(p => p.id === selectedProject.id);
-    if (currentIndex === -1) return;
-    const nextIndex = (currentIndex + 1) % navigableProjects.length;
-    setSelectedProject(navigableProjects[nextIndex]);
-  };
-
-  const handlePrevProject = () => {
-    if (!selectedProject) return;
-    const currentIndex = navigableProjects.findIndex(p => p.id === selectedProject.id);
-    if (currentIndex === -1) return;
-    const prevIndex = (currentIndex - 1 + navigableProjects.length) % navigableProjects.length;
-    setSelectedProject(navigableProjects[prevIndex]);
   };
 
   // Filter items for Grid View
@@ -189,17 +177,6 @@ export default function App() {
           nextId={items.length + 1}
         />
 
-        {/* PROJECT DETAIL PAGE OVERLAY */}
-        <ProjectDetailModal
-          project={selectedProject}
-          isOpen={!!selectedProject}
-          onClose={() => setSelectedProject(null)}
-          isAdmin={isLoggedIn}
-          onUpdate={handleUpdateProject}
-          onNext={handleNextProject}
-          onPrev={handlePrevProject}
-        />
-
         {/* SECTION 1: LANDING PAGE */}
         <section className="w-full snap-start relative shrink-0">
           <LandingPage onScrollDown={scrollToApp} />
@@ -207,6 +184,7 @@ export default function App() {
 
         {/* SECTION 2: APP INTERFACE */}
         <section
+          id="works-section"
           ref={appSectionRef}
           className={`${viewMode === "tray" ? "h-screen overflow-hidden" : "min-h-screen"} w-full snap-start flex flex-col relative shrink-0`}
         >
@@ -214,7 +192,7 @@ export default function App() {
           <FloatingTooltip
             hoveredItem={hoveredItem}
             viewMode={viewMode}
-            selectedProject={selectedProject}
+            selectedProject={null}
           />
 
           {/* Header */}
@@ -248,13 +226,13 @@ export default function App() {
                 items={sortedItems}
                 searchTerm={searchTerm}
                 activeTags={activeTags}
-                onSelectProject={setSelectedProject}
+                onSelectProjectBySlug={openProjectRoute}
                 setHoveredItem={setHoveredItem}
               />
             ) : (
               <GridView
                 items={filteredGridItems}
-                onSelectProject={setSelectedProject}
+                onSelectProjectBySlug={openProjectRoute}
               />
             )}
           </main>

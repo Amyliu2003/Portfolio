@@ -27,10 +27,10 @@ import trafficCityIdea2 from "../assets/TrafficCity_idea2.png";
 
 import lookingGlassTitle from "../assets/lookingGlass_title.png";
 
-import TemperatureCloudTitle from "../assets/TemperatureCloud_title.JPG";
-
 import attractivePoliticsTitle from "../assets/attractivePolitics_title.png";
 
+import CourseTiermakerTitle from "../assets/course_tiermaker_title.svg";
+import TemperatureCloudTitle from "../assets/TemperatureCloud_title.JPG";
 
 
 export interface BlockBase {
@@ -172,6 +172,7 @@ export interface ProcessSection {
 
 export interface ProjectItem {
   id: number;
+  slug: string;
   idStr: string;
   time: string;
   projectLabel: string;
@@ -182,12 +183,13 @@ export interface ProjectItem {
   description: string;
   customHtml?: string;
   image: string | null;
+  embedUrl?: string | null;
   link: string | null;
   githubLink: string | null;
   contentBlocks?: ContentBlock[];
 }
 
-export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) => {
+export const initialProjects: ProjectItem[] = Array.from({ length: 20 }, (_, i) => {
   const id = i + 1;
   const idStr = id < 10 ? `0${id}` : `${id}`;
   const projectLabel = `PROJECT ${idStr}`;
@@ -196,18 +198,151 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
   if (id === 1) {
     return {
       id,
+      slug: "this-website",
       idStr,
       projectLabel,
       type: "special",
       title: "Amy Liu's Portfolio Website",
       time: "JAN 2026",
-      skills: "React • TypeScript • UI/UX",
+      skills: "React • TypeScript • Tailwind • React Router • UI/UX",
       role: "Frontend Developer • Designer",
       description:
         "A custom-built interactive portfolio website designed to showcase projects through an unconventional horizontal “Lava Tray” interface and a responsive masonry grid. Built with React and Tailwind CSS, the site supports dual viewing modes, immersive full-screen project pages, and modular content blocks for long-form storytelling. A built-in admin system enables direct content editing, while dynamic filtering and navigation support intuitive exploration across devices.",
       image: thisWebsiteTitle,
-      link: "",
-      githubLink: ""
+      link: null,
+      githubLink: null,
+      contentBlocks: [
+        {
+          id: "tw-intro",
+          type: "rich-text",
+          align: "left",
+          content:
+            "<p>This case study is rendered by the portfolio itself—you are reading a page built from the same modular system that documents every other project. Each work gets a stable slug, a shareable URL under <strong>/works/:slug</strong>, and optional long-form blocks below the hero.</p><p>The goal was not a static PDF-style portfolio, but a browsable environment: quick scanning in the tray, deep reading on project pages, and live embeds where tools deserve a first-class demo.</p>",
+        },
+        {
+          id: "tw-pillars",
+          type: "card-grid",
+          cards: [
+            {
+              title: "Lava Tray",
+              description:
+                "Horizontal snap-scroll tray with hover previews, floating metadata, and tactile card selection. Optimized for discovery—see many projects at once without leaving the landing rhythm.",
+              image: thisWebsiteTitle,
+            },
+            {
+              title: "Grid View",
+              description:
+                "Responsive masonry layout for readers who prefer scanning thumbnails. Search, multi-tag filters, and sort modes (default, alphabetical, newest) narrow the set in place.",
+              image: thisWebsiteTitle,
+            },
+            {
+              title: "Project Stories",
+              description:
+                "Full-screen detail pages with hero media, about copy, sidebar metadata, and composable content blocks—stats, splits, process steps, quotes, embeds, and CTAs.",
+              image: thisWebsiteTitle,
+            },
+          ],
+        },
+        {
+          id: "tw-split-dual-mode",
+          type: "split",
+          title: "Two ways to browse, one data model",
+          text: "Tray and grid read from the same project array—no duplicated content. Clicking any real project navigates to its canonical route instead of opening a fragile in-app overlay, so URLs survive refresh and can be shared.\n\nThe landing page uses scroll snapping to separate introduction from the works interface. Purple accent (#BA76FF) on deep blue gradients carries through landing, tray, grid, and detail views for a consistent editorial identity.",
+          image: thisWebsiteTitle,
+          reverse: false,
+        },
+        {
+          id: "tw-stats",
+          type: "stats",
+          stats: [
+            { label: "Project slots", value: "20", suffix: "" },
+            { label: "Content blocks", value: "16", suffix: " types" },
+            { label: "Route groups", value: "2", suffix: "" },
+            { label: "Stack", value: "Vite", suffix: " + React" },
+          ],
+        },
+        {
+          id: "tw-steps",
+          type: "process-steps",
+          layout: "horizontal",
+          steps: [
+            {
+              title: "Land & orient",
+              description:
+                "Hero landing introduces the site, then smooth-scroll into the Works section at /works.",
+            },
+            {
+              title: "Filter & compare",
+              description:
+                "Search by title or skill tags; switch tray ↔ grid without losing context.",
+            },
+            {
+              title: "Open a project",
+              description:
+                "Navigate to /works/:slug for immersive detail, prev/next between adjacent works.",
+            },
+            {
+              title: "Try live tools",
+              description:
+                "Tools Library at /tools hosts standalone utilities; select projects embed runtime demos in the hero iframe.",
+            },
+          ],
+        },
+        {
+          id: "tw-code-routes",
+          type: "code",
+          language: "typescript",
+          filename: "Route contract (excerpt)",
+          code: `// Works
+/                          → landing + works app
+/works                     → scroll to Works section
+/works/:project_name       → project detail (slug-based)
+
+// Tools (unchanged)
+/tools
+/tools/:name/:id
+/tools/runtime/:slug`,
+        },
+        {
+          id: "tw-accordion",
+          type: "accordion",
+          items: [
+            {
+              title: "Shareable project routes",
+              content:
+                "Every published project uses a stable slug (e.g. this-website, campus-cravings). Invalid slugs show a lightweight not-found state with a path back to /works. Closing detail always returns to Works—not browser history—so navigation stays predictable.",
+            },
+            {
+              title: "Admin content editing",
+              content:
+                "Password-gated admin mode unlocks inline edits on project detail: titles, descriptions, hero images, embed URLs, and content blocks. Changes persist in session state so the site can be updated during a review without redeploying copy.",
+            },
+            {
+              title: "Modular content blocks",
+              content:
+                "Long-form case studies compose from blocks: rich text, split layouts, image grids, masonry, stats, process steps, card grids, comparisons, accordions, quotes, video, code snippets, and CTAs. This page uses that same block set as a living spec.",
+            },
+            {
+              title: "Tools Library integration",
+              content:
+                "Interactive utilities (e.g. Course Tiermaker) live in /tools with metadata pages and a /tools/runtime/:slug embed surface. Portfolio projects can reference tools via hero iframes and CTA links without duplicating the app shell.",
+            },
+          ],
+        },
+        {
+          id: "tw-quote",
+          type: "quote",
+          text: "A portfolio should feel like a place you wander—not a deck you download.",
+          author: "Design intent",
+        },
+        {
+          id: "tw-cta",
+          type: "cta",
+          text: "Browse the Works tray",
+          link: "/works",
+          subtext: "Return to the interactive project browser",
+        },
+      ],
     };
   }
 
@@ -215,6 +350,7 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
   if (id === 2) {
     return {
       id,
+      slug: "campus-cravings",
       idStr,
       projectLabel,
       type: "special",
@@ -234,6 +370,7 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
   if (id === 3) {
     return {
       id,
+      slug: "between-boundaries",
       idStr,
       projectLabel,
       type: "special",
@@ -253,6 +390,7 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
   if (id === 4) {
     return {
       id,
+      slug: "genesis",
       idStr,
       projectLabel,
       type: "special",
@@ -272,6 +410,7 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
   if (id === 5) {
     return {
       id,
+      slug: "100-days-ocs-artifacts",
       idStr,
       projectLabel,
       type: "special",
@@ -291,6 +430,7 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
   if (id === 6) {
     return {
       id,
+      slug: "unicef-geosight",
       idStr,
       projectLabel,
       type: "special",
@@ -310,6 +450,7 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
   if (id === 7) {
     return {
       id,
+      slug: "under-the-same-roof",
       idStr,
       projectLabel,
       type: "special",
@@ -328,6 +469,7 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
   if (id === 8) {
     return {
       id,
+      slug: "lightning",
       idStr,
       projectLabel,
       type: "special",
@@ -347,6 +489,7 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
   if (id === 9) {
     return {
       id,
+      slug: "traffic-city",
       idStr,
       projectLabel,
       type: "special",
@@ -380,6 +523,7 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
   if (id === 10) {
     return {
       id,
+      slug: "looking-through-glass-house",
       idStr,
       projectLabel,
       type: "special",
@@ -399,6 +543,7 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
   if (id === 11) {
     return {
       id,
+      slug: "window-weather",
       idStr,
       projectLabel,
       type: "special",
@@ -418,6 +563,7 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
   if (id === 12) {
     return {
       id,
+      slug: "occat-social",
       idStr,
       projectLabel,
       type: "special",
@@ -450,6 +596,7 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
   if(id === 13){
       return {
       id,
+      slug: "cloud-maker",
       idStr,
       projectLabel,
       type: "special",
@@ -468,6 +615,7 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
   if (id === 14) {
     return {
       id,
+      slug: "attractive-politics",
       idStr,
       projectLabel,
       type: "special",
@@ -486,6 +634,7 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
   if (id === 15) {
     return {
       id,
+      slug: "fafu-alumni-anniversary",
       idStr,
       projectLabel,
       type: "special",
@@ -501,9 +650,175 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 15 }, (_, i) 
     };
   }
 
+  // 16. Course Tiermaker
+  if (id === 16) {
+    return {
+      id,
+      slug: "course-tiermaker",
+      idStr,
+      projectLabel,
+      type: "special",
+      title: "Course Tiermaker",
+      time: "MAY 2026",
+      skills: "React • TypeScript • UX • localStorage",
+      role: "Product Designer • Frontend Developer",
+      description:
+        "An interactive course ranking tool for planning MI electives at UofT. Import a JSON course list, drag courses into custom tiers, annotate each course with notes, and compare options side by side. Progress saves automatically to the browser so planning can continue across sessions without an account.",
+      image: CourseTiermakerTitle,
+      embedUrl: "/tools/runtime/course-tiermaker",
+      link: "/tools/course-tiermaker/003",
+      githubLink: "",
+      contentBlocks: [
+        {
+          id: "ctm-intro",
+          type: "rich-text",
+          align: "left",
+          content:
+            "<p>Course Tiermaker started as a personal planning workflow: too many interesting electives, not enough clarity on trade-offs. Instead of spreadsheets, the tool uses a tier-list interaction model inspired by <em>tiermaker.com</em>—fast to scan, easy to rearrange, and readable at a glance.</p><p>The live embed above is the full application. Scroll down for how it works, what it saves, and how it connects to the Tools Library.</p>",
+        },
+        {
+          id: "ctm-split-features",
+          type: "split",
+          title: "Core workflow",
+          text: "Upload or paste a JSON course list, then drag cards between tiers (Must Take, High, Maybe, Later, Skip). Each card supports inline notes for instructor preferences, scheduling constraints, or vibe checks. Tier labels and colors can be edited to match your own decision language.\n\nThe interface is optimized for quick comparisons: pool view for unranked courses, tier columns for committed rankings, and persistent state so nothing is lost mid-session.",
+          image: CourseTiermakerTitle,
+          reverse: false,
+        },
+        {
+          id: "ctm-stats",
+          type: "stats",
+          stats: [
+            { label: "Save model", value: "Auto", suffix: "" },
+            { label: "Storage", value: "Browser", suffix: " local" },
+            { label: "Default tiers", value: "5", suffix: "" },
+            { label: "Status", value: "Live", suffix: "" },
+          ],
+        },
+        {
+          id: "ctm-steps",
+          type: "process-steps",
+          layout: "vertical",
+          steps: [
+            {
+              title: "Import courses",
+              description:
+                "Load a JSON list of courses (code, name, credits, term, instructor, notes). Sample data ships with the tool for first-time use.",
+            },
+            {
+              title: "Rank into tiers",
+              description:
+                "Drag courses from the pool into tiers. Reorder within a tier to express priority inside each band.",
+            },
+            {
+              title: "Annotate and refine",
+              description:
+                "Edit notes per course, rename tiers, and adjust colors. Changes write to localStorage on every update.",
+            },
+            {
+              title: "Resume later",
+              description:
+                "Reload the page or embed and your last session restores automatically. Clear All resets with confirmation.",
+            },
+          ],
+        },
+        {
+          id: "ctm-quote",
+          type: "quote",
+          text: "The goal is not a perfect ranking—it is a visible map of trade-offs you can revise as plans change.",
+          author: "Design intent",
+        },
+        {
+          id: "ctm-cta",
+          type: "cta",
+          text: "Open in Tools Library",
+          link: "/tools/course-tiermaker/003",
+          subtext: "Full tool page with metadata and related tools",
+        },
+      ],
+    };
+  }
+
+  // Placeholders 17–20 (reserved slots with full metadata stubs)
+  if (id === 17) {
+    return {
+      id,
+      slug: "project-17",
+      idStr,
+      projectLabel,
+      type: "placeholder",
+      title: "[PROJECT 17 — COMING SOON]",
+      time: "TBD",
+      skills: "[SKILL USED]",
+      role: "Creative Technologist",
+      description:
+        "Reserved portfolio slot. Summary and process documentation will be added when this project is ready to publish.",
+      image: null,
+      link: null,
+      githubLink: null,
+    };
+  }
+
+  if (id === 18) {
+    return {
+      id,
+      slug: "project-18",
+      idStr,
+      projectLabel,
+      type: "placeholder",
+      title: "[PROJECT 18 — COMING SOON]",
+      time: "TBD",
+      skills: "[SKILL USED]",
+      role: "Developer",
+      description:
+        "Reserved portfolio slot. Summary and process documentation will be added when this project is ready to publish.",
+      image: null,
+      link: null,
+      githubLink: null,
+    };
+  }
+
+  if (id === 19) {
+    return {
+      id,
+      slug: "project-19",
+      idStr,
+      projectLabel,
+      type: "placeholder",
+      title: "[PROJECT 19 — COMING SOON]",
+      time: "TBD",
+      skills: "[SKILL USED]",
+      role: "Designer Developer",
+      description:
+        "Reserved portfolio slot. Summary and process documentation will be added when this project is ready to publish.",
+      image: null,
+      link: null,
+      githubLink: null,
+    };
+  }
+
+  if (id === 20) {
+    return {
+      id,
+      slug: "project-20",
+      idStr,
+      projectLabel,
+      type: "placeholder",
+      title: "[PROJECT 20 — COMING SOON]",
+      time: "TBD",
+      skills: "[SKILL USED]",
+      role: "Developer",
+      description:
+        "Reserved portfolio slot. Summary and process documentation will be added when this project is ready to publish.",
+      image: null,
+      link: null,
+      githubLink: null,
+    };
+  }
+
   // Fallback return for any id that doesn't match
   return {
     id,
+    slug: `project-${idStr.toLowerCase()}`,
     idStr,
     projectLabel,
     type: "placeholder",

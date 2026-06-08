@@ -92,7 +92,7 @@
 }
 
 @font-face {
-  font-family: 'publicSan_italic';
+  font-family: 'publicSans_italic';
   src: url('./assets/fonts/PublicSans-Italic-VariableFont_wght.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
