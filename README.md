@@ -53,7 +53,10 @@ client/src/
 ├── components/
 │   ├── ProjectDetailModal.tsx   # Project detail UI + all content block renderers
 │   ├── TrayView.tsx / GridView.tsx
+│   ├── ui/                      # Empty placeholder for your custom component library
 │   └── ...
+├── imports/
+│   └── svg-4yjotkk3wi.tsx       # Landing page social icon paths (only live import asset)
 ├── tools/                   # Tools library (pages, runtime apps, registry)
 ├── assets/                  # Title images and media
 └── utils/theme.ts           # Color tokens (--accent, gradients)
