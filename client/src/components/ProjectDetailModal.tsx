@@ -40,6 +40,7 @@ interface ExtendedProjectItem extends ProjectItem {
 const COLORS = {
   primary: "#181A4B",
   secondary: "#172FAB",
+  text: "#FFFFFF",
   accent: "#BA76FF",
   dim: "rgba(255, 255, 255, 0.2)",
 };
@@ -422,8 +423,14 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
           damping: 25,
           stiffness: 200,
         }}
-        className="fixed inset-0 z-[200] flex flex-col overflow-y-auto"
-        style={{ background: "linear-gradient(#181a4b,#172fab)" }} 
+        className="fixed inset-0 z-[200] flex flex-col overflow-y-auto font-['Tinos',_serif] selection:bg-[#BA76FF] selection:text-white"
+        style={
+          {
+            background: "linear-gradient(#181a4b,#172fab)",
+            color: COLORS.text,
+            "--accent": COLORS.accent,
+          } as React.CSSProperties
+        }
       >
         {/* Global Font Load for Project Detail */}
         <div className="fixed top-6 right-6 z-50 flex gap-4 bg-gradient-to-b from-[#181a4b] to-[#172fab]"
@@ -531,15 +538,38 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
               </div>
           </div>
 
-          {/* SECTION 2: FULL SCREEN HERO IMAGE */}
-          <div className="w-[70vw] h-[100vh] relative mb-24 bg-[rgba(255,255,255,0.05)] p-px"
-               style={{marginBottom: "6rem"}}
+          {/* SECTION 2: HERO — images: height-led ratio; embeds: full width */}
+          <div
+            className={`w-full mb-24 ${formData.embedUrl ? "" : "flex justify-center"}`}
+            style={{ marginBottom: "6rem" }}
           >
+            <div
+              className={`relative p-px ${
+                formData.embedUrl
+                  ? "w-full"
+                  : "inline-block w-auto max-w-[95vw]"
+              } ${
+                !formData.embedUrl &&
+                typeof formData.image === "string" &&
+                formData.image.toLowerCase().includes(".svg")
+                  ? "bg-white"
+                  : "bg-[rgba(255,255,255,0.05)]"
+              }`}
+              style={{ height: "clamp(280px, 70vh, 720px)" }}
+            >
              <div className="absolute border border-[rgba(255,255,255,0.2)] inset-0 pointer-events-none z-10" />
              
              {isEditing && (
                 <div className="absolute top-4 left-4 z-20 w-full max-w-md bg-black/80 p-4 border border-[#333] backdrop-blur-md">
-                   <label className="block text-[10px] font-mono uppercase text-[#BA76FF] mb-2">Change Image</label>
+                   <label className="block text-[10px] font-mono uppercase text-[#BA76FF] mb-2">Embed URL (optional)</label>
+                   <input
+                     type="text"
+                     value={formData.embedUrl || ""}
+                     placeholder="https://... or /tools/..."
+                     onChange={(e) => setFormData({ ...formData, embedUrl: e.target.value || null })}
+                     className="w-full bg-[#1a1a1a] border border-[#333] text-white px-3 py-2 text-xs font-mono mb-3"
+                   />
+                   <label className="block text-[10px] font-mono uppercase text-[#BA76FF] mb-2">Change Image (fallback)</label>
                    <label className="flex items-center justify-center w-full p-4 border-2 border-dashed border-[#333] hover:border-[var(--accent)] cursor-pointer transition-colors mb-4 group/upload">
                       <div className="text-center">
                         <span className="block text-xs font-mono uppercase text-white/50 group-hover/upload:text-white">Click to Upload</span>
@@ -557,17 +587,30 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
                 </div>
              )}
 
-            {formData.image ? (
+            {formData.embedUrl ? (
+              <iframe
+                src={formData.embedUrl}
+                title={`${formData.title} live program`}
+                className="block w-full h-full min-h-full border-0"
+                style={{ height: "100%" }}
+              />
+            ) : formData.image ? (
               <img
                 src={formData.image}
                 alt={formData.title}
-                className="w-full h-full object-cover"
+                className={`block h-full w-auto max-w-[95vw] object-contain ${
+                  typeof formData.image === "string" &&
+                  formData.image.toLowerCase().includes(".svg")
+                    ? "p-6"
+                    : ""
+                }`}
               />
             ) : (
-               <div className="w-full h-full flex items-center justify-center text-white/20 font-mono uppercase">
+               <div className="w-full h-full min-w-[280px] flex items-center justify-center text-white/20 font-mono uppercase">
                   No Image Preview
                </div>
             )}
+          </div>
           </div>
 
           {/* SECTION 3: ABOUT PROJECT (Centered Slide) */}
@@ -759,3 +802,11 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
     </AnimatePresence>
   );
 };
+
+
+
+
+
+
+
+

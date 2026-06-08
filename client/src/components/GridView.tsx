@@ -6,12 +6,12 @@ import { COLORS } from "../utils/theme";
 
 interface GridViewProps {
   items: ProjectItem[];
-  onSelectProject: (item: ProjectItem) => void;
+  onSelectProjectBySlug: (slug: string) => void;
 }
 
 export const GridView: React.FC<GridViewProps> = ({
   items,
-  onSelectProject,
+  onSelectProjectBySlug,
 }) => {
   return (
     <div className="w-full h-full overflow-y-auto p-8 pb-32">
@@ -19,21 +19,32 @@ export const GridView: React.FC<GridViewProps> = ({
         columnsCountBreakPoints={{ 350: 1, 750: 2, 1100: 3, 1400: 4 }}
       >
         <Masonry gutter="3rem">
-          {items.map((item) => (
-            <motion.div
+          {items.map((item) => {
+            const isSvgTitleImage =
+              typeof item.image === "string" &&
+              item.image.toLowerCase().includes(".svg");
+
+            return (
+              <motion.div
               layoutId={`grid-${item.id}`}
               key={item.id}
-              onClick={() => onSelectProject(item)}
+              onClick={() => item.slug && onSelectProjectBySlug(item.slug)}
               className="relative group cursor-pointer radius-8 bg-[#172067] border border-white/10 hover:border-[var(--accent)] transition-all duration-300 bg-white/5 flex flex-col"
               whileHover={{ y: -5 }}
             >
               {/* Image Area */}
-              <div className="w-full overflow-hidden bg-black aspect-[4/3] relative border-b border-[#333]">
+              <div
+                className={`w-full overflow-hidden aspect-[4/3] relative border-b border-[#333] ${
+                  isSvgTitleImage ? "bg-white" : "bg-black"
+                }`}
+              >
                 {item.image ? (
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className={`w-full h-full transition-transform duration-700 group-hover:scale-105 ${
+                      isSvgTitleImage ? "object-contain p-3" : "object-cover"
+                    }`}
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center bg-white/5">
@@ -77,7 +88,8 @@ export const GridView: React.FC<GridViewProps> = ({
                 </div>
               </div>
             </motion.div>
-          ))}
+            );
+          })}
         </Masonry>
       </ResponsiveMasonry>
 
