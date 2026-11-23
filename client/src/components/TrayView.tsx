@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ProjectItem } from "../data/projects";
+import { hasActiveFilter, matchesSearch } from "../data/projects-helpers";
 import { Footer } from "./Footer";
 import lavaLampsImage from "../assets/lava_lamps.png";
 
@@ -18,6 +19,7 @@ export const TrayView: React.FC<TrayViewProps> = ({
   setHoveredItem,
 }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const hasFilter = hasActiveFilter(searchTerm, activeTags);
 
   // Scroll to first match logic
   useEffect(() => {
@@ -36,20 +38,7 @@ export const TrayView: React.FC<TrayViewProps> = ({
     }
 
     const firstMatchIndex = allDisplayedItems.findIndex(
-      (item) => {
-        const query = searchTerm.toLowerCase();
-        const matchesText =
-          searchTerm === "" ||
-          item.title.toLowerCase().includes(query) ||
-          item.skills.toLowerCase().includes(query) ||
-          item.projectLabel.toLowerCase().includes(query);
-
-        const matchesTags =
-          activeTags.length === 0 ||
-          activeTags.some((tag) => item.skills.includes(tag));
-
-        return matchesText && matchesTags;
-      },
+      (item) => matchesSearch(item, searchTerm, activeTags),
     );
 
     if (firstMatchIndex !== -1) {
@@ -110,32 +99,11 @@ export const TrayView: React.FC<TrayViewProps> = ({
                           const isSpecial =
                             gItem.type === "special";
 
-                          // Determine if there is an active search or filter
-                          const hasFilter =
-                            searchTerm !== "" ||
-                            activeTags.length > 0;
-
-                          const query =
-                            searchTerm.toLowerCase();
-                          const matchesText =
-                            searchTerm === "" ||
-                            gItem.title
-                              .toLowerCase()
-                              .includes(query) ||
-                            gItem.skills
-                              .toLowerCase()
-                              .includes(query) ||
-                            gItem.projectLabel
-                              .toLowerCase()
-                              .includes(query);
-                          const matchesTag =
-                            activeTags.length === 0 ||
-                            activeTags.some((tag) =>
-                              gItem.skills.includes(tag),
-                            );
-
-                          const isMatch =
-                            matchesText && matchesTag;
+                          const isMatch = matchesSearch(
+                            gItem,
+                            searchTerm,
+                            activeTags,
+                          );
 
                           // Highlight logic
                           const shouldHighlightPersistent =
