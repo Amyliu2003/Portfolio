@@ -149,7 +149,7 @@ export const TrayView: React.FC<TrayViewProps> = ({
                               <div
                                 className={`absolute bottom-0 left-0 w-full h-14 z-40 transition-colors duration-300 flex items-center justify-center overflow-hidden 
                                   ${shouldHighlightPersistent 
-                                    ? "bg-[#BA76FF] scale-120 -translate-y-2" 
+                                    ? "bg-[#BA76FF]" 
                                     : "bg-[#0A0F33] group-hover/item:bg-[#BA76FF] group-hover/item:scale-120  group-hover/item:-translate-y-2"}
                                 `}
                               >
