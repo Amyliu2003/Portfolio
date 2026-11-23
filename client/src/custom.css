@@ -482,6 +482,19 @@ button.ui-tag:hover:not(.is-on) { border-color: var(--color-accent); }
 }
 @media (min-width: 768px) { .detail-nav-btn { font-size: 16px; } }
 
+/* Works header meta block (TOOLS / Login / WORK / squares): one size drives the block.
+   WORK is ~18px at 375px and 30px from 640px (36px from 768px, as before); the small
+   rows and squares stay at 0.4× WORK (12px at full size). */
+.header-meta { font-size: clamp(16px, calc(1.02px + 4.53vw), 30px); }
+.header-meta__work { font-size: 1em; }
+.header-meta__small { font-size: 0.4em; }
+.header-meta__sq { width: 0.4em; height: 0.4em; }
+@media (min-width: 768px) {
+  .header-meta { font-size: 36px; }
+  .header-meta__small { font-size: 12px; }
+  .header-meta__sq { width: 12px; height: 12px; }
+}
+
 /* Login modal */
 .login-close { position: absolute; top: 12px; right: 12px; color: rgba(255, 255, 255, 0.5); }
 .login-close:hover { color: #fff; }
