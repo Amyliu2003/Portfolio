@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { ProjectItem } from "../data/projects";
 import { Footer } from "./Footer";
 import lavaLampsImage from "../assets/lava_lamps.png";
@@ -7,7 +8,6 @@ interface TrayViewProps {
   items: ProjectItem[];
   searchTerm: string;
   activeTags: string[];
-  onSelectProjectBySlug: (slug: string) => void;
   setHoveredItem: (item: ProjectItem | null) => void;
 }
 
@@ -15,7 +15,6 @@ export const TrayView: React.FC<TrayViewProps> = ({
   items,
   searchTerm,
   activeTags,
-  onSelectProjectBySlug,
   setHoveredItem,
 }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -142,17 +141,25 @@ export const TrayView: React.FC<TrayViewProps> = ({
                           const shouldHighlightPersistent =
                             hasFilter && isMatch;
 
+                          // Special items are real links; duplicate loop cycles stay out of the tab order.
+                          const isLink = isSpecial && !!gItem.slug;
+                          const SlotTag: React.ElementType = isLink ? Link : "div";
+                          const slotLinkProps = isLink
+                            ? {
+                                to: `/works/${gItem.slug}`,
+                                "aria-label": gItem.title,
+                                ...(cycle > 0 ? { tabIndex: -1 } : {}),
+                              }
+                            : {};
+
                           return (
-                            <div
+                            <SlotTag
                               key={`${gItem.id}-${cycle}`}
+                              {...slotLinkProps}
                               className={`flex-1 h-full relative group/item outline-none overflow-hidden
                                 ${isSpecial ? "cursor-pointer" : "cursor-default"}
                                 ${shouldHighlightPersistent ? "overflow-visible" : "overflow-hidden"}
                               `}
-                              onClick={() => {
-                                if (isSpecial && gItem.slug)
-                                  onSelectProjectBySlug(gItem.slug);
-                              }}
                               onMouseEnter={() =>
                                 setHoveredItem(gItem)
                               }
@@ -202,7 +209,7 @@ export const TrayView: React.FC<TrayViewProps> = ({
                               <div className="relative z-20 w-full h-full flex items-center justify-center">
                                 {/* We rely on the hover tooltip for visuals in Tray Mode */}
                               </div>
-                            </div>
+                            </SlotTag>
                           );
                         })}
                       </div>

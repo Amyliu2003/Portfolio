@@ -4,10 +4,13 @@ import { SpotlightCard } from "../components/SpotlightCard";
 import { TagFilter } from "../components/TagFilter";
 import { ToolCard } from "../components/ToolCard";
 import { featuredTool, tools } from "../data/tools";
+import { COLORS, GRADIENTS } from "../../utils/theme";
+import { useDocumentTitle } from "../../utils/useDocumentTitle";
 
 const ALL_TAG = "ALL";
 
 export function ToolsIndexPage() {
+  useDocumentTitle("Tools");
   const [activeTag, setActiveTag] = useState(ALL_TAG);
 
   const tags = useMemo(() => {
@@ -26,9 +29,8 @@ export function ToolsIndexPage() {
     <div
       className="min-h-screen min-h-dvh w-full px-4 py-6 sm:px-6 md:px-8 md:py-8 selection:bg-[#BA76FF] selection:text-white"
       style={{
-        backgroundColor: "#181A4B",
-        background:
-          "linear-gradient(180deg, rgba(186, 118, 255, 0.30) 0%, rgba(186, 118, 255, 0.00) 20%), linear-gradient(180deg, #D5DCD9 0%, #83C1E6 20%, #1D5DE5 40%, #172FAB 56%, #181A4B 80%)",
+        backgroundColor: COLORS.primary,
+        background: GRADIENTS.home,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
       }}

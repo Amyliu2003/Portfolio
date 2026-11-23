@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { initialProjects, ProjectItem } from "./data/projects";
 import { LoginModal } from "./components/LoginModal";
 import { AddProjectModal } from "./components/AddProjectModal";
-import { COLORS } from "./utils/theme";
+import { COLORS, GRADIENTS } from "./utils/theme";
 import { LandingPage } from "./components/LandingPage";
+import { useDocumentTitle } from "./utils/useDocumentTitle";
 
 // Components
 import { Header } from "./components/Header";
@@ -18,7 +18,7 @@ interface AppProps {
 }
 
 export default function App({ initialSection = "home" }: AppProps) {
-  const navigate = useNavigate();
+  useDocumentTitle(initialSection === "works" ? "Works" : undefined);
   const [items, setItems] =
     useState<ProjectItem[]>(initialProjects);
   const [searchTerm, setSearchTerm] = useState("");
@@ -54,10 +54,6 @@ export default function App({ initialSection = "home" }: AppProps) {
       });
     });
   }, [initialSection]);
-
-  const openProjectRoute = (slug: string) => {
-    navigate(`/works/${slug}`);
-  };
 
   const tagData = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -159,10 +155,7 @@ export default function App({ initialSection = "home" }: AppProps) {
       {/* Background Wrapper */}
       <div
         className="min-h-full w-full flex flex-col"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(186, 118, 255, 0.30) 0%, rgba(186, 118, 255, 0.00) 20%), linear-gradient(180deg, #D5DCD9 0%, #83C1E6 20%, #1D5DE5 40%, #172FAB 56%, #181A4B 80%)",
-        }}
+        style={{ background: GRADIENTS.home }}
       >
         <LoginModal
           isOpen={isLoginOpen}
@@ -226,13 +219,11 @@ export default function App({ initialSection = "home" }: AppProps) {
                 items={sortedItems}
                 searchTerm={searchTerm}
                 activeTags={activeTags}
-                onSelectProjectBySlug={openProjectRoute}
                 setHoveredItem={setHoveredItem}
               />
             ) : (
               <GridView
                 items={filteredGridItems}
-                onSelectProjectBySlug={openProjectRoute}
               />
             )}
           </main>

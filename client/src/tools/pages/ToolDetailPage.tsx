@@ -2,6 +2,8 @@ import { lazy, Suspense } from "react";
 import { Link, useParams } from "react-router-dom";
 import { StatusBadge } from "../components/StatusBadge";
 import { toolBySlugAndId } from "../data/tools";
+import { COLORS, GRADIENTS } from "../../utils/theme";
+import { useDocumentTitle } from "../../utils/useDocumentTitle";
 
 const toolLoaders = {
   "course-tiermaker": () => import("../runtime/course-tiermaker"),
@@ -19,6 +21,7 @@ export function ToolDetailPage() {
   const slug = params.name ?? "";
   const id = params.id ?? "";
   const tool = toolBySlugAndId(slug, id);
+  useDocumentTitle(tool ? tool.name : "Tool not found");
 
   if (!tool) {
     return (
@@ -42,9 +45,8 @@ export function ToolDetailPage() {
     <div
       className="min-h-screen min-h-dvh px-4 py-6 text-white sm:px-6 md:px-8 md:py-8"
       style={{
-        backgroundColor: "#181A4B",
-        background:
-          "linear-gradient(180deg, rgba(186, 118, 255, 0.30) 0%, rgba(186, 118, 255, 0.00) 20%), linear-gradient(180deg, #D5DCD9 0%, #83C1E6 20%, #1D5DE5 40%, #172FAB 56%, #181A4B 80%)",
+        backgroundColor: COLORS.primary,
+        background: GRADIENTS.home,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
       }}
