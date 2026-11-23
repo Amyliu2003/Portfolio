@@ -1,5 +1,5 @@
-export { Button } from "./Button";
-export type { ButtonProps, ButtonVariant } from "./Button";
+export { Button, ButtonLink } from "./Button";
+export type { ButtonProps, ButtonLinkProps, ButtonSize, ButtonVariant } from "./Button";
 export { Input } from "./Input";
 export { Textarea } from "./Textarea";
 export { SearchInput } from "./SearchInput";

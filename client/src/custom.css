@@ -226,6 +226,33 @@
 .ui-btn--danger:hover:not(:disabled) { background: var(--color-danger); color: #000; }
 .ui-btn:disabled,
 .ui-btn[aria-disabled="true"] { opacity: 0.4; cursor: not-allowed; }
+.ui-btn--lg { height: 46px; padding: 0 24px; }
+.ui-btn--icon { width: 38px; padding: 0; }
+.ui-btn--icon.ui-btn--lg { width: 46px; }
+a.ui-btn { text-decoration: none; }
+/* Toggle buttons (aria-pressed) use the accent fill when on */
+.ui-btn[aria-pressed="true"] { background: var(--color-accent); border-color: var(--color-accent); color: #000; }
+
+/* --- Touch targets: invisible hit area of at least 44x44 around Button and interactive Tag.
+       The visible size stays as designed (38px button, 26px tag). --- */
+.ui-btn,
+button.ui-tag { position: relative; }
+.ui-btn::before,
+button.ui-tag::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, 44px);
+  height: max(100%, 44px);
+  transform: translate(-50%, -50%);
+}
+/* Scroll rows clip overflow; give hit areas room without moving the layout */
+.ui-hit-scroll { padding-block: 9px; margin-block: -9px; }
+/* Wrapped tag rows on touch screens: keep hit areas from overlapping between lines */
+@media (pointer: coarse) {
+  .ui-tag-row { row-gap: 18px; }
+}
 
 /* --- Field wrapper + label --- */
 .ui-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
