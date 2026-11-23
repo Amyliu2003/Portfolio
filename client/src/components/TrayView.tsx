@@ -152,7 +152,7 @@ export const TrayView: React.FC<TrayViewProps> = ({
                                     : "bg-[#0A0F33] group-hover/item:bg-[#BA76FF] group-hover/item:scale-120  group-hover/item:-translate-y-2"}
                                 `}
                               >
-                                <div className="flex w-full flex-col items-center gap-0.5">
+                                <div className="flex w-full flex-col items-center">
                                   <span
                                     className={`text-2xl font-black font-sans transition-all duration-300 transform group-hover/item:-translate-y-1
                                       ${
@@ -167,7 +167,7 @@ export const TrayView: React.FC<TrayViewProps> = ({
                                   {/* Always-visible title (truncated; full title on hover) */}
                                   <span
                                     title={gItem.title}
-                                    className={`publicSans-text uppercase text-[10px] tracking-[0.3px] leading-none block w-full px-1.5 truncate text-center transition-all duration-300 transform group-hover/item:-translate-y-1
+                                    className={`publicSans-text tray-title-label uppercase text-[10px] leading-none text-center transition-all duration-300 transform group-hover/item:-translate-y-1
                                       ${
                                         shouldHighlightPersistent
                                           ? "text-black -translate-y-1"

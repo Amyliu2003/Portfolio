@@ -14,7 +14,7 @@ export const MatchStatus: React.FC<MatchStatusProps> = ({
 }) => (
   <p
     aria-live="polite"
-    className={`font-mono text-xs uppercase tracking-[0.6px] text-white whitespace-nowrap ${className}`.trim()}
+    className={`font-mono text-xs uppercase tracking-[0.6px] text-white match-status ${className}`.trim()}
   >
     {count === 0 ? (
       <>

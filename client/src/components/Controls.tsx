@@ -143,7 +143,7 @@ export const Controls: React.FC<ControlsProps> = ({
 
       {/* Bottom Row: Tags */}
       <div className="w-full pointer-events-auto flex items-center gap-4">
-         <div className="flex-1 min-w-0 flex flex-nowrap gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-[#BA76FF]/50 scrollbar-track-transparent">
+         <div className="works-tag-scroller flex-1 flex flex-nowrap gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-[#BA76FF]/50 scrollbar-track-transparent">
             {tagData.map(([tag, count]) => {
                 const isActive = activeTags.includes(tag);
                 return (
@@ -168,7 +168,7 @@ export const Controls: React.FC<ControlsProps> = ({
             <MatchStatus
                count={matchCount}
                onClear={onClearFilters}
-               className="shrink-0 pb-2"
+               className="shrink-0 works-match-status"
             />
          )}
       </div>
