@@ -112,6 +112,9 @@ export default function App({ initialSection = "home" }: AppProps) {
   };
 
   // Filter items for Grid View
+  // Reserved "coming soon" slots stay in the data but are hidden from the tray
+  const trayItems = sortedItems.filter((item) => item.type === "special");
+
   const filteredGridItems = sortedItems.filter(
     (item) =>
       item.type === "special" &&
@@ -206,7 +209,7 @@ export default function App({ initialSection = "home" }: AppProps) {
             {/* View Content Switcher */}
             {viewMode === "tray" ? (
               <TrayView
-                items={sortedItems}
+                items={trayItems}
                 searchTerm={searchTerm}
                 activeTags={activeTags}
                 setHoveredItem={setHoveredItem}

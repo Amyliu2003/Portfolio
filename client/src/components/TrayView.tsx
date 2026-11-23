@@ -180,6 +180,19 @@ export const TrayView: React.FC<TrayViewProps> = ({
                             </SlotTag>
                           );
                         })}
+                        {/* Pad a short final group so every group keeps 5 lamp slots */}
+                        {Array.from(
+                          { length: 5 - groupItems.length },
+                          (_, padIndex) => (
+                            <div
+                              key={`pad-${cycle}-${index}-${padIndex}`}
+                              aria-hidden="true"
+                              className="flex-1 h-full relative cursor-default"
+                            >
+                              <div className="absolute bottom-0 left-0 w-full h-14 bg-[#0A0F33]" />
+                            </div>
+                          ),
+                        )}
                       </div>
                     </div>
                   );
