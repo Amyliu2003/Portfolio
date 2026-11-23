@@ -102,7 +102,7 @@ export const LandingPage: React.FC<{
           <div className="flex gap-[16px] items-center relative shrink-0">
             {/* Instagram */}
             <a
-              href="https://instagram.com"
+              href="https://www.instagram.com/siera_2149/"
               aria-label="Amy Liu on Instagram (opens in new tab)"
               target="_blank"
               rel="noopener noreferrer"
@@ -128,7 +128,7 @@ export const LandingPage: React.FC<{
             </a>
             {/* LinkedIn */}
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/siyan-liu-6958ab291/"
               aria-label="Amy Liu on LinkedIn (opens in new tab)"
               target="_blank"
               rel="noopener noreferrer"
