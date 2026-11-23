@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { COLORS, THEME } from "../utils/theme";
 import { MatchStatus } from "./MatchStatus";
-import { SearchInput } from "./ui";
+import { Button, SearchInput } from "./ui";
 
 export type SortOption = "default" | "alphabetical" | "newest";
 
@@ -58,28 +58,31 @@ export const Controls: React.FC<ControlsProps> = ({
         {/* Sort & Actions */}
         <div className="flex items-center gap-4">
            {/* Sort Dropdown */}
-           <div className="relative h-[38px] flex items-center border border-white/20 group hover:border-white transition-colors bg-transparent backdrop-blur-sm">
-              <button 
+           <div className="relative">
+              <Button
+                variant="outline"
+                aria-haspopup="true"
+                aria-expanded={isSortOpen}
                 onClick={() => setIsSortOpen(!isSortOpen)}
-                className="flex items-center gap-3 px-4 h-full text-xs publicSans-text uppercase tracking-[0.6px] text-white"
               >
                  <span>SORT:</span>
-                 <span className="text-white font-normal">{sortOption}</span>
-                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" className={`transition-transform ${isSortOpen ? 'rotate-180' : ''}`}>
+                 <span>{sortOption}</span>
+                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className={`transition-transform ${isSortOpen ? 'rotate-180' : ''}`}>
                     <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeLinecap="square"/>
                  </svg>
-              </button>
+              </Button>
               
               {isSortOpen && (
                 <div className="absolute top-full right-0 mt-1 w-full min-w-[120px] bg-[#181A4B] border border-white/20 flex flex-col z-50">
                    {(["default", "newest", "alphabetical"] as SortOption[]).map(opt => (
-                      <button
+                      <Button
                         key={opt}
+                        variant="ghost"
+                        className="works-sort-option"
                         onClick={() => { setSortOption(opt); setIsSortOpen(false); }}
-                        className="text-left px-4 py-2 text-xs text-white publicSans-text uppercase hover:bg-[#BA76FF] hover:text-black transition-colors"
                       >
                          {opt}
-                      </button>
+                      </Button>
                    ))}
                 </div>
               )}
@@ -88,42 +91,49 @@ export const Controls: React.FC<ControlsProps> = ({
            <div className="w-px h-6 bg-white/10 mx-2"></div>
 
            {/* View Toggles */}
-           <div className="flex h-[38px] border border-white/20">
-              <button 
+           <div className="works-view-toggle" role="group" aria-label="View mode">
+              <Button
+                 variant="outline"
+                 icon
+                 aria-label="Tray view"
+                 aria-pressed={viewMode === "tray"}
                  onClick={() => setViewMode("tray")}
-                 className={`w-[38px] h-full flex items-center justify-center transition-colors ${viewMode === "tray" ? "bg-white text-black" : "text-white hover:bg-white/10"}`}
               >
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                       <path d="M15.8333 2.5H4.16667C3.24619 2.5 2.5 3.24619 2.5 4.16667V15.8333C2.5 16.7538 3.24619 17.5 4.16667 17.5H15.8333C16.7538 17.5 17.5 16.7538 17.5 15.8333V4.16667C17.5 3.24619 16.7538 2.5 15.8333 2.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square"/>
                       <path d="M2.5 7.5H17.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square"/>
                       <path d="M2.5 12.5H17.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square"/>
                   </svg>
-              </button>
-              <div className="w-px h-full bg-white/20"></div>
-              <button 
+              </Button>
+              <Button
+                 variant="outline"
+                 icon
+                 aria-label="Grid view"
+                 aria-pressed={viewMode === "grid"}
                  onClick={() => setViewMode("grid")}
-                 className={`w-[38px] h-full flex items-center justify-center transition-colors ${viewMode === "grid" ? "bg-white text-black" : "text-white hover:bg-white/10"}`}
               >
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                       <rect x="2.5" y="2.5" width="5.83" height="5.83" stroke="currentColor" strokeWidth="1.5"/>
                       <rect x="11.66" y="2.5" width="5.83" height="5.83" stroke="currentColor" strokeWidth="1.5"/>
                       <rect x="11.66" y="11.66" width="5.83" height="5.83" stroke="currentColor" strokeWidth="1.5"/>
                       <rect x="2.5" y="11.66" width="5.83" height="5.83" stroke="currentColor" strokeWidth="1.5"/>
                   </svg>
-              </button>
+              </Button>
            </div>
            
            {/* Add Project Button */}
            {isLoggedIn && (
-               <button 
+               <Button
+                 variant="accent"
+                 icon
+                 aria-label="Add project"
                  onClick={onAddProjectClick}
-                 className="h-[38px] w-[38px] flex items-center justify-center border border-[#BA76FF] text-[#BA76FF] hover:bg-[#BA76FF] hover:text-white transition-colors ml-2"
                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                      <line x1="12" y1="5" x2="12" y2="19"></line>
                      <line x1="5" y1="12" x2="19" y2="12"></line>
                   </svg>
-               </button>
+               </Button>
            )}
         </div>
       </div>

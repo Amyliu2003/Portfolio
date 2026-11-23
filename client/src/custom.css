@@ -78,6 +78,28 @@
   white-space: nowrap;
 }
 
+/* Works controls built from UI kit buttons */
+.match-status__clear { height: 30px; padding: 0 8px; }
+.works-sort-option { width: 100%; justify-content: flex-start; }
+.works-view-toggle { display: flex; gap: 6px; }
+
+/* Project detail controls built from UI kit buttons */
+.detail-close-btn { background: var(--color-primary); }
+.detail-know-more { margin-bottom: 2rem; padding: 0 8px; color: var(--color-accent); }
+/* Prev/Next keep the DIN face used across the detail page */
+.detail-nav-btn {
+  font-family: "ff-din-paneuropean", sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  gap: 16px;
+}
+@media (min-width: 768px) { .detail-nav-btn { font-size: 16px; } }
+
+/* Login modal */
+.login-close { position: absolute; top: 12px; right: 12px; color: rgba(255, 255, 255, 0.5); }
+.login-close:hover { color: #fff; }
+.login-submit { width: 100%; }
+
 .works-match-status {
   padding-bottom: 0.5rem;
 }

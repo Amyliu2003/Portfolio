@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "motion/react";
+import { Button } from "./ui";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -37,9 +38,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({
         exit={{ opacity: 0, scale: 0.95 }}
         className="w-full max-w-md bg-[#181A4B] border border-[#333] p-8 relative"
       >
-        <button
+        <Button
+          variant="ghost"
+          icon
+          aria-label="Close login"
           onClick={onClose}
-          className="absolute top-4 right-4 text-white/50 hover:text-white"
+          className="login-close"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -51,11 +55,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({
             strokeWidth="2"
             strokeLinecap="square"
             strokeLinejoin="miter"
+            aria-hidden="true"
           >
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
-        </button>
+        </Button>
 
         <h2 className="text-3xl font-black italic uppercase text-white mb-8 tracking-tighter">
           Admin Login
@@ -89,12 +94,9 @@ export const LoginModal: React.FC<LoginModalProps> = ({
 
           {error && <p className="text-red-500 text-xs font-mono">{error}</p>}
 
-          <button
-            type="submit"
-            className="w-full bg-[#BA76FF] text-black font-bold uppercase tracking-widest py-4 hover:bg-white transition-colors duration-300"
-          >
+          <Button type="submit" variant="accent" size="lg" className="login-submit">
             Enter System
-          </button>
+          </Button>
         </form>
       </motion.div>
     </div>
