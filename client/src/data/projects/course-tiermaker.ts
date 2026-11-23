@@ -30,55 +30,5 @@ export const project: ProjectData = {
       image: CourseTiermakerTitle,
       reverse: false,
     },
-    {
-      id: "ctm-stats",
-      type: "stats",
-      stats: [
-        { label: "Save model", value: "Auto", suffix: "" },
-        { label: "Storage", value: "Browser", suffix: " local" },
-        { label: "Default tiers", value: "5", suffix: "" },
-        { label: "Status", value: "Live", suffix: "" },
-      ],
-    },
-    {
-      id: "ctm-steps",
-      type: "process-steps",
-      layout: "vertical",
-      steps: [
-        {
-          title: "Import courses",
-          description:
-            "Load a JSON list of courses (code, name, credits, term, instructor, notes). Sample data ships with the tool for first-time use.",
-        },
-        {
-          title: "Rank into tiers",
-          description:
-            "Drag courses from the pool into tiers. Reorder within a tier to express priority inside each band.",
-        },
-        {
-          title: "Annotate and refine",
-          description:
-            "Edit notes per course, rename tiers, and adjust colors. Changes write to localStorage on every update.",
-        },
-        {
-          title: "Resume later",
-          description:
-            "Reload the page or embed and your last session restores automatically. Clear All resets with confirmation.",
-        },
-      ],
-    },
-    {
-      id: "ctm-quote",
-      type: "quote",
-      text: "The goal is not a perfect ranking—it is a visible map of trade-offs you can revise as plans change.",
-      author: "Design intent",
-    },
-    {
-      id: "ctm-cta",
-      type: "cta",
-      text: "Open in Tools Library",
-      link: "/tools/course-tiermaker/003",
-      subtext: "Full tool page with metadata and related tools",
-    },
   ],
 };

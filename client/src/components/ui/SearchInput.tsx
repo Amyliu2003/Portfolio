@@ -7,12 +7,14 @@ export interface SearchInputProps
   label?: string;
   /** Called when Escape is pressed, e.g. to clear the query. */
   onClear?: () => void;
+  /** md = 54px / 14px (design default), lg = 46px / 16px (matches Button lg and Input) */
+  size?: "md" | "lg";
 }
 
-/** Design system C — 54px search field with the accent search icon on the right. */
+/** Design system C — search field with the accent search icon on the right (54px, or 46px with size="lg"). */
 export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
-  ({ label, onClear, className, placeholder = "Search...", onKeyDown, ...props }, ref) => (
-    <div className={cx("ui-search", className)} role="search">
+  ({ label, onClear, className, size = "md", placeholder = "Search...", onKeyDown, ...props }, ref) => (
+    <div className={cx("ui-search", size === "lg" && "ui-search--lg", className)} role="search">
       <input
         ref={ref}
         type="search"

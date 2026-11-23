@@ -3,9 +3,6 @@ import { COLORS, THEME } from "../utils/theme";
 import { MatchStatus } from "./MatchStatus";
 import { Button, SearchInput, Tag } from "./ui";
 
-/** Width of the edge fade on the tag row; must match --tag-fade in custom.css */
-const TAG_FADE_PX = 48;
-
 export type SortOption = "default" | "alphabetical" | "newest";
 
 interface ControlsProps {
@@ -42,6 +39,11 @@ export const Controls: React.FC<ControlsProps> = ({
   onClearFilters,
 }) => {
   const [isSortOpen, setIsSortOpen] = useState(false);
+  const sortTriggerRef = useRef<HTMLButtonElement>(null);
+  const closeSortMenu = () => {
+    setIsSortOpen(false);
+    sortTriggerRef.current?.focus();
+  };
 
   // Tag row edge fades: left fade once scrolled away from the start, right fade until the end
   const tagScrollerRef = useRef<HTMLDivElement>(null);
@@ -71,6 +73,9 @@ export const Controls: React.FC<ControlsProps> = ({
     const container = tagScrollerRef.current;
     const tag = e.target as HTMLElement;
     if (!container || tag === container) return;
+    // Fade width comes from the CSS variable --tag-fade (single source of truth)
+    const fade =
+      parseFloat(getComputedStyle(container).getPropertyValue("--tag-fade")) || 0;
     const box = container.getBoundingClientRect();
     const r = tag.getBoundingClientRect();
     // Tag position within the scroll content (independent of any scroll in progress)
@@ -78,11 +83,11 @@ export const Controls: React.FC<ControlsProps> = ({
     const contentRight = contentLeft + r.width;
     const current = container.scrollLeft;
     let target = current;
-    if (contentLeft - TAG_FADE_PX < current) {
+    if (contentLeft - fade < current) {
       // Reveal past the left fade; at the very start there is no left fade
-      target = contentLeft - TAG_FADE_PX <= 0 ? 0 : contentLeft - TAG_FADE_PX;
-    } else if (contentRight + TAG_FADE_PX > current + container.clientWidth) {
-      target = contentRight + TAG_FADE_PX - container.clientWidth;
+      target = contentLeft - fade <= 0 ? 0 : contentLeft - fade;
+    } else if (contentRight + fade > current + container.clientWidth) {
+      target = contentRight + fade - container.clientWidth;
     }
     target = Math.max(0, Math.min(target, container.scrollWidth - container.clientWidth));
     if (Math.abs(target - current) < 1) return;
@@ -98,7 +103,7 @@ export const Controls: React.FC<ControlsProps> = ({
         
         {/* Search Bar */}
         <SearchInput
-          className="works-search"
+          size="lg"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onClear={() => setSearchTerm("")}
@@ -109,8 +114,17 @@ export const Controls: React.FC<ControlsProps> = ({
         {/* Sort & Actions */}
         <div className="flex items-center gap-4">
            {/* Sort Dropdown */}
-           <div className="relative">
+           <div
+              className="relative"
+              onKeyDown={(e) => {
+                if (e.key === "Escape" && isSortOpen) {
+                  e.stopPropagation();
+                  closeSortMenu();
+                }
+              }}
+           >
               <Button
+                ref={sortTriggerRef}
                 variant="outline"
                 size="lg"
                 aria-haspopup="true"
@@ -131,7 +145,7 @@ export const Controls: React.FC<ControlsProps> = ({
                         key={opt}
                         variant="ghost"
                         className="works-sort-option"
-                        onClick={() => { setSortOption(opt); setIsSortOpen(false); }}
+                        onClick={() => { setSortOption(opt); closeSortMenu(); }}
                       >
                          {opt}
                       </Button>

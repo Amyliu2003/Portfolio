@@ -45,6 +45,15 @@
   background-color: var(--color-primary);
 }
 
+/* /tools index page — named because index.css lacks min-h-screen, sm:px-6, md:px-8, py-6… */
+.tools-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 24px 16px;
+}
+@media (min-width: 640px) { .tools-page { padding-inline: 24px; } }
+@media (min-width: 768px) { .tools-page { padding: 32px; } }
+
 /* Works findability — written here because index.css is a precompiled Tailwind build */
 .tray-title-label {
   display: block;
@@ -72,7 +81,7 @@
 
 .works-tag-scroller {
   min-width: 0;
-  --tag-fade: 48px; /* keep in sync with TAG_FADE_PX in Controls.tsx */
+  --tag-fade: 48px; /* edge fade width; Controls.tsx reads it at runtime */
   --fade-left: 0px;
   --fade-right: 0px;
   -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--fade-left), #000 calc(100% - var(--fade-right)), transparent 100%);
@@ -304,6 +313,7 @@ button.ui-tag::before {
 /* --- SearchInput --- */
 .ui-search { position: relative; width: 100%; max-width: 400px; }
 .ui-search .ui-input { height: 54px; padding-right: 44px; }
+.ui-search--lg .ui-input { height: 46px; font-size: 16px; }
 .ui-search .ui-input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
 .ui-search__icon {
   position: absolute;
@@ -442,8 +452,6 @@ button.ui-tag:hover:not(.is-on) { border-color: var(--color-accent); }
    Site overrides on UI kit components — keep after the UI kit block so they win
    ========================================================================== */
 /* Works controls built from UI kit buttons */
-/* Search, Sort and Tray/Grid share the 46px control height (Button lg / Input) */
-.works-search .ui-input { height: 46px; font-size: 16px; }
 .match-status__clear { height: 30px; padding: 0 4px; }
 .works-sort-option { width: 100%; justify-content: flex-start; }
 .works-view-toggle { display: flex; gap: 6px; }
