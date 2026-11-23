@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { useParams } from "react-router-dom";
+import { useDocumentTitle } from "../../utils/useDocumentTitle";
 
 const toolLoaders = {
   "course-tiermaker": () => import("../runtime/course-tiermaker"),
@@ -15,6 +16,7 @@ function getToolComponent(slug: string) {
 export function ToolRuntimePage() {
   const { slug = "" } = useParams();
   const RuntimeTool = getToolComponent(slug);
+  useDocumentTitle(slug || "Tool");
 
   if (!RuntimeTool) {
     return (

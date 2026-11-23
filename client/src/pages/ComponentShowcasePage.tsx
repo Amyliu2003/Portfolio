@@ -10,6 +10,7 @@ import { ShowcaseSection } from "../components/showcase/ShowcaseSection";
 import { initialProjects } from "../data/projects";
 import { tools } from "../tools/data/tools";
 import { StatusBadge } from "../tools/components/StatusBadge";
+import { useDocumentTitle } from "../utils/useDocumentTitle";
 import { ToolCard } from "../tools/components/ToolCard";
 import { COLORS, GRADIENTS } from "../utils/theme";
 
@@ -33,6 +34,7 @@ function ShowcaseFullBleed({ children }: { children: React.ReactNode }) {
 }
 
 export function ComponentShowcasePage() {
+  useDocumentTitle("Component Showcase");
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTags, setActiveTags] = useState<string[]>(["React"]);
   const [sortOption, setSortOption] = useState<SortOption>("default");

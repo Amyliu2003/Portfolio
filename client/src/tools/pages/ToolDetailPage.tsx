@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { StatusBadge } from "../components/StatusBadge";
 import { toolBySlugAndId } from "../data/tools";
 import { COLORS, GRADIENTS } from "../../utils/theme";
+import { useDocumentTitle } from "../../utils/useDocumentTitle";
 
 const toolLoaders = {
   "course-tiermaker": () => import("../runtime/course-tiermaker"),
@@ -20,6 +21,7 @@ export function ToolDetailPage() {
   const slug = params.name ?? "";
   const id = params.id ?? "";
   const tool = toolBySlugAndId(slug, id);
+  useDocumentTitle(tool ? tool.name : "Tool not found");
 
   if (!tool) {
     return (

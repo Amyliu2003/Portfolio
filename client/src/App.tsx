@@ -5,6 +5,7 @@ import { LoginModal } from "./components/LoginModal";
 import { AddProjectModal } from "./components/AddProjectModal";
 import { COLORS, GRADIENTS } from "./utils/theme";
 import { LandingPage } from "./components/LandingPage";
+import { useDocumentTitle } from "./utils/useDocumentTitle";
 
 // Components
 import { Header } from "./components/Header";
@@ -19,6 +20,7 @@ interface AppProps {
 
 export default function App({ initialSection = "home" }: AppProps) {
   const navigate = useNavigate();
+  useDocumentTitle(initialSection === "works" ? "Works" : undefined);
   const [items, setItems] =
     useState<ProjectItem[]>(initialProjects);
   const [searchTerm, setSearchTerm] = useState("");

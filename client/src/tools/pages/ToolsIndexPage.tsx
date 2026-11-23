@@ -5,10 +5,12 @@ import { TagFilter } from "../components/TagFilter";
 import { ToolCard } from "../components/ToolCard";
 import { featuredTool, tools } from "../data/tools";
 import { COLORS, GRADIENTS } from "../../utils/theme";
+import { useDocumentTitle } from "../../utils/useDocumentTitle";
 
 const ALL_TAG = "ALL";
 
 export function ToolsIndexPage() {
+  useDocumentTitle("Tools");
   const [activeTag, setActiveTag] = useState(ALL_TAG);
 
   const tags = useMemo(() => {

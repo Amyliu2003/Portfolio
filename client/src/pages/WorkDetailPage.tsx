@@ -5,12 +5,14 @@ import {
   getProjectBySlug,
 } from "../data/projects-helpers";
 import { ProjectDetailModal } from "../components/ProjectDetailModal";
+import { useDocumentTitle } from "../utils/useDocumentTitle";
 
 export function WorkDetailPage() {
   const { project_name = "" } = useParams();
   const navigate = useNavigate();
   const project = getProjectBySlug(project_name);
   const { prev, next } = getAdjacentProjectSlugs(project_name);
+  useDocumentTitle(project ? project.title : "Project not found");
 
   if (!project) {
     return (
