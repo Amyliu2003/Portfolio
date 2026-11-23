@@ -14,9 +14,9 @@ export const Header: React.FC<HeaderProps> = ({
   onLogoutClick,
 }) => {
   return (
-    <header className="flex-shrink-0 w-full px-8 py-8 sm:py-10 z-10 flex flex-col md:flex-row justify-between items-start md:items-end border-b border-white/20">
+    <header className="flex-shrink-0 w-full px-8 py-8 sm:py-10 z-10 flex flex-col sm:flex-row sm:gap-6 justify-between items-start sm:items-end border-b border-white/20">
       {/* LEFT: TITLE BLOCK */}
-      <div className="flex flex-col items-start gap-0">
+      <div className="flex flex-col items-start gap-0 min-w-0 flex-1">
         <Link to="/works" className="block max-w-[min(468px,70vw)] leading-none hover:opacity-90 transition-opacity">
           <Logo />
         </Link>
@@ -29,7 +29,7 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* RIGHT: META BLOCK */}
-      <div className="flex flex-col items-end self-end gap-0 mt-4 md:mt-0">
+      <div className="flex flex-col items-end self-end shrink-0 gap-0 mt-4 sm:mt-0">
          <Link
             to="/tools"
             className="font-mono text-white text-xs uppercase tracking-[1.2px] hover:text-[#BA76FF] transition-colors"

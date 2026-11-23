@@ -455,6 +455,19 @@ button.ui-tag:hover:not(.is-on) { border-color: var(--color-accent); }
 .match-status__clear { height: 30px; padding: 0 4px; }
 .works-sort-option { width: 100%; justify-content: flex-start; }
 .works-view-toggle { display: flex; gap: 6px; }
+/* Works search fills the row next to the 46px squares (drops the kit's 400px cap) */
+.works-search { flex: 1 1 auto; min-width: 0; max-width: none; }
+/* Non-default sort indicator on the Sort square */
+.works-sort-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  pointer-events: none;
+}
 
 /* Project detail controls built from UI kit buttons */
 .detail-close-btn { background: var(--color-primary); }
