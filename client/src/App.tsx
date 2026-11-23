@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { initialProjects, ProjectItem } from "./data/projects";
-import { matchesSearch } from "./data/projects-helpers";
+import { hasActiveFilter, matchesSearch } from "./data/projects-helpers";
 import { LoginModal } from "./components/LoginModal";
 import { AddProjectModal } from "./components/AddProjectModal";
 import { COLORS, GRADIENTS } from "./utils/theme";
@@ -107,6 +107,11 @@ export default function App({ initialSection = "home" }: AppProps) {
     setSearchTerm("");
   };
 
+  const clearFilters = () => {
+    setSearchTerm("");
+    setActiveTags([]);
+  };
+
   const handleAddProject = (newProject: ProjectItem) => {
     setItems((prev) => [newProject, ...prev]);
   };
@@ -204,6 +209,9 @@ export default function App({ initialSection = "home" }: AppProps) {
               onAddProjectClick={() =>
                 setIsAddProjectOpen(true)
               }
+              hasFilter={hasActiveFilter(searchTerm, activeTags)}
+              matchCount={filteredGridItems.length}
+              onClearFilters={clearFilters}
             />
 
             {/* View Content Switcher */}
@@ -217,6 +225,7 @@ export default function App({ initialSection = "home" }: AppProps) {
             ) : (
               <GridView
                 items={filteredGridItems}
+                onClearFilters={clearFilters}
               />
             )}
           </main>
