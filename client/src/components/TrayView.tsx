@@ -21,40 +21,29 @@ export const TrayView: React.FC<TrayViewProps> = ({
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const hasFilter = hasActiveFilter(searchTerm, activeTags);
 
-  // Scroll to first match logic
+  // Scroll the tray (not the page) so the first highlighted slot is centered
   useEffect(() => {
-    if (
-      (!searchTerm && activeTags.length === 0) ||
-      !scrollContainerRef.current
-    )
-      return;
+    const container = scrollContainerRef.current;
+    if (!hasFilter || !container) return;
 
-    const allDisplayedItems: any[] = [];
-    // We duplicate items 4 times for the infinite loop effect
-    for (let cycle = 0; cycle < 4; cycle++) {
-      items.forEach((item) =>
-        allDisplayedItems.push({ ...item, cycle }),
-      );
-    }
-
-    const firstMatchIndex = allDisplayedItems.findIndex(
-      (item) => matchesSearch(item, searchTerm, activeTags),
+    const firstMatch = container.querySelector<HTMLElement>(
+      '[data-match="true"]',
     );
+    if (!firstMatch) return;
 
-    if (firstMatchIndex !== -1) {
-      const itemWidth = 160;
-      const scrollPos = firstMatchIndex * itemWidth;
-      const containerWidth =
-        scrollContainerRef.current.clientWidth;
-      const centeredPos =
-        scrollPos - containerWidth / 2 + itemWidth / 2;
+    const containerRect = container.getBoundingClientRect();
+    const matchRect = firstMatch.getBoundingClientRect();
+    const offsetInContent =
+      matchRect.left - containerRect.left + container.scrollLeft;
 
-      scrollContainerRef.current.scrollTo({
-        left: Math.max(0, centeredPos),
-        behavior: "smooth",
-      });
-    }
-  }, [searchTerm, activeTags, items]);
+    container.scrollTo({
+      left: Math.max(
+        0,
+        offsetInContent - container.clientWidth / 2 + matchRect.width / 2,
+      ),
+      behavior: "smooth",
+    });
+  }, [hasFilter, searchTerm, activeTags, items]);
 
   return (
     <div className="w-full h-full flex flex-col bg-transparent">
@@ -124,6 +113,9 @@ export const TrayView: React.FC<TrayViewProps> = ({
                             <SlotTag
                               key={`${gItem.id}-${cycle}`}
                               {...slotLinkProps}
+                              data-match={
+                                shouldHighlightPersistent ? "true" : undefined
+                              }
                               className={`flex-1 h-full relative group/item outline-none overflow-hidden
                                 ${isSpecial ? "cursor-pointer" : "cursor-default"}
                                 ${shouldHighlightPersistent ? "overflow-visible" : "overflow-hidden"}
