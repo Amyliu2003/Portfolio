@@ -1,17 +1,18 @@
 import React from "react";
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { ProjectItem } from "../data/projects";
 import { COLORS } from "../utils/theme";
 
+const MotionLink = motion.create(Link);
+
 interface GridViewProps {
   items: ProjectItem[];
-  onSelectProjectBySlug: (slug: string) => void;
 }
 
 export const GridView: React.FC<GridViewProps> = ({
   items,
-  onSelectProjectBySlug,
 }) => {
   return (
     <div className="w-full h-full overflow-y-auto p-8 pb-32">
@@ -24,14 +25,15 @@ export const GridView: React.FC<GridViewProps> = ({
               typeof item.image === "string" &&
               item.image.toLowerCase().includes(".svg");
 
-            return (
-              <motion.div
-              layoutId={`grid-${item.id}`}
-              key={item.id}
-              onClick={() => item.slug && onSelectProjectBySlug(item.slug)}
-              className="relative group cursor-pointer radius-8 bg-[#172067] border border-white/10 hover:border-[var(--accent)] transition-all duration-300 bg-white/5 flex flex-col"
-              whileHover={{ y: -5 }}
-            >
+            const cardProps = {
+              layoutId: `grid-${item.id}`,
+              className:
+                "relative group cursor-pointer radius-8 bg-[#172067] border border-white/10 hover:border-[var(--accent)] transition-all duration-300 bg-white/5 flex flex-col",
+              whileHover: { y: -5 },
+            };
+
+            const cardContent = (
+              <>
               {/* Image Area */}
               <div
                 className={`w-full overflow-hidden aspect-[4/3] relative border-b border-[#333] ${
@@ -87,7 +89,17 @@ export const GridView: React.FC<GridViewProps> = ({
                   ))}
                 </div>
               </div>
-            </motion.div>
+              </>
+            );
+
+            return item.slug ? (
+              <MotionLink key={item.id} to={`/works/${item.slug}`} {...cardProps}>
+                {cardContent}
+              </MotionLink>
+            ) : (
+              <motion.div key={item.id} {...cardProps}>
+                {cardContent}
+              </motion.div>
             );
           })}
         </Masonry>

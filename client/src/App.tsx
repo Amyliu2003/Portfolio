@@ -1,5 +1,4 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { initialProjects, ProjectItem } from "./data/projects";
 import { LoginModal } from "./components/LoginModal";
 import { AddProjectModal } from "./components/AddProjectModal";
@@ -19,7 +18,6 @@ interface AppProps {
 }
 
 export default function App({ initialSection = "home" }: AppProps) {
-  const navigate = useNavigate();
   useDocumentTitle(initialSection === "works" ? "Works" : undefined);
   const [items, setItems] =
     useState<ProjectItem[]>(initialProjects);
@@ -56,10 +54,6 @@ export default function App({ initialSection = "home" }: AppProps) {
       });
     });
   }, [initialSection]);
-
-  const openProjectRoute = (slug: string) => {
-    navigate(`/works/${slug}`);
-  };
 
   const tagData = useMemo(() => {
     const counts: Record<string, number> = {};
@@ -225,13 +219,11 @@ export default function App({ initialSection = "home" }: AppProps) {
                 items={sortedItems}
                 searchTerm={searchTerm}
                 activeTags={activeTags}
-                onSelectProjectBySlug={openProjectRoute}
                 setHoveredItem={setHoveredItem}
               />
             ) : (
               <GridView
                 items={filteredGridItems}
-                onSelectProjectBySlug={openProjectRoute}
               />
             )}
           </main>
