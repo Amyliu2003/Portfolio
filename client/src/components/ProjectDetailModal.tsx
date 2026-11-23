@@ -22,6 +22,7 @@ import {
   RichTextBlock,
   ImageBlock
 } from "../data/projects";
+import { GRADIENTS } from "../utils/theme";
 
 interface ProjectDetailModalProps {
   project: ProjectItem | null;
@@ -426,14 +427,14 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
         className="fixed inset-0 z-[200] flex flex-col overflow-y-auto font-['Tinos',_serif] selection:bg-[#BA76FF] selection:text-white"
         style={
           {
-            background: "linear-gradient(#181a4b,#172fab)",
+            background: GRADIENTS.detail,
             color: COLORS.text,
             "--accent": COLORS.accent,
           } as React.CSSProperties
         }
       >
         {/* Global Font Load for Project Detail */}
-        <div className="fixed top-6 right-6 z-50 flex gap-4 bg-gradient-to-b from-[#181a4b] to-[#172fab]"
+        <div className="fixed top-6 right-6 z-50 flex gap-4 bg-gradient-detail"
         >
           {/* EDIT CONTROLS */}
           {isAdmin && (

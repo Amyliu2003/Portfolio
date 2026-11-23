@@ -1,3 +1,40 @@
+:root {
+  --color-primary: #181A4B;
+  --color-secondary: #172FAB;
+  --color-text: #FFFFFF;
+  --color-accent: #BA76FF;
+  --color-dim: rgba(255, 255, 255, 0.2);
+  --gradient-home: linear-gradient(180deg, rgba(186, 118, 255, 0.3) 0%, rgba(186, 118, 255, 0) 20%), linear-gradient(180deg, #d5dcd9 0%, #83c1e6 20%, #1d5de5 40%, #172fab 56%, #181a4b 80%);
+  --gradient-detail: linear-gradient(180deg, #181a4b 0%, #172fab 100%);
+}
+
+.bg-gradient-home {
+  background-image: var(--gradient-home);
+  background-color: var(--color-primary);
+}
+
+.bg-gradient-detail {
+  background-image: var(--gradient-detail);
+  background-color: var(--color-primary);
+}
+
+/* Showcase swatches — explicit layers so previews stay visible on detail pages */
+.gradient-swatch {
+  min-height: 12rem;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.gradient-swatch-home {
+  background-image: linear-gradient(180deg, rgba(186, 118, 255, 0.3) 0%, rgba(186, 118, 255, 0) 20%), linear-gradient(180deg, #d5dcd9 0%, #83c1e6 20%, #1d5de5 40%, #172fab 56%, #181a4b 80%);
+  background-color: #181a4b;
+}
+
+.gradient-swatch-detail {
+  background-image: linear-gradient(180deg, #181a4b 0%, #172fab 100%);
+  background-color: #181a4b;
+}
+
 .marquee-container {
     overflow: hidden;
     white-space: nowrap;
