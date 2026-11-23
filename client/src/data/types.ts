@@ -142,7 +142,7 @@ export interface ProjectItem {
   time: string;
   projectLabel: string;
   type: "special" | "placeholder";
-  /** Lit by default in the lava tray when no search/filter is active */
+  /** Derived, not stored: true for the first FEATURED_COUNT works in ORDER (lit by default in the tray) */
   featured?: boolean;
   title: string;
   skills: string;
@@ -156,5 +156,5 @@ export interface ProjectItem {
   contentBlocks?: ContentBlock[];
 }
 
-/** A project's own data; number and label are derived from its position in ORDER. */
-export type ProjectData = Omit<ProjectItem, "id" | "idStr" | "projectLabel">;
+/** A project's own data; number, label and featured are derived from its position in ORDER. */
+export type ProjectData = Omit<ProjectItem, "id" | "idStr" | "projectLabel" | "featured">;

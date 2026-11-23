@@ -4,7 +4,6 @@ import CourseTiermakerTitle from "../../assets/course_tiermaker_title.svg";
 export const project: ProjectData = {
   slug: "course-tiermaker",
   type: "special",
-  featured: true,
   title: "Course Tiermaker",
   time: "MAY 2026",
   skills: "React • TypeScript • UX • localStorage",

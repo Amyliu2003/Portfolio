@@ -3,12 +3,13 @@ export const FEATURED_COUNT = 3;
 
 /** Display order of works, by slug. A work's number is its position here + 1. */
 export const ORDER: readonly string[] = [
+  "course-tiermaker",
+  "between-boundaries",
+  "unicef-geosight",
   "this-website",
   "campus-cravings",
-  "between-boundaries",
   "genesis",
   "100-days-ocs-artifacts",
-  "unicef-geosight",
   "under-the-same-roof",
   "lightning",
   "traffic-city",
@@ -18,7 +19,6 @@ export const ORDER: readonly string[] = [
   "cloud-maker",
   "attractive-politics",
   "fafu-alumni-anniversary",
-  "course-tiermaker",
   "project-17",
   "project-18",
   "project-19",

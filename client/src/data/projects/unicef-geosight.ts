@@ -4,7 +4,6 @@ import unicefGeosightTitle from "../../assets/unicefGeosight_title.png";
 export const project: ProjectData = {
   slug: "unicef-geosight",
   type: "special",
-  featured: true,
   title: "UNICEF GeoSight",
   time: "JUNE 2025",
   skills: "React • MapLibre GL JS • Docker",

@@ -4,7 +4,6 @@ import smartChipTitle from "../../assets/SmartChip_title.jpg";
 export const project: ProjectData = {
   slug: "between-boundaries",
   type: "special",
-  featured: true,
   title: "Between Boundaries",
   time: "FALL 2023",
   skills: "Arduino • AI/ML • WEBGL • Projection Mapping • Installation",
