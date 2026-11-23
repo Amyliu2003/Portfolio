@@ -94,9 +94,10 @@ export const TrayView: React.FC<TrayViewProps> = ({
                             activeTags,
                           );
 
-                          // Highlight logic
-                          const shouldHighlightPersistent =
-                            hasFilter && isMatch;
+                          // Lit lamps: matches while filtering, otherwise the featured projects
+                          const shouldHighlightPersistent = hasFilter
+                            ? isMatch
+                            : !!gItem.featured;
 
                           // Special items are real links; duplicate loop cycles stay out of the tab order.
                           const isLink = isSpecial && !!gItem.slug;
@@ -114,9 +115,9 @@ export const TrayView: React.FC<TrayViewProps> = ({
                               key={`${gItem.id}-${cycle}`}
                               {...slotLinkProps}
                               data-match={
-                                shouldHighlightPersistent ? "true" : undefined
+                                hasFilter && isMatch ? "true" : undefined
                               }
-                              className={`flex-1 h-full relative group/item outline-none overflow-hidden
+                              className={`tray-slot flex-1 h-full relative group/item outline-none overflow-hidden
                                 ${isSpecial ? "cursor-pointer" : "cursor-default"}
                                 ${shouldHighlightPersistent ? "overflow-visible" : "overflow-hidden"}
                               `}
@@ -164,10 +165,10 @@ export const TrayView: React.FC<TrayViewProps> = ({
                                   >
                                     {gItem.idStr}
                                   </span>
-                                  {/* Always-visible title (truncated; full title on hover) */}
+                                  {/* Title: pinned on lit lamps; on hover devices others show on hover/focus (see custom.css) */}
                                   <span
                                     title={gItem.title}
-                                    className={`publicSans-text tray-title-label uppercase text-[10px] leading-none text-center transition-all duration-300 transform group-hover/item:-translate-y-1
+                                    className={`publicSans-text tray-title-label ${shouldHighlightPersistent ? "is-pinned" : ""} uppercase text-[10px] leading-none text-center transition-all duration-300 transform group-hover/item:-translate-y-1
                                       ${
                                         shouldHighlightPersistent
                                           ? "text-black -translate-y-1"

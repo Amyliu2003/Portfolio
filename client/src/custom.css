@@ -30,6 +30,19 @@
   text-overflow: ellipsis;
 }
 
+/* On hover-capable devices, only lit lamps pin their title; the rest reveal it on hover/focus.
+   Touch (hover: none) devices keep every title visible. */
+@media (hover: hover) {
+  .tray-title-label:not(.is-pinned) {
+    display: none;
+  }
+
+  .tray-slot:hover .tray-title-label,
+  .tray-slot:focus-visible .tray-title-label {
+    display: block;
+  }
+}
+
 .works-tag-scroller {
   min-width: 0;
 }
