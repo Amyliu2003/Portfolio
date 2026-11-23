@@ -6,6 +6,33 @@
   --color-dim: rgba(255, 255, 255, 0.2);
   --gradient-home: linear-gradient(180deg, rgba(186, 118, 255, 0.3) 0%, rgba(186, 118, 255, 0) 20%), linear-gradient(180deg, #d5dcd9 0%, #83c1e6 20%, #1d5de5 40%, #172fab 56%, #181a4b 80%);
   --gradient-detail: linear-gradient(180deg, #181a4b 0%, #172fab 100%);
+
+  /* Design system tokens — source of truth: docs/design-system.html */
+  --color-bg: #080a14;
+  --color-surface: #0e1128;
+  --color-accent-2: #4affed;
+  --color-fg: #e8e8f0;          /* design-system text; --color-text (#FFFFFF) stays for the live site */
+  --color-fg-muted: rgba(232, 232, 240, 0.6);
+  --color-border: rgba(186, 118, 255, 0.15);
+  --color-danger: #ff5d6c;
+
+  --font-mono: Menlo, "Share Tech Mono", monospace;
+  --font-body: "publicSans", "Public Sans", system-ui, sans-serif;
+  --font-display: "din-condensed", "DIN Condensed", "DIN Alternate", "Arial Narrow", sans-serif;
+
+  --radius-0: 0;
+  --radius-4: 4px;     /* controls: buttons, inputs, tags, search */
+  --radius-8: 8px;     /* chips, tooltips, icon buttons */
+  --radius-12: 12px;   /* nav items, small panels */
+  --radius-16: 16px;   /* cards, panels, image areas */
+  --radius-20: 20px;   /* modals, drawers, large containers */
+  --radius-pill: 999px;
+
+  /* Reference only: CSS can't use variables inside @media, so media queries repeat these numbers */
+  --bp-mobile: 375px;
+  --bp-tablet: 768px;
+  --bp-desktop: 1280px;
+  --bp-wide: 1920px;
 }
 
 .bg-gradient-home {
