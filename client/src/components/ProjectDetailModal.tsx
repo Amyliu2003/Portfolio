@@ -21,8 +21,9 @@ import {
   CTABlock,
   RichTextBlock,
   ImageBlock
-} from "../data/projects";
+} from "../data/types";
 import { GRADIENTS } from "../utils/theme";
+import { Button, ButtonLink } from "./ui";
 
 interface ProjectDetailModalProps {
   project: ProjectItem | null;
@@ -293,15 +294,15 @@ const AccordionRenderer: React.FC<{ block: AccordionBlock }> = ({ block }) => {
 
 const CTARenderer: React.FC<{ block: CTABlock }> = ({ block }) => (
     <div className="w-full my-32 flex flex-col items-center text-center">
-        <a 
-            href={block.link} 
-            target="_blank" 
+        <ButtonLink
+            href={block.link}
+            target="_blank"
             rel="noopener noreferrer"
-            className="group relative inline-flex items-center justify-center px-12 py-6 overflow-hidden font-bold text-white transition-all duration-300 bg-transparent border-2 border-[var(--accent)] hover:bg-[var(--accent)] hover:text-black"
+            variant="accent"
+            size="lg"
         >
-            <span className="absolute w-0 h-0 transition-all duration-500 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-10"></span>
-            <span className={`relative text-xl uppercase tracking-widest ${THEME.fontHeader}`}>{block.text}</span>
-        </a>
+            {block.text}
+        </ButtonLink>
         {block.subtext && (
             <p className={`mt-6 text-xs text-white/40 ${THEME.fontBody} uppercase tracking-widest`}>
                 {block.subtext}
@@ -466,10 +467,13 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
           )}
 
           {/* CLOSE BUTTON */}
-          <button
+          <Button
+            variant="outline"
+            icon
+            size="lg"
+            aria-label="Close project"
             onClick={onClose}
-            className="p-4 border group bg-[#181A4B] hover:bg-[var(--accent)] transition-colors duration-300"
-            style={{ borderColor: COLORS.dim }}
+            className="detail-close-btn"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -481,12 +485,12 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
               strokeWidth="2"
               strokeLinecap="square"
               strokeLinejoin="miter"
-              className="text-white group-hover:text-black"
+              aria-hidden="true"
             >
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
-          </button>
+          </Button>
         </div>
 
         {/* --- MAIN CONTENT CONTAINER --- */}
@@ -638,12 +642,13 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
                     </p>
                     {/* KNOW MORE BUTTON - Only show if there is extra content */}
                     {formData.contentBlocks && formData.contentBlocks.length > 0 && (
-                      <button
+                      <Button
+                        variant="ghost"
                         onClick={scrollToProcess}
-                        className={`mb-8 inline-block text-[var(--accent)] text-sm uppercase tracking-widest hover:text-white transition-colors font-bold ${THEME.fontBody}`}
+                        className="detail-know-more"
                       >
                         [ Know More ]
-                      </button>
+                      </Button>
                     )}
                   </>
                 )}
@@ -652,24 +657,26 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
                 <div className="mt-8 mb-16">
                   <div className="flex flex-wrap gap-4">
                     {formData.link && (
-                      <a
+                      <ButtonLink
                         href={formData.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`inline-block px-8 py-4 bg-[var(--accent)] text-black font-bold uppercase tracking-widest hover:bg-white transition-colors duration-300 ${THEME.fontHeader}`}
+                        variant="accent"
+                        size="lg"
                       >
                         External Link
-                      </a>
+                      </ButtonLink>
                     )}
                     {formData.githubLink && (
-                      <a
+                      <ButtonLink
                         href={formData.githubLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`inline-block px-8 py-4 bg-transparent border border-white text-white font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors duration-300 ${THEME.fontHeader}`}
+                        variant="outline"
+                        size="lg"
                       >
                         View Code / Repo
-                      </a>
+                      </ButtonLink>
                     )}
                   </div>
                 </div>
@@ -781,21 +788,25 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
 
           {/* NAVIGATION FOOTER */}
           <div className="w-full flex items-center justify-between mt-12 mb-24 pt-12 border-t border-[rgba(255,255,255,0.1)]">
-              <button 
+              <Button
+                  variant="ghost"
+                  size="lg"
                   onClick={onPrev}
-                  className={`group flex items-center gap-4 text-white hover:text-[var(--accent)] transition-colors ${THEME.fontHeader}`}
+                  className="detail-nav-btn group"
               >
-                  <span className="text-2xl transition-transform group-hover:-translate-x-2">←</span>
-                  <span className="uppercase tracking-widest text-sm md:text-base">Previous Project</span>
-              </button>
+                  <span aria-hidden="true" className="text-2xl transition-transform group-hover:-translate-x-2">←</span>
+                  <span>Previous Project</span>
+              </Button>
 
-              <button 
+              <Button
+                  variant="ghost"
+                  size="lg"
                   onClick={onNext}
-                  className={`group flex items-center gap-4 text-white hover:text-[var(--accent)] transition-colors ${THEME.fontHeader}`}
+                  className="detail-nav-btn group"
               >
-                  <span className="uppercase tracking-widest text-sm md:text-base">Next Project</span>
-                  <span className="text-2xl transition-transform group-hover:translate-x-2">→</span>
-              </button>
+                  <span>Next Project</span>
+                  <span aria-hidden="true" className="text-2xl transition-transform group-hover:translate-x-2">→</span>
+              </Button>
           </div>
 
         </div>

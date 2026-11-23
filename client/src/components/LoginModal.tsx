@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
+import { Button, Input } from "./ui";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -15,6 +16,22 @@ export const LoginModal: React.FC<LoginModalProps> = ({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  // Esc closes; on any close, focus returns to whatever opened the modal ([Login])
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+  useEffect(() => {
+    if (!isOpen) return;
+    const opener = document.activeElement as HTMLElement | null;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onCloseRef.current();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      opener?.focus?.();
+    };
+  }, [isOpen]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,9 +54,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({
         exit={{ opacity: 0, scale: 0.95 }}
         className="w-full max-w-md bg-[#181A4B] border border-[#333] p-8 relative"
       >
-        <button
+        <Button
+          variant="ghost"
+          icon
+          aria-label="Close login"
           onClick={onClose}
-          className="absolute top-4 right-4 text-white/50 hover:text-white"
+          className="login-close"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -51,50 +71,46 @@ export const LoginModal: React.FC<LoginModalProps> = ({
             strokeWidth="2"
             strokeLinecap="square"
             strokeLinejoin="miter"
+            aria-hidden="true"
           >
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
-        </button>
+        </Button>
 
         <h2 className="text-3xl font-black italic uppercase text-white mb-8 tracking-tighter">
           Admin Login
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-xs font-mono uppercase tracking-widest text-white/50 mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-white/10 border border-[#333] text-white px-4 py-3 focus:border-[#BA76FF] outline-none transition-colors font-mono"
-              placeholder="admin@example.com"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-mono uppercase tracking-widest text-white/50 mb-2">
-              Password
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-white/10 border border-[#333] text-white px-4 py-3 focus:border-[#BA76FF] outline-none transition-colors font-mono"
-              placeholder="••••••••"
-            />
-          </div>
+          <Input
+            label="Email"
+            type="email"
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="admin@example.com"
+            aria-invalid={error && !email ? true : undefined}
+          />
+          <Input
+            label="Password"
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+            aria-invalid={error && !password ? true : undefined}
+          />
 
-          {error && <p className="text-red-500 text-xs font-mono">{error}</p>}
+          {error && (
+            <p className="ui-field__hint ui-field__hint--error" role="alert">
+              {error}
+            </p>
+          )}
 
-          <button
-            type="submit"
-            className="w-full bg-[#BA76FF] text-black font-bold uppercase tracking-widest py-4 hover:bg-white transition-colors duration-300"
-          >
+          <Button type="submit" variant="accent" size="lg" className="login-submit">
             Enter System
-          </button>
+          </Button>
         </form>
       </motion.div>
     </div>

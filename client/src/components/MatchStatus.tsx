@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "./ui";
 
 interface MatchStatusProps {
   count: number;
@@ -19,13 +20,9 @@ export const MatchStatus: React.FC<MatchStatusProps> = ({
     {count === 0 ? (
       <>
         0 MATCHES —{" "}
-        <button
-          type="button"
-          onClick={onClear}
-          className="uppercase hover:text-[#BA76FF] transition-colors"
-        >
+        <Button variant="ghost" onClick={onClear} className="match-status__clear">
           [CLEAR]
-        </button>
+        </Button>
       </>
     ) : (
       `${count} ${count === 1 ? "MATCH" : "MATCHES"}`

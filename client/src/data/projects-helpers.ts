@@ -1,14 +1,15 @@
-import { initialProjects, type ProjectItem } from "./projects";
+import { getOrderedProjects } from "./projects";
+import type { ProjectItem } from "./types";
 
 export function getRouteableProjects(
-  items: ProjectItem[] = initialProjects,
+  items: ProjectItem[] = getOrderedProjects(),
 ): ProjectItem[] {
   return items.filter((item) => item.type === "special" && !!item.slug);
 }
 
 export function getProjectBySlug(
   slug: string,
-  items: ProjectItem[] = initialProjects,
+  items: ProjectItem[] = getOrderedProjects(),
 ): ProjectItem | null {
   const normalized = slug.trim().toLowerCase();
   return (
@@ -20,7 +21,7 @@ export function getProjectBySlug(
 
 export function getAdjacentProjectSlugs(
   slug: string,
-  items: ProjectItem[] = initialProjects,
+  items: ProjectItem[] = getOrderedProjects(),
 ): { prev: string | null; next: string | null } {
   const routeable = getRouteableProjects(items);
   const index = routeable.findIndex(

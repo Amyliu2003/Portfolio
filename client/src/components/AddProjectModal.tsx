@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "motion/react";
 import TextareaAutosize from 'react-textarea-autosize';
-import { ProjectItem } from "../data/projects";
+import type { ProjectItem } from "../data/types";
 
 interface AddProjectModalProps {
   isOpen: boolean;

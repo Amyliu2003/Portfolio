@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { COLORS, THEME } from "../utils/theme";
 import { MatchStatus } from "./MatchStatus";
+import { Button, SearchInput, Tag } from "./ui";
 
 export type SortOption = "default" | "alphabetical" | "newest";
 
@@ -38,6 +39,61 @@ export const Controls: React.FC<ControlsProps> = ({
   onClearFilters,
 }) => {
   const [isSortOpen, setIsSortOpen] = useState(false);
+  const sortTriggerRef = useRef<HTMLButtonElement>(null);
+  const closeSortMenu = () => {
+    setIsSortOpen(false);
+    sortTriggerRef.current?.focus();
+  };
+
+  // Tag row edge fades: left fade once scrolled away from the start, right fade until the end
+  const tagScrollerRef = useRef<HTMLDivElement>(null);
+  const [tagFade, setTagFade] = useState({ left: false, right: false });
+
+  const updateTagFade = useCallback(() => {
+    const el = tagScrollerRef.current;
+    if (!el) return;
+    const left = el.scrollLeft > 1;
+    const right = el.scrollLeft + el.clientWidth < el.scrollWidth - 1;
+    setTagFade((prev) =>
+      prev.left === left && prev.right === right ? prev : { left, right },
+    );
+  }, []);
+
+  useEffect(() => {
+    const el = tagScrollerRef.current;
+    if (!el) return;
+    updateTagFade();
+    const observer = new ResizeObserver(updateTagFade);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [updateTagFade, tagData, hasFilter]);
+
+  // Keyboard focus on a tag under a fade (or out of view) scrolls it fully into the clear area
+  const revealFocusedTag = (e: React.FocusEvent<HTMLDivElement>) => {
+    const container = tagScrollerRef.current;
+    const tag = e.target as HTMLElement;
+    if (!container || tag === container) return;
+    // Fade width comes from the CSS variable --tag-fade (single source of truth)
+    const fade =
+      parseFloat(getComputedStyle(container).getPropertyValue("--tag-fade")) || 0;
+    const box = container.getBoundingClientRect();
+    const r = tag.getBoundingClientRect();
+    // Tag position within the scroll content (independent of any scroll in progress)
+    const contentLeft = r.left - box.left + container.scrollLeft;
+    const contentRight = contentLeft + r.width;
+    const current = container.scrollLeft;
+    let target = current;
+    if (contentLeft - fade < current) {
+      // Reveal past the left fade; at the very start there is no left fade
+      target = contentLeft - fade <= 0 ? 0 : contentLeft - fade;
+    } else if (contentRight + fade > current + container.clientWidth) {
+      target = contentRight + fade - container.clientWidth;
+    }
+    target = Math.max(0, Math.min(target, container.scrollWidth - container.clientWidth));
+    if (Math.abs(target - current) < 1) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    container.scrollTo({ left: target, behavior: reduce ? "auto" : "smooth" });
+  };
 
   return (
     <div className="w-full z-30 px-8 flex flex-col gap-8 pointer-events-none mt-4">
@@ -46,53 +102,53 @@ export const Controls: React.FC<ControlsProps> = ({
       <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-8 pointer-events-auto">
         
         {/* Search Bar */}
-        <div className="relative w-full md:w-[400px] h-[54px]">
-           {/* Glow/Blur Effect */}
-           <div className="absolute inset-0 bg-white/20 blur-md rounded-md opacity-20"></div>
-           
-           {/* Input Container */}
-           <div className="relative w-full h-full border border-white/20 flex items-center bg-transparent backdrop-blur-sm group hover:border-[#BA76FF]/50 transition-colors">
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search(Name || Tag)..."
-                className="w-full h-full bg-transparent px-4 text-lg text-white font-mono tracking-[0.45px] placeholder-white/50 outline-none"
-              />
-              <div className="pr-4 text-[#BA76FF]">
-                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9.16667 15.8333C12.8486 15.8333 15.8333 12.8486 15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333Z" stroke="currentColor" strokeWidth="2" strokeLinecap="square"/>
-                    <path d="M17.5 17.5L13.875 13.875" stroke="currentColor" strokeWidth="2" strokeLinecap="square"/>
-                 </svg>
-              </div>
-           </div>
-        </div>
+        <SearchInput
+          size="lg"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onClear={() => setSearchTerm("")}
+          placeholder="Search(Name || Tag)..."
+          label="Search works by name or tag"
+        />
 
         {/* Sort & Actions */}
         <div className="flex items-center gap-4">
            {/* Sort Dropdown */}
-           <div className="relative h-[38px] flex items-center border border-white/20 group hover:border-white transition-colors bg-transparent backdrop-blur-sm">
-              <button 
+           <div
+              className="relative"
+              onKeyDown={(e) => {
+                if (e.key === "Escape" && isSortOpen) {
+                  e.stopPropagation();
+                  closeSortMenu();
+                }
+              }}
+           >
+              <Button
+                ref={sortTriggerRef}
+                variant="outline"
+                size="lg"
+                aria-haspopup="true"
+                aria-expanded={isSortOpen}
                 onClick={() => setIsSortOpen(!isSortOpen)}
-                className="flex items-center gap-3 px-4 h-full text-xs publicSans-text uppercase tracking-[0.6px] text-white"
               >
                  <span>SORT:</span>
-                 <span className="text-white font-normal">{sortOption}</span>
-                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" className={`transition-transform ${isSortOpen ? 'rotate-180' : ''}`}>
+                 <span>{sortOption}</span>
+                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className={`transition-transform ${isSortOpen ? 'rotate-180' : ''}`}>
                     <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeLinecap="square"/>
                  </svg>
-              </button>
+              </Button>
               
               {isSortOpen && (
                 <div className="absolute top-full right-0 mt-1 w-full min-w-[120px] bg-[#181A4B] border border-white/20 flex flex-col z-50">
                    {(["default", "newest", "alphabetical"] as SortOption[]).map(opt => (
-                      <button
+                      <Button
                         key={opt}
-                        onClick={() => { setSortOption(opt); setIsSortOpen(false); }}
-                        className="text-left px-4 py-2 text-xs text-white publicSans-text uppercase hover:bg-[#BA76FF] hover:text-black transition-colors"
+                        variant="ghost"
+                        className="works-sort-option"
+                        onClick={() => { setSortOption(opt); closeSortMenu(); }}
                       >
                          {opt}
-                      </button>
+                      </Button>
                    ))}
                 </div>
               )}
@@ -101,68 +157,75 @@ export const Controls: React.FC<ControlsProps> = ({
            <div className="w-px h-6 bg-white/10 mx-2"></div>
 
            {/* View Toggles */}
-           <div className="flex h-[38px] border border-white/20">
-              <button 
+           <div className="works-view-toggle" role="group" aria-label="View mode">
+              <Button
+                 variant="outline"
+                 icon
+                 size="lg"
+                 aria-label="Tray view"
+                 aria-pressed={viewMode === "tray"}
                  onClick={() => setViewMode("tray")}
-                 className={`w-[38px] h-full flex items-center justify-center transition-colors ${viewMode === "tray" ? "bg-white text-black" : "text-white hover:bg-white/10"}`}
               >
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                       <path d="M15.8333 2.5H4.16667C3.24619 2.5 2.5 3.24619 2.5 4.16667V15.8333C2.5 16.7538 3.24619 17.5 4.16667 17.5H15.8333C16.7538 17.5 17.5 16.7538 17.5 15.8333V4.16667C17.5 3.24619 16.7538 2.5 15.8333 2.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square"/>
                       <path d="M2.5 7.5H17.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square"/>
                       <path d="M2.5 12.5H17.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square"/>
                   </svg>
-              </button>
-              <div className="w-px h-full bg-white/20"></div>
-              <button 
+              </Button>
+              <Button
+                 variant="outline"
+                 icon
+                 size="lg"
+                 aria-label="Grid view"
+                 aria-pressed={viewMode === "grid"}
                  onClick={() => setViewMode("grid")}
-                 className={`w-[38px] h-full flex items-center justify-center transition-colors ${viewMode === "grid" ? "bg-white text-black" : "text-white hover:bg-white/10"}`}
               >
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                       <rect x="2.5" y="2.5" width="5.83" height="5.83" stroke="currentColor" strokeWidth="1.5"/>
                       <rect x="11.66" y="2.5" width="5.83" height="5.83" stroke="currentColor" strokeWidth="1.5"/>
                       <rect x="11.66" y="11.66" width="5.83" height="5.83" stroke="currentColor" strokeWidth="1.5"/>
                       <rect x="2.5" y="11.66" width="5.83" height="5.83" stroke="currentColor" strokeWidth="1.5"/>
                   </svg>
-              </button>
+              </Button>
            </div>
            
            {/* Add Project Button */}
            {isLoggedIn && (
-               <button 
+               <Button
+                 variant="accent"
+                 icon
+                 size="lg"
+                 aria-label="Add project"
                  onClick={onAddProjectClick}
-                 className="h-[38px] w-[38px] flex items-center justify-center border border-[#BA76FF] text-[#BA76FF] hover:bg-[#BA76FF] hover:text-white transition-colors ml-2"
                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                      <line x1="12" y1="5" x2="12" y2="19"></line>
                      <line x1="5" y1="12" x2="19" y2="12"></line>
                   </svg>
-               </button>
+               </Button>
            )}
         </div>
       </div>
 
       {/* Bottom Row: Tags */}
       <div className="w-full pointer-events-auto flex items-center gap-4">
-         <div className="works-tag-scroller flex-1 flex flex-nowrap gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-[#BA76FF]/50 scrollbar-track-transparent">
-            {tagData.map(([tag, count]) => {
-                const isActive = activeTags.includes(tag);
-                return (
-                    <button
-                        key={tag}
-                        onClick={() => handleTagClick(tag)}
-                        className={`
-                            shrink-0 h-[30px] px-3 flex items-center gap-2 border transition-all duration-200 whitespace-nowrap
-                            ${isActive 
-                                ? "bg-[#BA76FF] border-[#BA76FF] text-white" 
-                                : "bg-transparent border-white/20 text-white hover:border-white"
-                            }
-                        `}
-                    >
-                        <span className="font-mono text-xs uppercase tracking-[0.6px]">{tag}</span>
-                        <span className={`text-xs publicSans-text font-bold ${isActive ? 'text-white' : 'text-white/60'}`}>{count}</span>
-                    </button>
-                );
-            })}
+         <div
+            ref={tagScrollerRef}
+            onScroll={updateTagFade}
+            onFocus={revealFocusedTag}
+            className={`works-tag-scroller ui-hit-scroll flex-1 flex flex-nowrap gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-[#BA76FF]/50 scrollbar-track-transparent${tagFade.left ? " has-fade-left" : ""}${tagFade.right ? " has-fade-right" : ""}`}
+         >
+            {tagData.map(([tag, count]) => (
+                <Tag
+                    key={tag}
+                    on={activeTags.includes(tag)}
+                    onClick={() => handleTagClick(tag)}
+                    className="shrink-0"
+                >
+                    {tag}
+                    <span className="ui-tag__count">{count}</span>
+                </Tag>
+            ))}
          </div>
          {hasFilter && (
             <MatchStatus

@@ -6,6 +6,33 @@
   --color-dim: rgba(255, 255, 255, 0.2);
   --gradient-home: linear-gradient(180deg, rgba(186, 118, 255, 0.3) 0%, rgba(186, 118, 255, 0) 20%), linear-gradient(180deg, #d5dcd9 0%, #83c1e6 20%, #1d5de5 40%, #172fab 56%, #181a4b 80%);
   --gradient-detail: linear-gradient(180deg, #181a4b 0%, #172fab 100%);
+
+  /* Design system tokens — source of truth: docs/design-system.html */
+  --color-bg: #080a14;
+  --color-surface: #0e1128;
+  --color-accent-2: #4affed;
+  --color-fg: #e8e8f0;          /* design-system text; --color-text (#FFFFFF) stays for the live site */
+  --color-fg-muted: rgba(232, 232, 240, 0.6);
+  --color-border: rgba(186, 118, 255, 0.15);
+  --color-danger: #ff5d6c;
+
+  --font-mono: Menlo, "Share Tech Mono", monospace;
+  --font-body: "publicSans", "Public Sans", system-ui, sans-serif;
+  --font-display: "din-condensed", "DIN Condensed", "DIN Alternate", "Arial Narrow", sans-serif;
+
+  --radius-0: 0;
+  --radius-4: 4px;     /* controls: buttons, inputs, tags, search */
+  --radius-8: 8px;     /* chips, tooltips, icon buttons */
+  --radius-12: 12px;   /* nav items, small panels */
+  --radius-16: 16px;   /* cards, panels, image areas */
+  --radius-20: 20px;   /* modals, drawers, large containers */
+  --radius-pill: 999px;
+
+  /* Reference only: CSS can't use variables inside @media, so media queries repeat these numbers */
+  --bp-mobile: 375px;
+  --bp-tablet: 768px;
+  --bp-desktop: 1280px;
+  --bp-wide: 1920px;
 }
 
 .bg-gradient-home {
@@ -17,6 +44,15 @@
   background-image: var(--gradient-detail);
   background-color: var(--color-primary);
 }
+
+/* /tools index page — named because index.css lacks min-h-screen, sm:px-6, md:px-8, py-6… */
+.tools-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 24px 16px;
+}
+@media (min-width: 640px) { .tools-page { padding-inline: 24px; } }
+@media (min-width: 768px) { .tools-page { padding: 32px; } }
 
 /* Works findability — written here because index.css is a precompiled Tailwind build */
 .tray-title-label {
@@ -45,11 +81,20 @@
 
 .works-tag-scroller {
   min-width: 0;
+  --tag-fade: 48px; /* edge fade width; Controls.tsx reads it at runtime */
+  --fade-left: 0px;
+  --fade-right: 0px;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--fade-left), #000 calc(100% - var(--fade-right)), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 var(--fade-left), #000 calc(100% - var(--fade-right)), transparent 100%);
 }
+/* The mask only changes what's painted: faded tags still take clicks and focus */
+.works-tag-scroller.has-fade-left { --fade-left: var(--tag-fade); }
+.works-tag-scroller.has-fade-right { --fade-right: var(--tag-fade); }
 
 .match-status {
   white-space: nowrap;
 }
+
 
 .works-match-status {
   padding-bottom: 0.5rem;
@@ -155,3 +200,276 @@
   font-style: normal;
 }
 
+
+/* ==========================================================================
+   UI kit — client/src/components/ui. Mirrors docs/design-system.html.
+   Named classes only: index.css is precompiled Tailwind (see CLAUDE.md).
+   ========================================================================== */
+
+.ui-focus-ring:focus-visible,
+.ui-btn:focus-visible,
+.ui-tag:focus-visible,
+.ui-switch:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* --- Button (radius 4) --- */
+.ui-btn {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  height: 38px;
+  padding: 0 18px;
+  border-radius: var(--radius-4);
+  border: 1px solid transparent;
+  background: none;
+  color: var(--color-fg);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+.ui-btn--primary { background: var(--color-primary); border-color: rgba(255, 255, 255, 0.2); }
+.ui-btn--primary:hover:not(:disabled) { border-color: var(--color-accent); }
+.ui-btn--accent { background: var(--color-accent); border-color: var(--color-accent); color: #000; }
+.ui-btn--accent:hover:not(:disabled) { background: transparent; color: var(--color-accent); }
+.ui-btn--outline { border-color: rgba(255, 255, 255, 0.25); }
+.ui-btn--outline:hover:not(:disabled) { border-color: var(--color-accent); color: var(--color-accent); }
+.ui-btn--ghost:hover:not(:disabled) { background: rgba(255, 255, 255, 0.08); }
+.ui-btn--danger { border-color: var(--color-danger); color: var(--color-danger); }
+.ui-btn--danger:hover:not(:disabled) { background: var(--color-danger); color: #000; }
+.ui-btn:disabled,
+.ui-btn[aria-disabled="true"] { opacity: 0.4; cursor: not-allowed; }
+.ui-btn--lg { height: 46px; padding: 0 24px; }
+.ui-btn--icon { width: 38px; padding: 0; }
+.ui-btn--icon.ui-btn--lg { width: 46px; }
+a.ui-btn { text-decoration: none; }
+/* Toggle buttons (aria-pressed) use the accent fill when on */
+.ui-btn[aria-pressed="true"] { background: var(--color-accent); border-color: var(--color-accent); color: #000; }
+
+/* --- Touch targets: invisible hit area of at least 44x44 around Button and interactive Tag.
+       The visible size stays as designed (38px button, 26px tag). --- */
+.ui-btn,
+button.ui-tag { position: relative; }
+.ui-btn::before,
+button.ui-tag::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, 44px);
+  height: max(100%, 44px);
+  transform: translate(-50%, -50%);
+}
+/* Scroll rows clip overflow; give hit areas room without moving the layout */
+.ui-hit-scroll { padding-block: 9px; margin-block: -9px; }
+/* Wrapped tag rows on touch screens: keep hit areas from overlapping between lines */
+@media (pointer: coarse) {
+  .ui-tag-row { row-gap: 18px; }
+}
+
+/* --- Field wrapper + label --- */
+.ui-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.ui-field__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-fg-muted);
+}
+.ui-field__hint { font-family: var(--font-mono); font-size: 11px; color: var(--color-fg-muted); }
+.ui-field__hint--error { color: var(--color-danger); }
+
+/* --- Input / Textarea (radius 4) --- */
+.ui-input {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  border-radius: var(--radius-4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-fg);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.ui-input::placeholder { color: rgba(255, 255, 255, 0.4); }
+.ui-input:hover:not(:disabled) { border-color: rgba(186, 118, 255, 0.5); }
+.ui-input:focus-visible { border-color: var(--color-accent); box-shadow: 0 0 0 3px rgba(186, 118, 255, 0.18); }
+.ui-input[aria-invalid="true"] { border-color: var(--color-danger); }
+.ui-input:disabled { opacity: 0.4; cursor: not-allowed; }
+.ui-textarea {
+  height: 96px;
+  padding: 12px 14px;
+  resize: vertical;
+  font-family: var(--font-body);
+}
+
+/* --- SearchInput --- */
+.ui-search { position: relative; width: 100%; max-width: 400px; }
+.ui-search .ui-input { height: 54px; padding-right: 44px; }
+.ui-search--lg .ui-input { height: 46px; font-size: 16px; }
+.ui-search .ui-input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+.ui-search__icon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-accent);
+  pointer-events: none;
+}
+
+/* --- Tag (radius 4) --- */
+.ui-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  height: 26px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: var(--radius-4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: var(--color-fg);
+  white-space: nowrap;
+}
+button.ui-tag { cursor: pointer; transition: border-color 0.2s, background-color 0.2s, color 0.2s; }
+button.ui-tag:hover:not(.is-on) { border-color: var(--color-accent); }
+.ui-tag.is-on { background: var(--color-accent); border-color: var(--color-accent); color: #000; }
+.ui-tag__count { opacity: 0.6; }
+.ui-tag.is-on .ui-tag__count { opacity: 0.75; }
+
+/* --- Card (radius 16) --- */
+.ui-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-16);
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(186, 118, 255, 0.12);
+  color: var(--color-fg);
+  transition: transform 0.25s, border-color 0.25s;
+}
+.ui-card:hover,
+.ui-card:focus-within { transform: translateY(-3px); border-color: rgba(186, 118, 255, 0.4); }
+.ui-card__hd {
+  background: var(--color-primary);
+  padding: 12px 18px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.ui-card__bd {
+  padding: 18px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(232, 232, 240, 0.8);
+}
+
+/* --- Slider: round thumb, filled track via --ui-slider-pct --- */
+.ui-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 20px;
+  background: transparent;
+  cursor: pointer;
+}
+.ui-slider:focus { outline: none; }
+.ui-slider::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--color-accent) var(--ui-slider-pct, 0%), rgba(255, 255, 255, 0.15) var(--ui-slider-pct, 0%));
+}
+.ui-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  margin-top: -7px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+.ui-slider::-moz-range-track { height: 6px; border-radius: var(--radius-pill); background: rgba(255, 255, 255, 0.15); }
+.ui-slider::-moz-range-progress { height: 6px; border-radius: var(--radius-pill); background: var(--color-accent); }
+.ui-slider::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 0; }
+.ui-slider:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 3px var(--color-accent); }
+.ui-slider:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 3px var(--color-accent); }
+.ui-slider:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* --- Switch: pill track, round thumb --- */
+.ui-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-fg);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: var(--radius-4);
+}
+.ui-switch__track {
+  position: relative;
+  flex-shrink: 0;
+  width: 44px;
+  height: 24px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.15);
+  transition: background-color 0.2s;
+}
+.ui-switch__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s;
+}
+.ui-switch[aria-checked="true"] .ui-switch__track { background: var(--color-accent); }
+.ui-switch[aria-checked="true"] .ui-switch__thumb { transform: translateX(20px); }
+.ui-switch:disabled { opacity: 0.4; cursor: not-allowed; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-btn, .ui-input, .ui-tag, .ui-card, .ui-switch__track, .ui-switch__thumb { transition: none; }
+  .ui-card:hover, .ui-card:focus-within { transform: none; }
+}
+
+/* ==========================================================================
+   Site overrides on UI kit components — keep after the UI kit block so they win
+   ========================================================================== */
+/* Works controls built from UI kit buttons */
+.match-status__clear { height: 30px; padding: 0 4px; }
+.works-sort-option { width: 100%; justify-content: flex-start; }
+.works-view-toggle { display: flex; gap: 6px; }
+
+/* Project detail controls built from UI kit buttons */
+.detail-close-btn { background: var(--color-primary); }
+.detail-know-more { margin-bottom: 2rem; padding: 0 8px; color: var(--color-accent); }
+/* Prev/Next keep the DIN face used across the detail page */
+.detail-nav-btn {
+  font-family: "ff-din-paneuropean", sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  gap: 16px;
+  margin-inline: -24px; /* keep the label aligned with the page edge, as before */
+}
+@media (min-width: 768px) { .detail-nav-btn { font-size: 16px; } }
+
+/* Login modal */
+.login-close { position: absolute; top: 12px; right: 12px; color: rgba(255, 255, 255, 0.5); }
+.login-close:hover { color: #fff; }
+.login-submit { width: 100%; }

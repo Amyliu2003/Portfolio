@@ -21,6 +21,43 @@ export const COLORS = {
   backgroundGradient: GRADIENT_HOME,
 };
 
+/** Design system tokens — source of truth: docs/design-system.html (mirrored as CSS variables in custom.css) */
+export const DS_COLORS = {
+  bg: "#080a14",
+  surface: "#0e1128",
+  primary: COLORS.primary,
+  secondary: COLORS.secondary,
+  accent: COLORS.accent,
+  accent2: "#4affed",
+  /** Design-system text color; COLORS.text (#FFFFFF) stays for the live site */
+  text: "#e8e8f0",
+  border: "rgba(186, 118, 255, 0.15)",
+  danger: "#ff5d6c",
+} as const;
+
+export const FONTS = {
+  mono: 'Menlo, "Share Tech Mono", monospace',
+  body: '"publicSans", "Public Sans", system-ui, sans-serif',
+  display: '"din-condensed", "DIN Condensed", "DIN Alternate", "Arial Narrow", sans-serif',
+} as const;
+
+export const RADII = {
+  none: "0",
+  xs: "4px",
+  sm: "8px",
+  md: "12px",
+  lg: "16px",
+  xl: "20px",
+  pill: "999px",
+} as const;
+
+export const BREAKPOINTS = {
+  mobile: 375,
+  tablet: 768,
+  desktop: 1280,
+  wide: 1920,
+} as const;
+
 export const THEME = {
   bg: `bg-[${COLORS.primary}]`,
   text: `text-[${COLORS.text}]`,
