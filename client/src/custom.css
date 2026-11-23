@@ -347,6 +347,8 @@ button.ui-tag::before {
 button.ui-tag { cursor: pointer; transition: border-color 0.2s, background-color 0.2s, color 0.2s; }
 button.ui-tag:hover:not(.is-on) { border-color: var(--color-accent); }
 .ui-tag.is-on { background: var(--color-accent); border-color: var(--color-accent); color: #000; }
+.ui-tag__count { opacity: 0.6; }
+.ui-tag.is-on .ui-tag__count { opacity: 0.75; }
 
 /* --- Card (radius 16) --- */
 .ui-card {

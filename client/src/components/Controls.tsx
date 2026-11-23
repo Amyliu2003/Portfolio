@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { COLORS, THEME } from "../utils/theme";
 import { MatchStatus } from "./MatchStatus";
-import { Button, SearchInput } from "./ui";
+import { Button, SearchInput, Tag } from "./ui";
 
 export type SortOption = "default" | "alphabetical" | "newest";
 
@@ -140,26 +140,18 @@ export const Controls: React.FC<ControlsProps> = ({
 
       {/* Bottom Row: Tags */}
       <div className="w-full pointer-events-auto flex items-center gap-4">
-         <div className="works-tag-scroller flex-1 flex flex-nowrap gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-[#BA76FF]/50 scrollbar-track-transparent">
-            {tagData.map(([tag, count]) => {
-                const isActive = activeTags.includes(tag);
-                return (
-                    <button
-                        key={tag}
-                        onClick={() => handleTagClick(tag)}
-                        className={`
-                            shrink-0 h-[30px] px-3 flex items-center gap-2 border transition-all duration-200 whitespace-nowrap
-                            ${isActive 
-                                ? "bg-[#BA76FF] border-[#BA76FF] text-white" 
-                                : "bg-transparent border-white/20 text-white hover:border-white"
-                            }
-                        `}
-                    >
-                        <span className="font-mono text-xs uppercase tracking-[0.6px]">{tag}</span>
-                        <span className={`text-xs publicSans-text font-bold ${isActive ? 'text-white' : 'text-white/60'}`}>{count}</span>
-                    </button>
-                );
-            })}
+         <div className="works-tag-scroller ui-hit-scroll flex-1 flex flex-nowrap gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-[#BA76FF]/50 scrollbar-track-transparent">
+            {tagData.map(([tag, count]) => (
+                <Tag
+                    key={tag}
+                    on={activeTags.includes(tag)}
+                    onClick={() => handleTagClick(tag)}
+                    className="shrink-0"
+                >
+                    {tag}
+                    <span className="ui-tag__count">{count}</span>
+                </Tag>
+            ))}
          </div>
          {hasFilter && (
             <MatchStatus
