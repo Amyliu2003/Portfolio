@@ -21,7 +21,7 @@ import {
   CTABlock,
   RichTextBlock,
   ImageBlock
-} from "../data/projects";
+} from "../data/types";
 import { GRADIENTS } from "../utils/theme";
 
 interface ProjectDetailModalProps {

@@ -1,4 +1,5 @@
-import { initialProjects, type ProjectItem } from "./projects";
+import { initialProjects } from "./projects";
+import type { ProjectItem } from "./types";
 
 export function getRouteableProjects(
   items: ProjectItem[] = initialProjects,

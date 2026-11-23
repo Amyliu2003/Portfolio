@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { ProjectItem } from "../data/projects";
+import type { ProjectItem } from "../data/types";
 import { COLORS } from "../utils/theme";
 
 interface FloatingTooltipProps {

@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
-import { initialProjects, ProjectItem } from "./data/projects";
+import { initialProjects } from "./data/projects";
+import type { ProjectItem } from "./data/types";
 import { hasActiveFilter, matchesSearch } from "./data/projects-helpers";
 import { LoginModal } from "./components/LoginModal";
 import { AddProjectModal } from "./components/AddProjectModal";

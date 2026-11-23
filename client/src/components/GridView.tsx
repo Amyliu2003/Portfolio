@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
-import { ProjectItem } from "../data/projects";
+import type { ProjectItem } from "../data/types";
 import { COLORS } from "../utils/theme";
 import { MatchStatus } from "./MatchStatus";
 
