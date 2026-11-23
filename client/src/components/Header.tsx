@@ -14,7 +14,7 @@ export const Header: React.FC<HeaderProps> = ({
   onLogoutClick,
 }) => {
   return (
-    <header className="flex-shrink-0 w-full px-8 py-8 sm:py-10 z-10 flex flex-col md:flex-row justify-between items-end border-b border-white/20">
+    <header className="flex-shrink-0 w-full px-8 py-8 sm:py-10 z-10 flex flex-col md:flex-row justify-between items-start md:items-end border-b border-white/20">
       {/* LEFT: TITLE BLOCK */}
       <div className="flex flex-col items-start gap-0">
         <Link to="/works" className="block max-w-[min(468px,70vw)] leading-none hover:opacity-90 transition-opacity">
@@ -24,12 +24,12 @@ export const Header: React.FC<HeaderProps> = ({
             <span className="yarding-text hidden sm:block">siera@2149</span>
             {/* Separator in the tagline face so it matches the other "|" (Yarding draws it like "/") */}
             <span className="hidden sm:block font-normal not-italic whitespace-pre"> | </span>
-            <span className="font-normal not-italic">Creative Technologist | U of T MI &amp; NYU IMA</span>
+            <span className="font-normal not-italic leading-[1.3]"><span className="whitespace-nowrap">Creative Technologist |</span> <span className="whitespace-nowrap">U of T MI &amp; NYU IMA</span></span>
         </div>
       </div>
 
       {/* RIGHT: META BLOCK */}
-      <div className="flex flex-col items-start sm:items-end gap-0 mt-4 md:mt-0">
+      <div className="flex flex-col items-end self-end gap-0 mt-4 md:mt-0">
          <Link
             to="/tools"
             className="font-mono text-white text-xs uppercase tracking-[1.2px] hover:text-[#BA76FF] transition-colors"
