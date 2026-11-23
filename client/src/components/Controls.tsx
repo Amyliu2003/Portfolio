@@ -49,7 +49,7 @@ export const Controls: React.FC<ControlsProps> = ({
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search(Project_Name)..."
+                placeholder="Search(Name || Tag)..."
                 className="w-full h-full bg-transparent px-4 text-lg text-white font-mono tracking-[0.45px] placeholder-white/50 outline-none"
               />
               <div className="pr-4 text-[#BA76FF]">
