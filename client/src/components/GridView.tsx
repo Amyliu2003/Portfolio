@@ -29,7 +29,7 @@ export const GridView: React.FC<GridViewProps> = ({
               item.image.toLowerCase().includes(".svg");
 
             const cardProps = {
-              layoutId: `grid-${item.id}`,
+              layoutId: `grid-${item.slug}`,
               className:
                 "relative group cursor-pointer radius-8 bg-[#172067] border border-white/10 hover:border-[var(--accent)] transition-all duration-300 bg-white/5 flex flex-col",
               whileHover: { y: -5 },
@@ -96,11 +96,11 @@ export const GridView: React.FC<GridViewProps> = ({
             );
 
             return item.slug ? (
-              <MotionLink key={item.id} to={`/works/${item.slug}`} {...cardProps}>
+              <MotionLink key={item.slug} to={`/works/${item.slug}`} {...cardProps}>
                 {cardContent}
               </MotionLink>
             ) : (
-              <motion.div key={item.id} {...cardProps}>
+              <motion.div key={item.slug} {...cardProps}>
                 {cardContent}
               </motion.div>
             );

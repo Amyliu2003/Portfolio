@@ -1,5 +1,5 @@
 import type { ProjectData, ProjectItem } from "../types";
-import { ORDER } from "../order";
+import { FEATURED_COUNT, ORDER } from "../order";
 import { project as projectThisWebsite } from "./this-website";
 import { project as projectCampusCravings } from "./campus-cravings";
 import { project as projectBetweenBoundaries } from "./between-boundaries";
@@ -48,10 +48,23 @@ export const PROJECTS_BY_SLUG: Record<string, ProjectData> = Object.fromEntries(
   ALL_PROJECTS.map((project) => [project.slug, project]),
 );
 
-export const initialProjects: ProjectItem[] = ORDER.map((slug, i) => {
-  const data = PROJECTS_BY_SLUG[slug];
-  if (!data) throw new Error(`ORDER lists unknown project slug "${slug}"`);
-  const id = i + 1;
-  const idStr = id < 10 ? `0${id}` : `${id}`;
-  return { ...data, id, idStr, projectLabel: `PROJECT ${idStr}` };
-});
+/**
+ * Works in ORDER, each with its display number derived from its position:
+ * number = position + 1 (zero-padded), featured = position < FEATURED_COUNT.
+ * Numbers never change with sorting or filtering.
+ */
+export function getOrderedProjects(): ProjectItem[] {
+  return ORDER.map((slug, i) => {
+    const data = PROJECTS_BY_SLUG[slug];
+    if (!data) throw new Error(`ORDER lists unknown project slug "${slug}"`);
+    const id = i + 1;
+    const idStr = String(id).padStart(2, "0");
+    return {
+      ...data,
+      id,
+      idStr,
+      projectLabel: `PROJECT ${idStr}`,
+      featured: i < FEATURED_COUNT,
+    };
+  });
+}

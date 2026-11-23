@@ -1,3 +1,6 @@
+/** How many works, from the start of ORDER, are featured (lit by default in the tray). */
+export const FEATURED_COUNT = 3;
+
 /** Display order of works, by slug. A work's number is its position here + 1. */
 export const ORDER: readonly string[] = [
   "this-website",

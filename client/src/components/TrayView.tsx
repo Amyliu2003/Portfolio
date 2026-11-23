@@ -112,7 +112,7 @@ export const TrayView: React.FC<TrayViewProps> = ({
 
                           return (
                             <SlotTag
-                              key={`${gItem.id}-${cycle}`}
+                              key={`${gItem.slug}-${cycle}`}
                               {...slotLinkProps}
                               data-match={
                                 hasFilter && isMatch ? "true" : undefined
