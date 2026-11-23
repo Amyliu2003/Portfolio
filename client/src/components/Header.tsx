@@ -22,7 +22,7 @@ export const Header: React.FC<HeaderProps> = ({
         </Link>
         <div className="flex items-center gap-0 text-white/80 publicSans-text italic uppercase tracking-[1.4px] text-xs sm:text-sm leading-none">
             <span className="yarding-text hidden sm:block ">siera@2149 |</span>
-            <span className="font-normal not-italic"> Creative Technologist | Master of Information student, University of Toronto</span>
+            <span className="font-normal not-italic"> Creative Technologist | U of T MI &amp; NYU IMA</span>
         </div>
       </div>
 
