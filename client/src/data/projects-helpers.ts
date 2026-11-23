@@ -33,13 +33,16 @@ export function getAdjacentProjectSlugs(
   return { prev, next };
 }
 
-/** Lowercased search words, split on whitespace. */
+/** Lowercased search words, split on whitespace; words shorter than 2 chars are ignored. */
 export function tokenize(query: string): string[] {
-  return query.toLowerCase().split(/\s+/).filter(Boolean);
+  return query
+    .toLowerCase()
+    .split(/\s+/)
+    .filter((word) => word.length >= 2);
 }
 
 export function hasActiveFilter(searchTerm: string, activeTags: string[]): boolean {
-  return searchTerm.trim() !== "" || activeTags.length > 0;
+  return tokenize(searchTerm).length > 0 || activeTags.length > 0;
 }
 
 /**
