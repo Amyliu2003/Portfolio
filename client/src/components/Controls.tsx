@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { COLORS, THEME } from "../utils/theme";
 import { MatchStatus } from "./MatchStatus";
+import { SearchInput } from "./ui";
 
 export type SortOption = "default" | "alphabetical" | "newest";
 
@@ -46,27 +47,13 @@ export const Controls: React.FC<ControlsProps> = ({
       <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-8 pointer-events-auto">
         
         {/* Search Bar */}
-        <div className="relative w-full md:w-[400px] h-[54px]">
-           {/* Glow/Blur Effect */}
-           <div className="absolute inset-0 bg-white/20 blur-md rounded-md opacity-20"></div>
-           
-           {/* Input Container */}
-           <div className="relative w-full h-full border border-white/20 flex items-center bg-transparent backdrop-blur-sm group hover:border-[#BA76FF]/50 transition-colors">
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search(Name || Tag)..."
-                className="w-full h-full bg-transparent px-4 text-lg text-white font-mono tracking-[0.45px] placeholder-white/50 outline-none"
-              />
-              <div className="pr-4 text-[#BA76FF]">
-                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9.16667 15.8333C12.8486 15.8333 15.8333 12.8486 15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333Z" stroke="currentColor" strokeWidth="2" strokeLinecap="square"/>
-                    <path d="M17.5 17.5L13.875 13.875" stroke="currentColor" strokeWidth="2" strokeLinecap="square"/>
-                 </svg>
-              </div>
-           </div>
-        </div>
+        <SearchInput
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onClear={() => setSearchTerm("")}
+          placeholder="Search(Name || Tag)..."
+          label="Search works by name or tag"
+        />
 
         {/* Sort & Actions */}
         <div className="flex items-center gap-4">
