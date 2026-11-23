@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { COLORS, THEME } from "../utils/theme";
 import { MatchStatus } from "./MatchStatus";
 import { Button, SearchInput, Tag } from "./ui";
+
+/** Width of the edge fade on the tag row; must match --tag-fade in custom.css */
+const TAG_FADE_PX = 48;
 
 export type SortOption = "default" | "alphabetical" | "newest";
 
@@ -39,6 +42,53 @@ export const Controls: React.FC<ControlsProps> = ({
   onClearFilters,
 }) => {
   const [isSortOpen, setIsSortOpen] = useState(false);
+
+  // Tag row edge fades: left fade once scrolled away from the start, right fade until the end
+  const tagScrollerRef = useRef<HTMLDivElement>(null);
+  const [tagFade, setTagFade] = useState({ left: false, right: false });
+
+  const updateTagFade = useCallback(() => {
+    const el = tagScrollerRef.current;
+    if (!el) return;
+    const left = el.scrollLeft > 1;
+    const right = el.scrollLeft + el.clientWidth < el.scrollWidth - 1;
+    setTagFade((prev) =>
+      prev.left === left && prev.right === right ? prev : { left, right },
+    );
+  }, []);
+
+  useEffect(() => {
+    const el = tagScrollerRef.current;
+    if (!el) return;
+    updateTagFade();
+    const observer = new ResizeObserver(updateTagFade);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [updateTagFade, tagData, hasFilter]);
+
+  // Keyboard focus on a tag under a fade (or out of view) scrolls it fully into the clear area
+  const revealFocusedTag = (e: React.FocusEvent<HTMLDivElement>) => {
+    const container = tagScrollerRef.current;
+    const tag = e.target as HTMLElement;
+    if (!container || tag === container) return;
+    const box = container.getBoundingClientRect();
+    const r = tag.getBoundingClientRect();
+    // Tag position within the scroll content (independent of any scroll in progress)
+    const contentLeft = r.left - box.left + container.scrollLeft;
+    const contentRight = contentLeft + r.width;
+    const current = container.scrollLeft;
+    let target = current;
+    if (contentLeft - TAG_FADE_PX < current) {
+      // Reveal past the left fade; at the very start there is no left fade
+      target = contentLeft - TAG_FADE_PX <= 0 ? 0 : contentLeft - TAG_FADE_PX;
+    } else if (contentRight + TAG_FADE_PX > current + container.clientWidth) {
+      target = contentRight + TAG_FADE_PX - container.clientWidth;
+    }
+    target = Math.max(0, Math.min(target, container.scrollWidth - container.clientWidth));
+    if (Math.abs(target - current) < 1) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    container.scrollTo({ left: target, behavior: reduce ? "auto" : "smooth" });
+  };
 
   return (
     <div className="w-full z-30 px-8 flex flex-col gap-8 pointer-events-none mt-4">
@@ -145,7 +195,12 @@ export const Controls: React.FC<ControlsProps> = ({
 
       {/* Bottom Row: Tags */}
       <div className="w-full pointer-events-auto flex items-center gap-4">
-         <div className="works-tag-scroller ui-hit-scroll flex-1 flex flex-nowrap gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-[#BA76FF]/50 scrollbar-track-transparent">
+         <div
+            ref={tagScrollerRef}
+            onScroll={updateTagFade}
+            onFocus={revealFocusedTag}
+            className={`works-tag-scroller ui-hit-scroll flex-1 flex flex-nowrap gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-[#BA76FF]/50 scrollbar-track-transparent${tagFade.left ? " has-fade-left" : ""}${tagFade.right ? " has-fade-right" : ""}`}
+         >
             {tagData.map(([tag, count]) => (
                 <Tag
                     key={tag}

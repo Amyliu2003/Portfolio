@@ -72,7 +72,15 @@
 
 .works-tag-scroller {
   min-width: 0;
+  --tag-fade: 48px; /* keep in sync with TAG_FADE_PX in Controls.tsx */
+  --fade-left: 0px;
+  --fade-right: 0px;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--fade-left), #000 calc(100% - var(--fade-right)), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 var(--fade-left), #000 calc(100% - var(--fade-right)), transparent 100%);
 }
+/* The mask only changes what's painted: faded tags still take clicks and focus */
+.works-tag-scroller.has-fade-left { --fade-left: var(--tag-fade); }
+.works-tag-scroller.has-fade-right { --fade-right: var(--tag-fade); }
 
 .match-status {
   white-space: nowrap;
