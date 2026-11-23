@@ -34,12 +34,6 @@ export const Header: React.FC<HeaderProps> = ({
          >
             [Tools]
          </Link>
-         <Link
-            to="/showcase"
-            className="font-mono text-white text-xs uppercase tracking-[1.2px] hover:text-[#BA76FF] transition-colors"
-         >
-            [Showcase]
-         </Link>
 
          {/* Login Link */}
          <button 

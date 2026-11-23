@@ -7,7 +7,6 @@ import { ToolDetailPage } from "./tools/pages/ToolDetailPage.tsx";
 import { ToolRuntimePage } from "./tools/pages/ToolRuntimePage.tsx";
 import { WorksPage } from "./pages/WorksPage.tsx";
 import { WorkDetailPage } from "./pages/WorkDetailPage.tsx";
-import { ComponentShowcasePage } from "./pages/ComponentShowcasePage.tsx";
 import "./index.css";
 import "./custom.css";
 
@@ -20,7 +19,6 @@ createRoot(document.getElementById("root")!).render(
       <Route path="/tools" element={<ToolsIndexPage />} />
       <Route path="/tools/:name/:id" element={<ToolDetailPage />} />
       <Route path="/tools/runtime/:slug" element={<ToolRuntimePage />} />
-      <Route path="/showcase" element={<ComponentShowcasePage />} />
     </Routes>
   </BrowserRouter>
 );
