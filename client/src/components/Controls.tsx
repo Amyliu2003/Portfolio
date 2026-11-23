@@ -48,6 +48,7 @@ export const Controls: React.FC<ControlsProps> = ({
         
         {/* Search Bar */}
         <SearchInput
+          className="works-search"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onClear={() => setSearchTerm("")}
@@ -61,6 +62,7 @@ export const Controls: React.FC<ControlsProps> = ({
            <div className="relative">
               <Button
                 variant="outline"
+                size="lg"
                 aria-haspopup="true"
                 aria-expanded={isSortOpen}
                 onClick={() => setIsSortOpen(!isSortOpen)}
@@ -95,6 +97,7 @@ export const Controls: React.FC<ControlsProps> = ({
               <Button
                  variant="outline"
                  icon
+                 size="lg"
                  aria-label="Tray view"
                  aria-pressed={viewMode === "tray"}
                  onClick={() => setViewMode("tray")}
@@ -108,6 +111,7 @@ export const Controls: React.FC<ControlsProps> = ({
               <Button
                  variant="outline"
                  icon
+                 size="lg"
                  aria-label="Grid view"
                  aria-pressed={viewMode === "grid"}
                  onClick={() => setViewMode("grid")}
@@ -126,6 +130,7 @@ export const Controls: React.FC<ControlsProps> = ({
                <Button
                  variant="accent"
                  icon
+                 size="lg"
                  aria-label="Add project"
                  onClick={onAddProjectClick}
                >

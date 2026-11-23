@@ -434,6 +434,8 @@ button.ui-tag:hover:not(.is-on) { border-color: var(--color-accent); }
    Site overrides on UI kit components — keep after the UI kit block so they win
    ========================================================================== */
 /* Works controls built from UI kit buttons */
+/* Search, Sort and Tray/Grid share the 46px control height (Button lg / Input) */
+.works-search .ui-input { height: 46px; font-size: 16px; }
 .match-status__clear { height: 30px; padding: 0 4px; }
 .works-sort-option { width: 100%; justify-content: flex-start; }
 .works-view-toggle { display: flex; gap: 6px; }
