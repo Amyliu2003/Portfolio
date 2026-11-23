@@ -177,6 +177,8 @@ export interface ProjectItem {
   time: string;
   projectLabel: string;
   type: "special" | "placeholder";
+  /** Lit by default in the lava tray when no search/filter is active */
+  featured?: boolean;
   title: string;
   skills: string;
   role: string;
@@ -374,6 +376,7 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 20 }, (_, i) 
       idStr,
       projectLabel,
       type: "special",
+      featured: true,
       title: "Between Boundaries",
       time: "FALL 2023",
       skills: "Arduino • AI/ML • WEBGL • Projection Mapping • Installation",
@@ -434,6 +437,7 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 20 }, (_, i) 
       idStr,
       projectLabel,
       type: "special",
+      featured: true,
       title: "UNICEF GeoSight",
       time: "JUNE 2025",
       skills: "React • MapLibre GL JS • Docker",
@@ -658,6 +662,7 @@ export const initialProjects: ProjectItem[] = Array.from({ length: 20 }, (_, i) 
       idStr,
       projectLabel,
       type: "special",
+      featured: true,
       title: "Course Tiermaker",
       time: "MAY 2026",
       skills: "React • TypeScript • UX • localStorage",

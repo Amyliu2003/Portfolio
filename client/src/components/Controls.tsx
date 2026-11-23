@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { COLORS, THEME } from "../utils/theme";
+import { MatchStatus } from "./MatchStatus";
 
 export type SortOption = "default" | "alphabetical" | "newest";
 
@@ -15,6 +16,9 @@ interface ControlsProps {
   setViewMode: (mode: "tray" | "grid") => void;
   isLoggedIn: boolean;
   onAddProjectClick: () => void;
+  hasFilter: boolean;
+  matchCount: number;
+  onClearFilters: () => void;
 }
 
 export const Controls: React.FC<ControlsProps> = ({
@@ -29,6 +33,9 @@ export const Controls: React.FC<ControlsProps> = ({
   setViewMode,
   isLoggedIn,
   onAddProjectClick,
+  hasFilter,
+  matchCount,
+  onClearFilters,
 }) => {
   const [isSortOpen, setIsSortOpen] = useState(false);
 
@@ -49,7 +56,7 @@ export const Controls: React.FC<ControlsProps> = ({
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search(Project_Name)..."
+                placeholder="Search(Name || Tag)..."
                 className="w-full h-full bg-transparent px-4 text-lg text-white font-mono tracking-[0.45px] placeholder-white/50 outline-none"
               />
               <div className="pr-4 text-[#BA76FF]">
@@ -135,8 +142,8 @@ export const Controls: React.FC<ControlsProps> = ({
       </div>
 
       {/* Bottom Row: Tags */}
-      <div className="w-full pointer-events-auto">
-         <div className="flex flex-nowrap gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-[#BA76FF]/50 scrollbar-track-transparent">
+      <div className="w-full pointer-events-auto flex items-center gap-4">
+         <div className="works-tag-scroller flex-1 flex flex-nowrap gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-[#BA76FF]/50 scrollbar-track-transparent">
             {tagData.map(([tag, count]) => {
                 const isActive = activeTags.includes(tag);
                 return (
@@ -157,6 +164,13 @@ export const Controls: React.FC<ControlsProps> = ({
                 );
             })}
          </div>
+         {hasFilter && (
+            <MatchStatus
+               count={matchCount}
+               onClear={onClearFilters}
+               className="shrink-0 works-match-status"
+            />
+         )}
       </div>
     </div>
   );

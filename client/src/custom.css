@@ -18,6 +18,43 @@
   background-color: var(--color-primary);
 }
 
+/* Works findability — written here because index.css is a precompiled Tailwind build */
+.tray-title-label {
+  display: block;
+  width: 100%;
+  margin-top: 2px;
+  padding: 0 6px;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* On hover-capable devices, only lit lamps pin their title; the rest reveal it on hover/focus.
+   Touch (hover: none) devices keep every title visible. */
+@media (hover: hover) {
+  .tray-title-label:not(.is-pinned) {
+    display: none;
+  }
+
+  .tray-slot:hover .tray-title-label,
+  .tray-slot:focus-visible .tray-title-label {
+    display: block;
+  }
+}
+
+.works-tag-scroller {
+  min-width: 0;
+}
+
+.match-status {
+  white-space: nowrap;
+}
+
+.works-match-status {
+  padding-bottom: 0.5rem;
+}
+
 .marquee-container {
     overflow: hidden;
     white-space: nowrap;

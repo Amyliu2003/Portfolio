@@ -32,3 +32,37 @@ export function getAdjacentProjectSlugs(
   const next = routeable[(index + 1) % routeable.length]?.slug ?? null;
   return { prev, next };
 }
+
+/** Lowercased search words, split on whitespace; words shorter than 2 chars are ignored. */
+export function tokenize(query: string): string[] {
+  return query
+    .toLowerCase()
+    .split(/\s+/)
+    .filter((word) => word.length >= 2);
+}
+
+export function hasActiveFilter(searchTerm: string, activeTags: string[]): boolean {
+  return tokenize(searchTerm).length > 0 || activeTags.length > 0;
+}
+
+/**
+ * Shared Works search rule (Tray + Grid):
+ * - text: any search word appears in title / skills / projectLabel / description
+ * - tags: any active tag appears in skills
+ * - both conditions must hold.
+ */
+export function matchesSearch(
+  item: ProjectItem,
+  searchTerm: string,
+  activeTags: string[],
+): boolean {
+  const tokens = tokenize(searchTerm);
+  const haystack = [item.title, item.skills, item.projectLabel, item.description]
+    .join("\n")
+    .toLowerCase();
+  const matchesText =
+    tokens.length === 0 || tokens.some((token) => haystack.includes(token));
+  const matchesTags =
+    activeTags.length === 0 || activeTags.some((tag) => item.skills.includes(tag));
+  return matchesText && matchesTags;
+}

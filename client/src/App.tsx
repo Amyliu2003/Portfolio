@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { initialProjects, ProjectItem } from "./data/projects";
+import { hasActiveFilter, matchesSearch } from "./data/projects-helpers";
 import { LoginModal } from "./components/LoginModal";
 import { AddProjectModal } from "./components/AddProjectModal";
 import { COLORS, GRADIENTS } from "./utils/theme";
@@ -106,27 +107,24 @@ export default function App({ initialSection = "home" }: AppProps) {
     setSearchTerm("");
   };
 
+  const clearFilters = () => {
+    setSearchTerm("");
+    setActiveTags([]);
+  };
+
   const handleAddProject = (newProject: ProjectItem) => {
     setItems((prev) => [newProject, ...prev]);
   };
 
   // Filter items for Grid View
-  const filteredGridItems = sortedItems.filter((item) => {
-    if (item.type !== "special") return false;
+  // Reserved "coming soon" slots stay in the data but are hidden from the tray
+  const trayItems = sortedItems.filter((item) => item.type === "special");
 
-    const query = searchTerm.toLowerCase();
-    const matchesText =
-      searchTerm === "" ||
-      item.title.toLowerCase().includes(query) ||
-      item.skills.toLowerCase().includes(query) ||
-      item.projectLabel.toLowerCase().includes(query);
-
-    const matchesTags =
-      activeTags.length === 0 ||
-      activeTags.some((tag) => item.skills.includes(tag));
-
-    return matchesText && matchesTags;
-  });
+  const filteredGridItems = sortedItems.filter(
+    (item) =>
+      item.type === "special" &&
+      matchesSearch(item, searchTerm, activeTags),
+  );
 
   return (
     <div
@@ -211,12 +209,15 @@ export default function App({ initialSection = "home" }: AppProps) {
               onAddProjectClick={() =>
                 setIsAddProjectOpen(true)
               }
+              hasFilter={hasActiveFilter(searchTerm, activeTags)}
+              matchCount={filteredGridItems.length}
+              onClearFilters={clearFilters}
             />
 
             {/* View Content Switcher */}
             {viewMode === "tray" ? (
               <TrayView
-                items={sortedItems}
+                items={trayItems}
                 searchTerm={searchTerm}
                 activeTags={activeTags}
                 setHoveredItem={setHoveredItem}
@@ -224,6 +225,7 @@ export default function App({ initialSection = "home" }: AppProps) {
             ) : (
               <GridView
                 items={filteredGridItems}
+                onClearFilters={clearFilters}
               />
             )}
           </main>

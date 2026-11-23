@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ProjectItem } from "../data/projects";
+import { hasActiveFilter, matchesSearch } from "../data/projects-helpers";
 import { Footer } from "./Footer";
 import lavaLampsImage from "../assets/lava_lamps.png";
 
@@ -18,54 +19,31 @@ export const TrayView: React.FC<TrayViewProps> = ({
   setHoveredItem,
 }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const hasFilter = hasActiveFilter(searchTerm, activeTags);
 
-  // Scroll to first match logic
+  // Scroll the tray (not the page) so the first highlighted slot is centered
   useEffect(() => {
-    if (
-      (!searchTerm && activeTags.length === 0) ||
-      !scrollContainerRef.current
-    )
-      return;
+    const container = scrollContainerRef.current;
+    if (!hasFilter || !container) return;
 
-    const allDisplayedItems: any[] = [];
-    // We duplicate items 4 times for the infinite loop effect
-    for (let cycle = 0; cycle < 4; cycle++) {
-      items.forEach((item) =>
-        allDisplayedItems.push({ ...item, cycle }),
-      );
-    }
-
-    const firstMatchIndex = allDisplayedItems.findIndex(
-      (item) => {
-        const query = searchTerm.toLowerCase();
-        const matchesText =
-          searchTerm === "" ||
-          item.title.toLowerCase().includes(query) ||
-          item.skills.toLowerCase().includes(query) ||
-          item.projectLabel.toLowerCase().includes(query);
-
-        const matchesTags =
-          activeTags.length === 0 ||
-          activeTags.some((tag) => item.skills.includes(tag));
-
-        return matchesText && matchesTags;
-      },
+    const firstMatch = container.querySelector<HTMLElement>(
+      '[data-match="true"]',
     );
+    if (!firstMatch) return;
 
-    if (firstMatchIndex !== -1) {
-      const itemWidth = 160;
-      const scrollPos = firstMatchIndex * itemWidth;
-      const containerWidth =
-        scrollContainerRef.current.clientWidth;
-      const centeredPos =
-        scrollPos - containerWidth / 2 + itemWidth / 2;
+    const containerRect = container.getBoundingClientRect();
+    const matchRect = firstMatch.getBoundingClientRect();
+    const offsetInContent =
+      matchRect.left - containerRect.left + container.scrollLeft;
 
-      scrollContainerRef.current.scrollTo({
-        left: Math.max(0, centeredPos),
-        behavior: "smooth",
-      });
-    }
-  }, [searchTerm, activeTags, items]);
+    container.scrollTo({
+      left: Math.max(
+        0,
+        offsetInContent - container.clientWidth / 2 + matchRect.width / 2,
+      ),
+      behavior: "smooth",
+    });
+  }, [hasFilter, searchTerm, activeTags, items]);
 
   return (
     <div className="w-full h-full flex flex-col bg-transparent">
@@ -110,36 +88,16 @@ export const TrayView: React.FC<TrayViewProps> = ({
                           const isSpecial =
                             gItem.type === "special";
 
-                          // Determine if there is an active search or filter
-                          const hasFilter =
-                            searchTerm !== "" ||
-                            activeTags.length > 0;
+                          const isMatch = matchesSearch(
+                            gItem,
+                            searchTerm,
+                            activeTags,
+                          );
 
-                          const query =
-                            searchTerm.toLowerCase();
-                          const matchesText =
-                            searchTerm === "" ||
-                            gItem.title
-                              .toLowerCase()
-                              .includes(query) ||
-                            gItem.skills
-                              .toLowerCase()
-                              .includes(query) ||
-                            gItem.projectLabel
-                              .toLowerCase()
-                              .includes(query);
-                          const matchesTag =
-                            activeTags.length === 0 ||
-                            activeTags.some((tag) =>
-                              gItem.skills.includes(tag),
-                            );
-
-                          const isMatch =
-                            matchesText && matchesTag;
-
-                          // Highlight logic
-                          const shouldHighlightPersistent =
-                            hasFilter && isMatch;
+                          // Lit lamps: matches while filtering, otherwise the featured projects
+                          const shouldHighlightPersistent = hasFilter
+                            ? isMatch
+                            : !!gItem.featured;
 
                           // Special items are real links; duplicate loop cycles stay out of the tab order.
                           const isLink = isSpecial && !!gItem.slug;
@@ -156,7 +114,10 @@ export const TrayView: React.FC<TrayViewProps> = ({
                             <SlotTag
                               key={`${gItem.id}-${cycle}`}
                               {...slotLinkProps}
-                              className={`flex-1 h-full relative group/item outline-none overflow-hidden
+                              data-match={
+                                hasFilter && isMatch ? "true" : undefined
+                              }
+                              className={`tray-slot flex-1 h-full relative group/item outline-none overflow-hidden
                                 ${isSpecial ? "cursor-pointer" : "cursor-default"}
                                 ${shouldHighlightPersistent ? "overflow-visible" : "overflow-hidden"}
                               `}
@@ -192,17 +153,32 @@ export const TrayView: React.FC<TrayViewProps> = ({
                                     : "bg-[#0A0F33] group-hover/item:bg-[#BA76FF] group-hover/item:scale-120  group-hover/item:-translate-y-2"}
                                 `}
                               >
-                                <span
-                                  className={`text-2xl font-black font-sans transition-all duration-300 transform group-hover/item:-translate-y-1
-                                    ${
-                                      shouldHighlightPersistent
-                                        ? "text-black -translate-y-1"
-                                        : "text-white group-hover/item:text-black"
-                                    }
-                                  `}
-                                >
-                                  {gItem.idStr}
-                                </span>
+                                <div className="flex w-full flex-col items-center">
+                                  <span
+                                    className={`text-2xl font-black font-sans transition-all duration-300 transform group-hover/item:-translate-y-1
+                                      ${
+                                        shouldHighlightPersistent
+                                          ? "text-black -translate-y-1"
+                                          : "text-white group-hover/item:text-black"
+                                      }
+                                    `}
+                                  >
+                                    {gItem.idStr}
+                                  </span>
+                                  {/* Title: pinned on lit lamps; on hover devices others show on hover/focus (see custom.css) */}
+                                  <span
+                                    title={gItem.title}
+                                    className={`publicSans-text tray-title-label ${shouldHighlightPersistent ? "is-pinned" : ""} uppercase text-[10px] leading-none text-center transition-all duration-300 transform group-hover/item:-translate-y-1
+                                      ${
+                                        shouldHighlightPersistent
+                                          ? "text-black -translate-y-1"
+                                          : "text-white group-hover/item:text-black"
+                                      }
+                                    `}
+                                  >
+                                    {gItem.title}
+                                  </span>
+                                </div>
                               </div>
 
                               {/* Content Container (Invisible hit area mostly) */}
@@ -212,6 +188,19 @@ export const TrayView: React.FC<TrayViewProps> = ({
                             </SlotTag>
                           );
                         })}
+                        {/* Pad a short final group so every group keeps 5 lamp slots */}
+                        {Array.from(
+                          { length: 5 - groupItems.length },
+                          (_, padIndex) => (
+                            <div
+                              key={`pad-${cycle}-${index}-${padIndex}`}
+                              aria-hidden="true"
+                              className="flex-1 h-full relative cursor-default"
+                            >
+                              <div className="absolute bottom-0 left-0 w-full h-14 bg-[#0A0F33]" />
+                            </div>
+                          ),
+                        )}
                       </div>
                     </div>
                   );

@@ -4,15 +4,18 @@ import { Link } from "react-router-dom";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { ProjectItem } from "../data/projects";
 import { COLORS } from "../utils/theme";
+import { MatchStatus } from "./MatchStatus";
 
 const MotionLink = motion.create(Link);
 
 interface GridViewProps {
   items: ProjectItem[];
+  onClearFilters: () => void;
 }
 
 export const GridView: React.FC<GridViewProps> = ({
   items,
+  onClearFilters,
 }) => {
   return (
     <div className="w-full h-full overflow-y-auto p-8 pb-32">
@@ -106,8 +109,8 @@ export const GridView: React.FC<GridViewProps> = ({
       </ResponsiveMasonry>
 
       {items.length === 0 && (
-        <div className="w-full h-64 flex items-center justify-center opacity-30 font-mono text-sm uppercase">
-          No matching protocols found.
+        <div className="w-full h-64 flex items-center justify-center">
+          <MatchStatus count={0} onClear={onClearFilters} />
         </div>
       )}
     </div>
