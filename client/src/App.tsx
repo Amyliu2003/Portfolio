@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
-import { initialProjects, ProjectItem } from "./data/projects";
+import { getOrderedProjects } from "./data/projects";
+import type { ProjectItem } from "./data/types";
 import { hasActiveFilter, matchesSearch } from "./data/projects-helpers";
 import { LoginModal } from "./components/LoginModal";
 import { AddProjectModal } from "./components/AddProjectModal";
@@ -21,7 +22,7 @@ interface AppProps {
 export default function App({ initialSection = "home" }: AppProps) {
   useDocumentTitle(initialSection === "works" ? "Works" : undefined);
   const [items, setItems] =
-    useState<ProjectItem[]>(initialProjects);
+    useState<ProjectItem[]>(getOrderedProjects);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTags, setActiveTags] = useState<string[]>([]);
   const [hoveredItem, setHoveredItem] =
@@ -113,7 +114,8 @@ export default function App({ initialSection = "home" }: AppProps) {
   };
 
   const handleAddProject = (newProject: ProjectItem) => {
-    setItems((prev) => [newProject, ...prev]);
+    // Appended so Default order keeps 01–03 first
+    setItems((prev) => [...prev, newProject]);
   };
 
   // Filter items for Grid View

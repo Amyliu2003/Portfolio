@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ProjectItem } from "../data/projects";
+import type { ProjectItem } from "../data/types";
 import { hasActiveFilter, matchesSearch } from "../data/projects-helpers";
 import { Footer } from "./Footer";
 import lavaLampsImage from "../assets/lava_lamps.png";
@@ -112,7 +112,7 @@ export const TrayView: React.FC<TrayViewProps> = ({
 
                           return (
                             <SlotTag
-                              key={`${gItem.id}-${cycle}`}
+                              key={`${gItem.slug}-${cycle}`}
                               {...slotLinkProps}
                               data-match={
                                 hasFilter && isMatch ? "true" : undefined
