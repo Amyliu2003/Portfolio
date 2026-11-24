@@ -958,11 +958,13 @@ export default function CourseTiermaker() {
       <div
         style={{
           background: C.blue,
-          padding: "0 24px",
+          padding: "12px 24px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          height: 100,
+          flexWrap: "wrap",
+          gap: 12,
+          minHeight: 100,
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -1004,7 +1006,7 @@ export default function CourseTiermaker() {
             </div>
           </div>
         </div>
-        <div style={{ display: "flex", gap: 8 }}>
+        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "flex-end", gap: 8 }}>
           <HBtn onClick={() => setShowImport((s) => !s)} sky>
             ↑ Import JSON
           </HBtn>
@@ -1304,6 +1306,7 @@ const HBtn = ({
       letterSpacing: 0.8,
       textTransform: "uppercase",
       fontFamily: "Inter,sans-serif",
+      whiteSpace: "nowrap",
     }}
   >
     {children}
