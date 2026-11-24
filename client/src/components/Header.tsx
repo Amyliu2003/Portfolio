@@ -24,7 +24,7 @@ export const Header: React.FC<HeaderProps> = ({
             <span className="yarding-text hidden lg:block">siera@2149</span>
             {/* Separator in the tagline face so it matches the other "|" (Yarding draws it like "/") */}
             <span className="hidden lg:block font-normal not-italic whitespace-pre"> | </span>
-            <span className="font-normal not-italic leading-[1.3]"><span className="inline-block">Creative Technologist |</span> <span className="inline-block">U of T MI &amp; NYU IMA</span></span>
+            <span className="font-normal not-italic leading-[1.3]"><span className="inline-block">Creative Technologist<span className="hidden min-[480px]:inline"> |</span></span> <span className="inline-block">U of T MI &amp; NYU IMA</span></span>
         </div>
       </div>
 
@@ -43,9 +43,8 @@ export const Header: React.FC<HeaderProps> = ({
             aria-label={isLoggedIn ? "Logout" : "Login"}
             className="header-login header-meta__small font-['Yarding'] text-white uppercase tracking-[1.2px] hover:text-[#BA76FF] transition-colors"
          >
-             {/* <480px: only the first Yarding glyph, in a 44px tap box (see custom.css) */}
-             <span className="min-[480px]:hidden" aria-hidden="true">{(isLoggedIn ? "[Logout]" : "[Login]")[0]}</span>
-             <span className="hidden min-[480px]:inline" aria-hidden="true">{isLoggedIn ? "[Logout]" : "[Login]"}</span>
+             {/* <480px: sits in a 44px-tall tap box (see .header-login in custom.css) */}
+             <span aria-hidden="true">{isLoggedIn ? "[Logout]" : "[Login]"}</span>
          </button>
 
          {/* Work Label */}

@@ -494,12 +494,11 @@ button.ui-tag:hover:not(.is-on) { border-color: var(--color-accent); }
 .header-meta__work { font-size: 1em; }
 .header-meta__small { font-size: 0.4em; }
 .header-meta__sq { width: 0.4em; height: 0.4em; }
-/* Below 480px: readable minimums and a real 44px Login tap box (no overlap with [TOOLS]) */
+/* Below 480px: readable minimums and a real 44px-tall Login tap box (no overlap with [TOOLS]) */
 @media (max-width: 479.98px) {
   .header-meta { font-size: max(18px, clamp(16px, calc(1.02px + 4.53vw), 30px)); }
   .header-meta__small { font-size: max(12px, 0.4em); }
   .header-login {
-    font-size: 14px;
     min-width: 44px;
     min-height: 44px;
     display: inline-flex;
