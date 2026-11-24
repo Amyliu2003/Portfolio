@@ -40,9 +40,12 @@ export const Header: React.FC<HeaderProps> = ({
          {/* Login Link */}
          <button 
             onClick={isLoggedIn ? onLogoutClick : onLoginClick}
-            className="header-meta__small font-['Yarding'] text-white uppercase tracking-[1.2px] hover:text-[#BA76FF] transition-colors"
+            aria-label={isLoggedIn ? "Logout" : "Login"}
+            className="header-login header-meta__small font-['Yarding'] text-white uppercase tracking-[1.2px] hover:text-[#BA76FF] transition-colors"
          >
-             {isLoggedIn ? "[Logout]" : "[Login]"}
+             {/* <480px: only the first Yarding glyph, in a 44px tap box (see custom.css) */}
+             <span className="min-[480px]:hidden" aria-hidden="true">{(isLoggedIn ? "[Logout]" : "[Login]")[0]}</span>
+             <span className="hidden min-[480px]:inline" aria-hidden="true">{isLoggedIn ? "[Logout]" : "[Login]"}</span>
          </button>
 
          {/* Work Label */}
@@ -50,8 +53,8 @@ export const Header: React.FC<HeaderProps> = ({
              Work / 22-26
          </div>
 
-         {/* Squares */}
-         <div className="flex gap-0 mt-1">
+         {/* Squares (decorative; hidden below 480px) */}
+         <div className="hidden min-[480px]:flex gap-0 mt-1" aria-hidden="true">
              <div className="header-meta__sq border border-white"></div>
              <div className="header-meta__sq bg-[#BA76FF]"></div>
              <div className="header-meta__sq border border-white"></div>

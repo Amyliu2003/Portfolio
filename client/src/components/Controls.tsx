@@ -3,6 +3,22 @@ import { COLORS, THEME } from "../utils/theme";
 import { MatchStatus } from "./MatchStatus";
 import { Button, SearchInput, Tag } from "./ui";
 
+/** true while the viewport is at least `px` wide (tracks resizes) */
+function useMinWidth(px: number) {
+  const query = `(min-width: ${px}px)`;
+  const [matches, setMatches] = useState(
+    () => typeof window !== "undefined" && window.matchMedia(query).matches,
+  );
+  useEffect(() => {
+    const mql = window.matchMedia(query);
+    const onChange = () => setMatches(mql.matches);
+    onChange();
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, [query]);
+  return matches;
+}
+
 export type SortOption = "default" | "alphabetical" | "newest";
 
 const SORT_LABELS: Record<SortOption, string> = {
@@ -45,6 +61,7 @@ export const Controls: React.FC<ControlsProps> = ({
   onClearFilters,
 }) => {
   const [isSortOpen, setIsSortOpen] = useState(false);
+  const isWide = useMinWidth(480);
   const sortTriggerRef = useRef<HTMLButtonElement>(null);
   const closeSortMenu = () => {
     setIsSortOpen(false);
@@ -104,8 +121,8 @@ export const Controls: React.FC<ControlsProps> = ({
   return (
     <div className="w-full z-30 px-8 flex flex-col gap-8 pointer-events-none mt-4">
       
-      {/* Top Row: Search + [Sort][Tray][Grid] (one row from 480px, two rows below) */}
-      <div className="w-full flex flex-col min-[480px]:flex-row min-[480px]:items-center gap-3 pointer-events-auto">
+      {/* Top Row: Search + [Sort][Tray][Grid] on one row at every width */}
+      <div className="w-full flex flex-row items-center gap-3 pointer-events-auto">
         
         {/* Search Bar */}
         <SearchInput
@@ -114,7 +131,7 @@ export const Controls: React.FC<ControlsProps> = ({
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onClear={() => setSearchTerm("")}
-          placeholder="Search(Name || Tag)..."
+          placeholder={isWide ? "Search(Name || Tag)..." : "Search..."}
           label="Search works by name or tag"
         />
 
@@ -152,7 +169,7 @@ export const Controls: React.FC<ControlsProps> = ({
               </Button>
               
               {isSortOpen && (
-                <div className="absolute top-full left-0 min-[480px]:left-auto min-[480px]:right-0 mt-1 min-w-[180px] bg-[#181A4B] border border-white/20 flex flex-col z-50">
+                <div className="absolute top-full right-0 mt-1 min-w-[180px] bg-[#181A4B] border border-white/20 flex flex-col z-50">
                    {(["default", "newest", "alphabetical"] as SortOption[]).map(opt => (
                       <Button
                         key={opt}
