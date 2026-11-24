@@ -455,6 +455,24 @@ button.ui-tag:hover:not(.is-on) { border-color: var(--color-accent); }
 .match-status__clear { height: 30px; padding: 0 4px; }
 .works-sort-option { width: 100%; justify-content: flex-start; }
 .works-view-toggle { display: flex; gap: 6px; }
+/* Works search fills the row next to the 46px squares (drops the kit's 400px cap) */
+.works-search { flex: 1 1 auto; min-width: 0; max-width: none; }
+/* Below 480px the search box is narrow: drop the icon and give its space back to the text */
+@media (max-width: 479.98px) {
+  .works-search .ui-search__icon { display: none; }
+  .works-search .ui-input { padding-right: 14px; }
+}
+/* Non-default sort indicator on the Sort square */
+.works-sort-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  pointer-events: none;
+}
 
 /* Project detail controls built from UI kit buttons */
 .detail-close-btn { background: var(--color-primary); }
@@ -468,6 +486,31 @@ button.ui-tag:hover:not(.is-on) { border-color: var(--color-accent); }
   margin-inline: -24px; /* keep the label aligned with the page edge, as before */
 }
 @media (min-width: 768px) { .detail-nav-btn { font-size: 16px; } }
+
+/* Works header meta block (TOOLS / Login / WORK / squares): one size drives the block.
+   WORK is ~18px at 375px and 30px from 640px (36px from 768px, as before); the small
+   rows and squares stay at 0.4× WORK (12px at full size). */
+.header-meta { font-size: clamp(16px, calc(1.02px + 4.53vw), 30px); }
+.header-meta__work { font-size: 1em; }
+.header-meta__small { font-size: 0.4em; }
+.header-meta__sq { width: 0.4em; height: 0.4em; }
+/* Below 480px: readable minimums and a real 44px-tall Login tap box (no overlap with [TOOLS]) */
+@media (max-width: 479.98px) {
+  .header-meta { font-size: max(18px, clamp(16px, calc(1.02px + 4.53vw), 30px)); }
+  .header-meta__small { font-size: max(12px, 0.4em); }
+  .header-login {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}
+@media (min-width: 768px) {
+  .header-meta { font-size: 36px; }
+  .header-meta__small { font-size: 12px; }
+  .header-meta__sq { width: 12px; height: 12px; }
+}
 
 /* Login modal */
 .login-close { position: absolute; top: 12px; right: 12px; color: rgba(255, 255, 255, 0.5); }

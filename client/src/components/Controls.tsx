@@ -3,7 +3,29 @@ import { COLORS, THEME } from "../utils/theme";
 import { MatchStatus } from "./MatchStatus";
 import { Button, SearchInput, Tag } from "./ui";
 
+/** true while the viewport is at least `px` wide (tracks resizes) */
+function useMinWidth(px: number) {
+  const query = `(min-width: ${px}px)`;
+  const [matches, setMatches] = useState(
+    () => typeof window !== "undefined" && window.matchMedia(query).matches,
+  );
+  useEffect(() => {
+    const mql = window.matchMedia(query);
+    const onChange = () => setMatches(mql.matches);
+    onChange();
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, [query]);
+  return matches;
+}
+
 export type SortOption = "default" | "alphabetical" | "newest";
+
+const SORT_LABELS: Record<SortOption, string> = {
+  default: "Default",
+  newest: "Newest",
+  alphabetical: "Alphabetical",
+};
 
 interface ControlsProps {
   searchTerm: string;
@@ -39,6 +61,7 @@ export const Controls: React.FC<ControlsProps> = ({
   onClearFilters,
 }) => {
   const [isSortOpen, setIsSortOpen] = useState(false);
+  const isWide = useMinWidth(480);
   const sortTriggerRef = useRef<HTMLButtonElement>(null);
   const closeSortMenu = () => {
     setIsSortOpen(false);
@@ -98,21 +121,22 @@ export const Controls: React.FC<ControlsProps> = ({
   return (
     <div className="w-full z-30 px-8 flex flex-col gap-8 pointer-events-none mt-4">
       
-      {/* Top Row: Search & Sort */}
-      <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-8 pointer-events-auto">
+      {/* Top Row: Search + [Sort][Tray][Grid] on one row at every width */}
+      <div className="w-full flex flex-row items-center gap-3 pointer-events-auto">
         
         {/* Search Bar */}
         <SearchInput
           size="lg"
+          className="works-search"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onClear={() => setSearchTerm("")}
-          placeholder="Search(Name || Tag)..."
+          placeholder={isWide ? "Search(Name || Tag)..." : "Search..."}
           label="Search works by name or tag"
         />
 
-        {/* Sort & Actions */}
-        <div className="flex items-center gap-4">
+        {/* Sort, view toggles (and admin Add) as 46px squares */}
+        <div className="works-view-toggle">
            {/* Sort Dropdown */}
            <div
               className="relative"
@@ -126,35 +150,43 @@ export const Controls: React.FC<ControlsProps> = ({
               <Button
                 ref={sortTriggerRef}
                 variant="outline"
+                icon
                 size="lg"
+                aria-label={`Sort: ${SORT_LABELS[sortOption]}`}
+                title={`Sort: ${SORT_LABELS[sortOption]}`}
                 aria-haspopup="true"
                 aria-expanded={isSortOpen}
                 onClick={() => setIsSortOpen(!isSortOpen)}
               >
-                 <span>SORT:</span>
-                 <span>{sortOption}</span>
-                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className={`transition-transform ${isSortOpen ? 'rotate-180' : ''}`}>
-                    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeLinecap="square"/>
+                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M2.5 6.5H9.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square"/>
+                    <path d="M2.5 13.5H7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square"/>
+                    <path d="M14 3V17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square"/>
+                    <path d="M11 6L14 3L17 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square"/>
+                    <path d="M11 14L14 17L17 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square"/>
                  </svg>
+                 {sortOption !== "default" && <span className="works-sort-dot" aria-hidden="true" />}
               </Button>
               
               {isSortOpen && (
-                <div className="absolute top-full right-0 mt-1 w-full min-w-[120px] bg-[#181A4B] border border-white/20 flex flex-col z-50">
+                <div className="absolute top-full right-0 mt-1 min-w-[180px] bg-[#181A4B] border border-white/20 flex flex-col z-50">
                    {(["default", "newest", "alphabetical"] as SortOption[]).map(opt => (
                       <Button
                         key={opt}
                         variant="ghost"
                         className="works-sort-option"
+                        aria-current={opt === sortOption ? "true" : undefined}
                         onClick={() => { setSortOption(opt); closeSortMenu(); }}
                       >
-                         {opt}
+                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style={{ visibility: opt === sortOption ? "visible" : "hidden" }}>
+                            <path d="M2 6.5L4.75 9L10 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square"/>
+                         </svg>
+                         {SORT_LABELS[opt]}
                       </Button>
                    ))}
                 </div>
               )}
            </div>
-
-           <div className="w-px h-6 bg-white/10 mx-2"></div>
 
            {/* View Toggles */}
            <div className="works-view-toggle" role="group" aria-label="View mode">
