@@ -457,6 +457,11 @@ button.ui-tag:hover:not(.is-on) { border-color: var(--color-accent); }
 .works-view-toggle { display: flex; gap: 6px; }
 /* Works search fills the row next to the 46px squares (drops the kit's 400px cap) */
 .works-search { flex: 1 1 auto; min-width: 0; max-width: none; }
+/* Below 480px the search box is narrow: drop the icon and give its space back to the text */
+@media (max-width: 479.98px) {
+  .works-search .ui-search__icon { display: none; }
+  .works-search .ui-input { padding-right: 14px; }
+}
 /* Non-default sort indicator on the Sort square */
 .works-sort-dot {
   position: absolute;
