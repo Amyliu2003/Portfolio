@@ -8,4 +8,5 @@
 
 ## Supported widths
 
-- The minimum supported viewport width is **360px**. Check layouts at 360, 375, 480, 640, 768 and 1280; widths below 360px are not designed for (no overflow fixes or extra breakpoints for them).
+- The design baseline width is **360px**: layouts must look right there (check 360, 375, 480, 640, 768 and 1280).
+- At **320px** there must be no horizontal scrolling and every control must still work (WCAG 1.4.10 Reflow), but the look is not optimized for it — don't add breakpoints or polish just for 320px.
